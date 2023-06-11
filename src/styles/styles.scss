@@ -1,0 +1,238 @@
+@use "constants" as *;
+@use "theme-colors";
+
+* {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+:root {
+  font-family: $font-family;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  height: $header-height;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  /*box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);*/
+  /*border: 1px solid red;*/
+
+  #main-title {
+    position: relative;
+    text-align: center;
+    font-size: $largest-font-size;
+    margin-top: 35px;
+    z-index: 1;
+  }
+
+  #header-background {
+    width: 100vw;
+    height: $header-height;
+    position: absolute;
+    z-index: -3;
+  }
+
+  .menu-list {
+    position: fixed;
+    top: $header-height;
+    margin: -5px 0 0 0;
+    padding: 10px 0 10px;
+    display: block;
+    z-index: 1;
+    .menu-slot {
+      display: block;
+      width: 220px;
+      height: 40px;
+      padding: 8px 30px 12px 20px;
+    }
+    li {
+      list-style-type: none;
+    }
+  }
+
+  #main-menu-button {
+    position: relative;
+    margin-left: 10px;
+    width: 60px;
+    height: 50px;
+    border-radius: 5px;
+    /*box-shadow: 0 0 8px var(--medium-light);*/
+    text-align: center;
+    font-size: 45px;
+    font-family: "Arial", sans-serif;
+    line-height: 48px;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    z-index: 1;
+    &:hover {
+      transition: background-color 0.2s;
+    }
+  }
+
+  #main-menu-list {
+    left: 10px;
+    border-radius: 0 5px 5px 3px;
+  }
+
+  #profile-menu-button {
+    position: relative;
+    margin-right: 10px;
+    height: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    vertical-align: center;
+    text-align: center;
+    line-height: 43px;
+    font-size: 30px;
+    font-family: "Arial", sans-serif;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    z-index: 1;
+    &:hover {
+      transition: background-color 0.2s;
+    }
+  }
+
+  #profile-menu-list {
+    right: 10px;
+    border-radius: 5px 0 0 5px;
+  }
+}
+
+hr {
+  position: absolute;
+  top: $header-height;
+  left: 50%;
+  transform: translate(-50%);
+  display: block;
+  margin: 0 auto;
+  height: 2px;
+  width: 80vw;
+  border: none;
+  background-image: linear-gradient(
+    90deg,
+    hsla(0, 100%, 100%, 0),
+    $medium,
+    hsla(0, 100%, 100%, 0)
+  );
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  top: $header-height;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - $header-height);
+  /*border: 1px solid blue;*/
+  padding: 10vh 15vw 40px;
+  margin: 0;
+}
+
+#description {
+  padding-top: 5vh;
+}
+
+#contact-info {
+  width: 100vw;
+  height: 120px;
+  padding-top: 8vh;
+  text-align: center;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+  &:hover {
+    color: #535bf2;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  button {
+    margin-top: 10px;
+  }
+}
+
+input[type="text"] {
+  border-radius: 2px;
+  height: 22px;
+  width: 160px;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  width: 105px;
+  cursor: pointer;
+  &:hover {
+    transition: background-color 0.2s;
+  }
+}
+
+#no-page {
+  position: relative;
+  display: block;
+  padding: 0;
+  margin: 0;
+  top: 0;
+}
+
+h2 {
+  margin-top: 20vh;
+}
+
+/*
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+*/

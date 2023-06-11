@@ -1,0 +1,140 @@
+@use "constants" as *;
+
+/* ------------ */
+/* LIGHT THEME  */
+/* ------------ */
+
+.light {
+  #main-menu-button {
+    background-color: $lightest;
+    box-shadow: 0 0 10px $medium-light;
+    color: $dark;
+    &:hover {
+      background-color: white;
+    }
+    &:active {
+      background-color: $light;
+      box-shadow: none;
+    }
+  }
+
+  #profile-menu-button {
+    background-color: $light;
+    color: $dark;
+    &:hover {
+      background-color: $medium-light;
+    }
+  }
+
+  header,
+  .content,
+  footer {
+    color: $dark;
+    background-color: white;
+  }
+
+  #header-background {
+    background-color: white;
+    /*box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);*/
+  }
+
+  .menu-list {
+    /*background: linear-gradient(180deg, $light, $lightest 2%);*/
+    background: $lightest;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    /*background: $lightest;*/
+    .menu-slot {
+      color: $medium-dark;
+    }
+    .menu-slot:hover {
+      background-color: $light;
+    }
+  }
+
+  input[type="text"] {
+    background-color: white;
+    color: $darkest;
+    border: 1px solid $medium-light;
+    &:active,
+    &:focus {
+      outline: 2px solid $medium-light;
+    }
+  }
+
+  button {
+    color: $darkest;
+    background-color: $light;
+    &:hover {
+      background-color: darken($light, 3%);
+    }
+  }
+}
+
+/* ------------ */
+/*  DARK THEME  */
+/* ------------ */
+
+.dark {
+  #main-menu-button {
+    background-color: $dark;
+    color: $light;
+    &:hover {
+      background-color: $medium-dark;
+    }
+    &:active {
+      background-color: $dark;
+    }
+  }
+
+  #profile-menu-button {
+    background-color: $medium-dark;
+    color: $light;
+    &:hover {
+      background-color: lighten($medium-dark, 10%);
+    }
+    &:active {
+      background-color: $medium-dark;
+    }
+  }
+
+  header,
+  .content,
+  footer {
+    background-color: $darkest;
+    color: $light;
+  }
+
+  #header-background {
+    background-color: $darkest;
+  }
+
+  .menu-list {
+    /*background: linear-gradient(180deg, $dark, $medium-dark 5%);*/
+    background: $medium-dark;
+    .menu-slot {
+      color: $lightest;
+    }
+    .menu-slot:hover {
+      background-color: $medium;
+      color: white;
+    }
+  }
+
+  input[type="text"] {
+    background-color: $dark;
+    color: $lightest;
+    border: none;
+    &:active,
+    &:focus {
+      outline: 2px solid $medium-light;
+    }
+  }
+
+  button {
+    background-color: $medium-dark;
+    color: $lightest;
+    &:hover {
+      background-color: lighten($medium-dark, 10%);
+    }
+  }
+}
