@@ -1,8 +1,10 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 
 import * as constants from "./constants";
 import "./styles/styles.scss";
+
+import { ThemeContext } from "./Contexts";
 
 import Layout from "./pages/Layout";
 import LogIn from "./pages/LogIn";
@@ -24,7 +26,6 @@ function App() {
   const [currentPage, setPage] = useState<string>(constants.MAIN);
   const [popup, setPopup] = useState<string>(constants.NONE);
 
-  const ThemeContext = createContext(constants.LIGHT);
   const [theme, setTheme] = useState<constants.Theme>(() => {
     const storedTheme = localStorage.getItem("theme");
     return storedTheme ? (storedTheme as constants.Theme) : constants.LIGHT;
@@ -50,47 +51,47 @@ function App() {
       {/*<h1>Vite + React</h1>
       <p>Server response: {greeting}</p>*/}
       <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Layout
-                username={user ? user.username : ""}
-                currentPage={currentPage}
-                theme={theme}
-                toggleThemeFunc={toggleTheme}
-              />
-            }
-          >
-            <Route index element={<LogIn />} />
-            {user ? (
-              <>
-                <Route
-                  path={`profile-settings/${user.username}`}
-                  element={<ProfileSettings user={user} />}
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Layout
+                  username={user ? user.username : ""}
+                  currentPage={currentPage}
                 />
-                <Route
-                  path={`my-tasks/${user.username}`}
-                  element={<MyTasks tasks={user.tasks} />}
-                />
-              </>
-            ) : (
-              <>
-                <Route
-                  path={`profile-settings/:username`}
-                  element={<ProfileSettings user={user} />}
-                />
-                <Route
-                  path={`my-tasks/:username`}
-                  element={<MyTasks tasks={null} />}
-                />
-              </>
-            )}
-            <Route path="sign-up" element={<SignUp />} />
-            <Route path="about" element={<About />} />
-            <Route path="*" element={<NoPage />} />
-          </Route>
-        </Routes>
+              }
+            >
+              <Route index element={<LogIn />} />
+              {user ? (
+                <>
+                  <Route
+                    path={`profile-settings/${user.username}`}
+                    element={<ProfileSettings user={user} />}
+                  />
+                  <Route
+                    path={`my-tasks/${user.username}`}
+                    element={<MyTasks tasks={user.tasks} />}
+                  />
+                </>
+              ) : (
+                <>
+                  <Route
+                    path={`profile-settings/:username`}
+                    element={<ProfileSettings user={user} />}
+                  />
+                  <Route
+                    path={`my-tasks/:username`}
+                    element={<MyTasks tasks={null} />}
+                  />
+                </>
+              )}
+              <Route path="sign-up" element={<SignUp />} />
+              <Route path="about" element={<About />} />
+              <Route path="*" element={<NoPage />} />
+            </Route>
+          </Routes>
+        </ThemeContext.Provider>
       </BrowserRouter>
     </>
   );

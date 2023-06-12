@@ -1,4 +1,8 @@
 import { createContext } from "react";
-import { LIGHT, DARK } from "./constants";
 
-export const ThemeContext = createContext(LIGHT);
+interface ThemeContextValue {
+  theme: string;
+  toggleTheme: () => void;
+}
+
+export const ThemeContext = createContext<ThemeContextValue | null>(null);

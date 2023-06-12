@@ -1,17 +1,14 @@
 import useDisplayMenu from "../hooks/useDisplayMenu";
 import { Link } from "react-router-dom";
-import { LIGHT, DARK, Theme } from "../constants.js";
+import { LIGHT, DARK } from "../constants.js";
+import { useContext } from "react";
+import { ThemeContext } from "../Contexts";
 
-interface MainMenuProps {
-  toggleThemeFunc: () => void;
-  theme: Theme;
-}
-
-const MainMenu: React.FC<MainMenuProps> = ({ toggleThemeFunc, theme }) => {
+const MainMenu = () => {
   let { displayMenu, setDisplayMenu, menuRef } = useDisplayMenu();
-
-  const toggleTheme = () => {
-    toggleThemeFunc();
+  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const toggleThemeFunc = () => {
+    toggleTheme();
   };
 
   return (
@@ -51,7 +48,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ toggleThemeFunc, theme }) => {
               to=""
               id="change-theme"
               className="menu-slot"
-              onClick={toggleTheme}
+              onClick={toggleThemeFunc}
             >
               {theme == DARK ? "Change to light theme" : "Change to dark theme"}
             </Link>
