@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 const useDisplayMenu = () => {
   const [displayMenu, setDisplayMenu] = useState(false);
   let menuRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (!menuRef.current?.contains(e.target as Node)) {
@@ -14,6 +15,7 @@ const useDisplayMenu = () => {
       document.removeEventListener("mousedown", handler);
     };
   });
+
   return { displayMenu, setDisplayMenu, menuRef };
 };
 
