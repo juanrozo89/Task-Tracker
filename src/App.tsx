@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Route, Routes, BrowserRouter, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import * as constants from "./constants";
 import "./styles/styles.scss";
@@ -24,8 +24,6 @@ function App() {
 
   const [user, setUser] = useState<any>(null);
   const [popup, setPopup] = useState<string>(constants.NONE);
-
-  const location = useLocation();
   const [pageTitle, setPageTitle] = useState<string>(constants.MAIN);
 
   const [theme, setTheme] = useState<constants.Theme>(() => {
@@ -33,14 +31,24 @@ function App() {
     return storedTheme ? (storedTheme as constants.Theme) : constants.LIGHT;
   });
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     getGreeting().then((res) => setGreeting(res.greeting));
   }, []);
 
+  // preserve location when changing theme
+  useEffect(() => {
+    navigate(location.pathname);
+  }, [theme]);
+
+  // save theme in local storage
   useEffect(() => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // change main title in certain pages
   useEffect(() => {
     if (location.pathname == "/" && user) {
       setPageTitle(constants.MY_TASKS);
