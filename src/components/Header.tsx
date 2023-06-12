@@ -1,6 +1,5 @@
 import MainMenu from "./MainMenu";
 import ProfileMenu from "./ProfileMenu";
-import { Theme } from "../constants.js";
 
 export interface HeaderProps {
   username: string;

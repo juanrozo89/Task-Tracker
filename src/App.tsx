@@ -23,8 +23,9 @@ function App() {
   const [greeting, setGreeting] = useState("");
 
   const [user, setUser] = useState<any>(null);
-  const [currentPage, setPage] = useState<string>(constants.MAIN);
   const [popup, setPopup] = useState<string>(constants.NONE);
+
+  const [currentPage, setPage] = useState<string>(constants.MAIN);
 
   const [theme, setTheme] = useState<constants.Theme>(() => {
     const storedTheme = localStorage.getItem("theme");
@@ -78,7 +79,7 @@ function App() {
                 <>
                   <Route
                     path={`profile-settings/:username`}
-                    element={<ProfileSettings user={user} />}
+                    element={<ProfileSettings user={null} />}
                   />
                   <Route
                     path={`my-tasks/:username`}

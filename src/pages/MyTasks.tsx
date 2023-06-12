@@ -1,6 +1,5 @@
 import Task from "../components/Task";
 import RedirectToLogin from "../components/RedirectToLogin";
-import { Link } from "react-router-dom";
 
 const MyTasks: React.FC<{ tasks: any[] | null }> = ({ tasks }) => {
   return (
