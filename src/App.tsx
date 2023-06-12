@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import useThemeHandler from "./hooks/useThemeHandler";
-
+import { Route, Routes } from "react-router-dom";
 import * as constants from "./constants";
 import "./styles/styles.scss";
-
+// contexts
 import { ThemeContext } from "./Contexts";
 
+// custom hooks
+import useThemeHandler from "./hooks/useThemeHandler";
+import useTitleModifier from "./hooks/useTitleModifier";
+
+// pages
 import Layout from "./pages/Layout";
 import LogIn from "./pages/LogIn";
 import About from "./pages/About";
@@ -25,26 +28,13 @@ function App() {
 
   const [user, setUser] = useState<any>(null);
   const [popup, setPopup] = useState<string>(constants.NONE);
-  const [pageTitle, setPageTitle] = useState<string>(constants.MAIN);
-
-  const location = useLocation();
 
   const { theme, toggleTheme } = useThemeHandler();
+  const pageTitle = useTitleModifier(user);
 
   useEffect(() => {
     getGreeting().then((res) => setGreeting(res.greeting));
   }, []);
-
-  // change main title in certain pages
-  useEffect(() => {
-    if (location.pathname == "/" && user) {
-      setPageTitle(constants.MY_TASKS);
-    } else if (location.pathname == "/profile-settings") {
-      setPageTitle(constants.PROFILE_SETTINGS);
-    } else {
-      setPageTitle(constants.MAIN);
-    }
-  }, [location]);
 
   return (
     <>
