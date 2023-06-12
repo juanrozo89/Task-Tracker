@@ -63,30 +63,14 @@ function App() {
                 />
               }
             >
-              <Route index element={<LogIn />} />
-              {user ? (
-                <>
-                  <Route
-                    path={`profile-settings/${user.username}`}
-                    element={<ProfileSettings user={user} />}
-                  />
-                  <Route
-                    path={`my-tasks/${user.username}`}
-                    element={<MyTasks tasks={user.tasks} />}
-                  />
-                </>
-              ) : (
-                <>
-                  <Route
-                    path={`profile-settings/:username`}
-                    element={<ProfileSettings user={null} />}
-                  />
-                  <Route
-                    path={`my-tasks/:username`}
-                    element={<MyTasks tasks={null} />}
-                  />
-                </>
-              )}
+              <Route
+                index
+                element={user ? <MyTasks tasks={user.tasks} /> : <LogIn />}
+              />
+              <Route
+                path={"profile-settings"}
+                element={<ProfileSettings user={user} />}
+              />
               <Route path="sign-up" element={<SignUp />} />
               <Route path="about" element={<About />} />
               <Route path="*" element={<NoPage />} />
