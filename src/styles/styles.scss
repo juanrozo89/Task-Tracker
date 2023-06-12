@@ -151,23 +151,52 @@ hr {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-items: start;
   left: 0;
   width: 100vw;
   height: calc(100vh - $header-height);
-  /*border: 1px solid blue;*/
-  padding: 10vh 15vw 40px;
+  padding: 0 15vw 40px;
   margin: 0;
-}
 
-#description {
-  padding-top: 5vh;
-}
+  h2 {
+    margin: 10vh 0 30px;
+  }
 
-#contact-info {
-  width: 100vw;
-  height: 120px;
-  padding-top: 8vh;
-  text-align: center;
+  #description {
+    padding-top: 10vh;
+  }
+
+  #contact-info {
+    width: 100vw;
+    height: 120px;
+    padding-top: 8vh;
+    text-align: center;
+  }
+
+  #no-page {
+    position: relative;
+    display: block;
+    padding: 0;
+    margin: 0;
+    top: 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    button {
+      margin-top: 15px;
+    }
+  }
+
+  input[type="text"] {
+    border-radius: 2px;
+    height: 22px;
+    width: 160px;
+  }
 }
 
 a {
@@ -179,25 +208,7 @@ a {
   }
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  button {
-    margin-top: 10px;
-  }
-}
-
-input[type="text"] {
-  border-radius: 2px;
-  height: 22px;
-  width: 160px;
-}
-
 button {
-  border: none;
   border-radius: 8px;
   padding: 0.6em 1em;
   font-size: 1em;
@@ -208,18 +219,6 @@ button {
   &:hover {
     transition: background-color 0.2s;
   }
-}
-
-#no-page {
-  position: relative;
-  display: block;
-  padding: 0;
-  margin: 0;
-  top: 0;
-}
-
-h2 {
-  margin-top: 20vh;
 }
 
 /*

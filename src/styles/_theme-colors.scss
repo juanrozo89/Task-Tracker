@@ -13,15 +13,17 @@
       background-color: white;
     }
     &:active {
-      background-color: $light;
+      background-color: $lightest;
       box-shadow: none;
     }
   }
 
   #profile-menu-button {
+    border: none;
     background-color: $light;
     color: $dark;
     &:hover {
+      border: none;
       background-color: $medium-light;
     }
   }
@@ -62,9 +64,11 @@
   }
 
   button {
+    border: none;
     color: $darkest;
     background-color: $light;
     &:hover {
+      border: none;
       background-color: darken($light, 3%);
     }
   }
@@ -133,7 +137,9 @@
   button {
     background-color: $medium-dark;
     color: $lightest;
+    border: none;
     &:hover {
+      border: none;
       background-color: lighten($medium-dark, 10%);
     }
   }
