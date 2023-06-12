@@ -25,7 +25,7 @@ function App() {
   const [user, setUser] = useState<any>(null);
   const [popup, setPopup] = useState<string>(constants.NONE);
 
-  const [currentPage, setPage] = useState<string>(constants.MAIN);
+  const [pageTitle, setPageTitle] = useState<string>(constants.MAIN);
 
   const [theme, setTheme] = useState<constants.Theme>(() => {
     const storedTheme = localStorage.getItem("theme");
@@ -59,7 +59,7 @@ function App() {
               element={
                 <Layout
                   username={user ? user.username : ""}
-                  currentPage={currentPage}
+                  pageTitle={pageTitle}
                 />
               }
             >

@@ -3,7 +3,7 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Header, { HeaderProps } from "../components/Header";
 import { ThemeContext } from "../Contexts";
 
-const Layout: React.FC<HeaderProps> = ({ username, currentPage }) => {
+const Layout: React.FC<HeaderProps> = ({ username, pageTitle }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme } = useContext(ThemeContext)!;
@@ -14,7 +14,7 @@ const Layout: React.FC<HeaderProps> = ({ username, currentPage }) => {
 
   return (
     <div className={theme}>
-      <Header username={username} currentPage={currentPage} />
+      <Header username={username} pageTitle={pageTitle} />
       <hr />
       <div className="content">
         <Outlet />

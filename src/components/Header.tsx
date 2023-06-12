@@ -3,15 +3,15 @@ import ProfileMenu from "./ProfileMenu";
 
 export interface HeaderProps {
   username: string;
-  currentPage: string;
+  pageTitle: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ username, currentPage }) => {
+const Header: React.FC<HeaderProps> = ({ username, pageTitle }) => {
   return (
     <>
       <header>
         <MainMenu />
-        <h1 id="main-title">{currentPage}</h1>
+        <h1 id="main-title">{pageTitle}</h1>
         <ProfileMenu username={username} />
         <div id="header-background"></div>
       </header>
