@@ -4,10 +4,10 @@ import Header, { HeaderProps } from "../components/Header";
 import { ThemeContext } from "../Contexts";
 
 const Layout: React.FC<HeaderProps> = ({ username, pageTitle }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { theme } = useContext(ThemeContext)!;
 
+  const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     navigate(location.pathname);
   }, [theme]);

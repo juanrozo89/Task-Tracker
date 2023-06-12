@@ -1,9 +1,9 @@
 // Page titles
 export const MAIN = "Task Tracker";
 export const ABOUT = "About Task Tracker";
-export const TASKS = "My Tasks";
+export const MY_TASKS = "My Tasks";
 export const API = "API Reference";
-export const SETTINGS = "Profile Settings";
+export const PROFILE_SETTINGS = "Profile Settings";
 export const LOG_IN = "Log In";
 export const SIGN_UP = "Sign Up";
 export const NO_PAGE = "Not Found";
