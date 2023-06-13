@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { MAIN, MY_TASKS, PROFILE_SETTINGS } from "../constants";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const useTitleModifier = (user: any) => {
   const [pageTitle, setPageTitle] = useState<string>(MAIN);

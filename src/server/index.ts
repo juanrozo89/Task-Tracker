@@ -2,13 +2,15 @@ import express from "express";
 export const app = express();
 // import path from "path";
 // import helmet from "helmet";
-
 import apiRoutes from "./api.ts";
-apiRoutes(app);
+import cors from "cors";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//app.use(cors());
 // app.use(helmet());
+
+apiRoutes(app);
 
 /*
 app.use("/", express.static(path.join(__dirname, "public")));

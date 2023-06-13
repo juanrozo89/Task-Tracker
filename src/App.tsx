@@ -24,7 +24,7 @@ const getGreeting = async function () {
 };
 
 function App() {
-  const [greeting, setGreeting] = useState("");
+  const [greeting, setGreeting] = useState<string>("");
 
   const [user, setUser] = useState<any>(null);
   const [popup, setPopup] = useState<string>(constants.NONE);

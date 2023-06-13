@@ -10,7 +10,10 @@ import bcrypt from "bcrypt";
 const saltRounds = 10;
 
 import mongoose from "mongoose";
-mongoose.connect(process.env.MONGO_URI!).catch((err) => console.log(err));
+mongoose
+  .connect(process.env.MONGO_URI!)
+  .then(() => console.log("Successfully connected to database"))
+  .catch((err) => console.log(err));
 
 const Schema = mongoose.Schema;
 
@@ -34,6 +37,7 @@ const userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 
+// COMMON ERRORS:
 const missingFieldError = (field: string, res: Response) => {
   res.status(400).json({ error: `Required ${field} missing` });
 };
@@ -41,6 +45,12 @@ const missingFieldError = (field: string, res: Response) => {
 const notFoundError = (thing: string, res: Response) => {
   res.status(400).json({ error: `${thing} not found` });
 };
+
+const conflictingPasswordError = (res: Response) => {
+  res.status(400).json({ error: "Confirmation password does not match" });
+};
+
+// FUNCTIONS AND MIDDLEWARE:
 
 // get index of item
 const getIndex = (list: Array<any>, key: string, value: any) => {
@@ -57,8 +67,12 @@ const getIndex = (list: Array<any>, key: string, value: any) => {
 };
 
 // get user middleware
-const getUser = async (req: Request, res: Response, next: NextFunction) => {
-  const username = req.params.username;
+const getUser = async (
+  username: string,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const user = await User.findOne({ username: username });
   if (!user) {
     notFoundError(`User ${username}`, res);
@@ -68,10 +82,56 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+// API ROUTES:
 export default function (app: Express) {
   app.get("/api/test", (_, res) =>
     res.json({ greeting: process.env.MONGO_URI })
   );
+
+  app
+    .route("/api/sign-up")
+
+    // add a new user
+    .post(async (req: Request, res: Response) => {
+      if (!req.body.username) {
+        missingFieldError("username", res);
+      } else if (!req.body.password) {
+        missingFieldError("password", res);
+      } else if (!req.body.confirm_password) {
+        missingFieldError("confirm password", res);
+      } else {
+        const username = req.body.username;
+        console.log("All fields are present");
+        const user = await User.findOne({
+          username: username,
+        });
+        if (user) {
+          res
+            .status(409)
+            .json({ error: `Username ${username} already exists` });
+        } else if (req.body.password != req.body.confirm_password) {
+          conflictingPasswordError(res);
+        } else {
+          const hashed = bcrypt.hashSync(req.body.password, saltRounds);
+          let newUser = new User({
+            username: username,
+            password: hashed,
+            tasks: [],
+          });
+          try {
+            await User.create(newUser);
+            res.json({
+              result: `New user account for ${username} successfully created`,
+            });
+          } catch (error) {
+            res.status(500).json({
+              error:
+                "An error occurred while creating the user account." + error,
+            });
+          }
+        }
+      }
+    });
 }
 
 /*
@@ -116,59 +176,6 @@ export default function (app: Express) {
     });
 
   app
-    .route("/api/signup")
-
-    // add a new user
-    .post(async (req: Request, res: Response) => {
-      if (!req.body.signup_username) {
-        missingFieldError("username", res);
-      } else if (!req.body.signup_password) {
-        missingFieldError("password", res);
-      } else if (!req.body.confirm_signup_password) {
-        missingFieldError("confirm password", res);
-      } 
-      //else if(!req.body.email) {
-        //missingFieldError('email', res);
-      //} 
-      else {
-        const username = req.body.signup_username;
-        //const email = req.body.email;
-        const usernameExists = await User.findOne({
-          username: username,
-        }).select("username");
-        //const emailExists = await User.findOne({ email: email }).select('email');
-        if (usernameExists) {
-          res
-            .status(409)
-            .json({ error: `Username ${username} already exists` });
-        }
-        //else if (emailExists) {
-          //res.status(409)
-            //.json({ error: `email ${email} already exists` });
-        //} 
-        else {
-          const hashed = bcrypt.hashSync(req.body.signup_password, saltRounds);
-          let newUser = new User({
-            username: username,
-            password: hashed,
-            //email: email,
-            tasks: [],
-          });
-          try {
-            await newUser.save();
-            res.json({
-              result: `New user account for ${username} successfully created`,
-            });
-          } catch (error) {
-            res.status(500).json({
-              error: "An error occurred while creating the user account.",
-            });
-          }
-        }
-      }
-    });
-
-  app
     .route("/api/profile_settings/:username")
 
     // update user info
@@ -186,9 +193,7 @@ export default function (app: Express) {
         if (!validPassword) {
           res.status(401).json({ error: "Invalid password" });
         } else if (newPassword != confirmPassword) {
-          res
-            .status(400)
-            .json({ error: "Confirmation password does not match" });
+          conflictingPasswordError(res);
         } else {
           if (newUsername != "") {
             user.username = newUsername;

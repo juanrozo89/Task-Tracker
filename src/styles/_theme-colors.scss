@@ -130,7 +130,7 @@
     border: none;
     &:active,
     &:focus {
-      outline: 2px solid $medium-light;
+      outline: 2px solid lighten($medium, 10%);
     }
   }
 

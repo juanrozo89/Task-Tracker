@@ -155,6 +155,7 @@ hr {
   left: 0;
   width: 100vw;
   height: calc(100vh - $header-height);
+  min-height: max-content;
   padding: 0 15vw 40px;
   margin: 0;
 
