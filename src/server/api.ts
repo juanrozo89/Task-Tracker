@@ -67,12 +67,8 @@ const getIndex = (list: Array<any>, key: string, value: any) => {
 };
 
 // get user middleware
-const getUser = async (
-  username: string,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const getUser = async (req: Request, res: Response, next: NextFunction) => {
+  const username = req.body.username;
   const user = await User.findOne({ username: username });
   if (!user) {
     notFoundError(`User ${username}`, res);
@@ -88,46 +84,71 @@ export default function (app: Express) {
     res.json({ greeting: process.env.MONGO_URI })
   );
 
-  app
-    .route("/api/sign-up")
+  // HANDLE USER SESSION:
 
-    // add a new user
-    .post(async (req: Request, res: Response) => {
+  // add a new user
+  app.route("/api/sign-up").post(async (req: Request, res: Response) => {
+    if (!req.body.username) {
+      missingFieldError("username", res);
+    } else if (!req.body.password) {
+      missingFieldError("password", res);
+    } else if (!req.body.confirm_password) {
+      missingFieldError("confirm password", res);
+    } else {
+      const username = req.body.username;
+      console.log("All fields are present");
+      const user = await User.findOne({
+        username: username,
+      });
+      if (user) {
+        res.status(409).json({ error: `Username ${username} already exists` });
+      } else if (req.body.password != req.body.confirm_password) {
+        conflictingPasswordError(res);
+      } else {
+        const hashed = bcrypt.hashSync(req.body.password, saltRounds);
+        let newUser = new User({
+          username: username,
+          password: hashed,
+          tasks: [],
+        });
+        try {
+          await User.create(newUser);
+          res.json({
+            result: `New user account for ${username} successfully created`,
+            user: newUser,
+          });
+        } catch (error) {
+          res.status(500).json({
+            error: "An error occurred while creating the user account." + error,
+          });
+        }
+      }
+    }
+  });
+
+  // log in a user
+  app
+    .route("/api/log-in")
+    .post(getUser, async (req: Request, res: Response) => {
       if (!req.body.username) {
         missingFieldError("username", res);
       } else if (!req.body.password) {
         missingFieldError("password", res);
-      } else if (!req.body.confirm_password) {
-        missingFieldError("confirm password", res);
       } else {
+        const user = req.user;
         const username = req.body.username;
-        console.log("All fields are present");
-        const user = await User.findOne({
-          username: username,
-        });
-        if (user) {
-          res
-            .status(409)
-            .json({ error: `Username ${username} already exists` });
-        } else if (req.body.password != req.body.confirm_password) {
-          conflictingPasswordError(res);
+        const password = req.body.password;
+        const validPassword = bcrypt.compareSync(password, user.password);
+        if (!validPassword) {
+          res.status(401).json({ error: "Invalid password" });
         } else {
-          const hashed = bcrypt.hashSync(req.body.password, saltRounds);
-          let newUser = new User({
-            username: username,
-            password: hashed,
-            tasks: [],
-          });
+          user.logged_in = true;
           try {
-            await User.create(newUser);
-            res.json({
-              result: `New user account for ${username} successfully created`,
-              user: newUser,
-            });
-          } catch (error) {
+            await user.save();
+            res.json({ result: `${username} logged in`, user: user });
+          } catch {
             res.status(500).json({
-              error:
-                "An error occurred while creating the user account." + error,
+              error: "An error occurred while logging in the user",
             });
           }
         }
@@ -142,39 +163,7 @@ export default function (app: Express) {
 
   // HANDLE USERS:
 
-  app
-    .route("/api/login")
-
-    // log in an existing user
-    .post(async (req: Request, res: Response) => {
-      if (!req.body.username) {
-        missingFieldError("username", res);
-      } else if (!req.body.password) {
-        missingFieldError("password", res);
-      } else {
-        const username = req.body.username;
-        const password = req.body.password;
-        const user = await User.findOne({ username: username });
-        if (!user) {
-          res.status(401).json({ error: "Username not found" });
-        } else {
-          const validPassword = bcrypt.compareSync(password, user.password);
-          if (!validPassword) {
-            res.status(401).json({ error: "Invalid password" });
-          } else {
-            user.logged_in = true;
-            try {
-              await user.save();
-              res.json({ result: `${username} logged in` });
-            } catch {
-              res
-                .status(500)
-                .json({ error: "An error occurred while logging in the user" });
-            }
-          }
-        }
-      }
-    });
+  
 
   app
     .route("/api/profile_settings/:username")

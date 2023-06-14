@@ -24,6 +24,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
               type="password"
               name="password"
               id="password-input"
+              autoComplete="off"
               required
             />
             <label htmlFor="confirm-password-input">
@@ -34,6 +35,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
                 type="password"
                 name="confirm_password"
                 id="confirm-password-input"
+                autoComplete="off"
                 required
               />
               <button type="submit" className="inline-button">

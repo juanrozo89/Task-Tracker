@@ -16,7 +16,7 @@ type User = {
 
 interface UserContextValues {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 export const UserContext = createContext<UserContextValues | null>(null);
