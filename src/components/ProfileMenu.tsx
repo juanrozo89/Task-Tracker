@@ -18,7 +18,7 @@ const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
           </Link>
         </li>
         <li>
-          <Link to={"/" + username} id="profile-tasks" className="menu-slot">
+          <Link to="/" id="profile-tasks" className="menu-slot">
             My Tasks
           </Link>
         </li>

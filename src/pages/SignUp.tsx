@@ -52,7 +52,7 @@ const SignUp = () => {
   };
 
   return (
-    <>
+    <section id="sign-up" className="content">
       <h2>Register a new account:</h2>
 
       <form onSubmit={handleSubmit}>
@@ -67,7 +67,7 @@ const SignUp = () => {
 
         <label htmlFor="signup-password">Password: </label>
         <input
-          type="text"
+          type="password"
           name="password"
           id="signup-password"
           onChange={(e) => setPassword(e.target.value)}
@@ -76,7 +76,7 @@ const SignUp = () => {
 
         <label htmlFor="signup-confirm-password">Confirm password: </label>
         <input
-          type="text"
+          type="password"
           name="confirm_password"
           id="confirm-password-signup"
           onChange={(e) => setConfirmPassword(e.target.value)}
@@ -85,7 +85,7 @@ const SignUp = () => {
 
         <button type="submit">Sign Up!</button>
       </form>
-    </>
+    </section>
   );
 };
 

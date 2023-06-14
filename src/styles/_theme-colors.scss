@@ -5,6 +5,15 @@
 /* ------------ */
 
 .light {
+  #root,
+  header,
+  #header-background,
+  .content,
+  footer {
+    color: $dark;
+    background-color: white;
+  }
+
   #main-menu-button {
     background-color: $lightest;
     box-shadow: 0 0 10px $medium-light;
@@ -28,18 +37,6 @@
     }
   }
 
-  header,
-  .content,
-  footer {
-    color: $dark;
-    background-color: white;
-  }
-
-  #header-background {
-    background-color: white;
-    /*box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);*/
-  }
-
   .menu-list {
     /*background: linear-gradient(180deg, $light, $lightest 2%);*/
     background: $lightest;
@@ -53,7 +50,8 @@
     }
   }
 
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     background-color: white;
     color: $darkest;
     border: 1px solid $medium-light;
@@ -79,6 +77,15 @@
 /* ------------ */
 
 .dark {
+  #root,
+  header,
+  #header-background,
+  .content,
+  footer {
+    background-color: $darkest;
+    color: $light;
+  }
+
   #main-menu-button {
     background-color: $dark;
     color: $light;
@@ -101,17 +108,6 @@
     }
   }
 
-  header,
-  .content,
-  footer {
-    background-color: $darkest;
-    color: $light;
-  }
-
-  #header-background {
-    background-color: $darkest;
-  }
-
   .menu-list {
     /*background: linear-gradient(180deg, $dark, $medium-dark 5%);*/
     background: $medium-dark;
@@ -124,7 +120,8 @@
     }
   }
 
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     background-color: $dark;
     color: $lightest;
     border: none;

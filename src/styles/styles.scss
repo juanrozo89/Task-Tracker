@@ -17,7 +17,7 @@
   -webkit-text-size-adjust: 100%;
 }
 
-body {
+#root {
   margin: 0;
   place-items: center;
   min-width: 320px;
@@ -126,7 +126,7 @@ header {
 }
 
 hr {
-  position: absolute;
+  position: fixed;
   top: $header-height;
   left: 50%;
   transform: translate(-50%);
@@ -154,8 +154,8 @@ hr {
   justify-items: start;
   left: 0;
   width: 100vw;
-  height: calc(100vh - $header-height);
-  min-height: max-content;
+  min-height: calc(100vh - $header-height);
+  height: fit-content;
   padding: 0 15vw 40px;
   margin: 0;
 
@@ -163,23 +163,11 @@ hr {
     margin: 10vh 0 30px;
   }
 
-  #description {
-    padding-top: 10vh;
-  }
-
   #contact-info {
     width: 100vw;
     height: 120px;
     padding-top: 8vh;
     text-align: center;
-  }
-
-  #no-page {
-    position: relative;
-    display: block;
-    padding: 0;
-    margin: 0;
-    top: 0;
   }
 
   form {
@@ -193,11 +181,39 @@ hr {
     }
   }
 
-  input[type="text"] {
+  .left-aligned-form {
+    align-items: start;
+  }
+
+  .inline-button {
+    height: 28px;
+    width: 60px;
+    margin: 0 10px;
+    padding: 0 0 4px;
+  }
+
+  #add-task-button {
+    margin: 20px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
     border-radius: 2px;
     height: 22px;
     width: 160px;
   }
+}
+
+#about {
+  padding-top: 10vh;
+}
+
+#no-page {
+  position: relative;
+  display: block;
+  padding: 0;
+  margin: 0;
+  top: 0;
 }
 
 a {

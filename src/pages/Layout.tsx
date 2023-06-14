@@ -10,9 +10,7 @@ const Layout: React.FC<HeaderProps> = ({ username, pageTitle }) => {
     <div className={theme}>
       <Header username={username} pageTitle={pageTitle} />
       <hr />
-      <div className="content">
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   );
 };

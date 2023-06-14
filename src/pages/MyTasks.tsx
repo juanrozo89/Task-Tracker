@@ -3,8 +3,8 @@ import RedirectToLogin from "../components/RedirectToLogin";
 
 const MyTasks: React.FC<{ tasks: any[] | null }> = ({ tasks }) => {
   return (
-    <>
-      <h3>My Tasks: </h3>
+    <section id="my-tasks" className="content">
+      <button id="add-task-button">Add task</button>
       {tasks ? (
         <div id="tasks-container">
           {tasks.length >= 1 ? (
@@ -30,7 +30,7 @@ const MyTasks: React.FC<{ tasks: any[] | null }> = ({ tasks }) => {
       ) : (
         <RedirectToLogin />
       )}
-    </>
+    </section>
   );
 };
 
