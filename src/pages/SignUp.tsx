@@ -1,14 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../Contexts";
 
 import axios from "axios";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const SignUp = () => {
-  const [resp, setResponse] = useState<any>("first");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const { setUser } = useContext(UserContext)!;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,8 +24,9 @@ const SignUp = () => {
         confirm_password: confirmPassword,
       })
       .then((res) => {
-        setResponse(`${res.data.result}`);
         console.log(`${res.data.result}`);
+        setUser(res.data.user);
+        navigate("/");
       })
       .catch((error) => {
         console.log(error.toJSON());
@@ -49,7 +54,6 @@ const SignUp = () => {
   return (
     <>
       <h2>Register a new account:</h2>
-      <p>Response: {resp}</p>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="signup-username">Username: </label>

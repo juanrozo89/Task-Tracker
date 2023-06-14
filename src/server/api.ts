@@ -122,6 +122,7 @@ export default function (app: Express) {
             await User.create(newUser);
             res.json({
               result: `New user account for ${username} successfully created`,
+              user: newUser,
             });
           } catch (error) {
             res.status(500).json({
