@@ -8,7 +8,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
     content = (
       <section id="profile-settings" className="content">
         <h2>Update your info</h2>
-        <div>
+        <div id="profile-settings-forms">
           <form id="change-username-form" className="left-aligned-form">
             <label htmlFor="username-input">Change username: </label>
             <div>
@@ -24,7 +24,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
               type="password"
               name="password"
               id="password-input"
-              autoComplete="off"
+              autoComplete="new-password"
               required
             />
             <label htmlFor="confirm-password-input">
@@ -35,7 +35,6 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
                 type="password"
                 name="confirm_password"
                 id="confirm-password-input"
-                autoComplete="off"
                 required
               />
               <button type="submit" className="inline-button">
@@ -43,6 +42,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
               </button>
             </div>
           </form>
+          <button id="delete-account-button">Delete account</button>
         </div>
       </section>
     );

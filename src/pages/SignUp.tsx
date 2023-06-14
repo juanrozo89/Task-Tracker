@@ -61,7 +61,7 @@ const SignUp = () => {
           name="password"
           id="signup-password"
           onChange={(e) => setPassword(e.target.value)}
-          autoComplete="off"
+          autoComplete="new-password"
           required
         />
 
@@ -71,7 +71,7 @@ const SignUp = () => {
           name="confirm_password"
           id="confirm-password-signup"
           onChange={(e) => setConfirmPassword(e.target.value)}
-          autoComplete="off"
+          autoComplete="new-password"
           required
         />
 

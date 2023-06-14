@@ -181,6 +181,16 @@ hr {
     }
   }
 
+  #profile-settings-forms {
+    & > * {
+      margin-bottom: 10px;
+    }
+    #delete-account-button {
+      width: 150px;
+      margin-top: 20px;
+    }
+  }
+
   .left-aligned-form {
     align-items: start;
   }
