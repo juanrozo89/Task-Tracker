@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import useDisplayMenu from "../hooks/useDisplayMenu";
+import useLogout from "../hooks/useLogout";
 
 const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
   let { displayMenu, setDisplayMenu, menuRef } = useDisplayMenu();
   let menuContent;
+
+  const logoutUser = useLogout();
 
   if (username) {
     menuContent = (
@@ -28,7 +31,7 @@ const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
           </Link>
         </li>
         <li>
-          <Link to="/" id="logout" className="menu-slot">
+          <Link to="/" id="logout" className="menu-slot" onClick={logoutUser!}>
             Log out
           </Link>
         </li>

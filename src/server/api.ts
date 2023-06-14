@@ -68,13 +68,17 @@ const getIndex = (list: Array<any>, key: string, value: any) => {
 
 // get user middleware
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
-  const username = req.body.username;
-  const user = await User.findOne({ username: username });
-  if (!user) {
-    notFoundError(`User ${username}`, res);
+  if (!req.body.username) {
+    missingFieldError("username", res);
   } else {
-    req.user = user;
-    next();
+    const username = req.body.username;
+    const user = await User.findOne({ username: username });
+    if (!user) {
+      notFoundError(`User ${username}`, res);
+    } else {
+      req.user = user;
+      next();
+    }
   }
 };
 
@@ -130,9 +134,7 @@ export default function (app: Express) {
   app
     .route("/api/log-in")
     .post(getUser, async (req: Request, res: Response) => {
-      if (!req.body.username) {
-        missingFieldError("username", res);
-      } else if (!req.body.password) {
+      if (!req.body.password) {
         missingFieldError("password", res);
       } else {
         const user = req.user;
@@ -152,6 +154,22 @@ export default function (app: Express) {
             });
           }
         }
+      }
+    });
+
+  // log out a user
+  app
+    .route("/api/log-out")
+    .post(getUser, async (req: Request, res: Response) => {
+      let user = req.user;
+      user.logged_in = false;
+      try {
+        await user.save();
+        res.json({ result: `${user.username} logged out` });
+      } catch {
+        res.status(500).json({
+          error: "An error occurred while logging out the user",
+        });
       }
     });
 }

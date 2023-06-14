@@ -8,22 +8,28 @@ const useLogout = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext)!;
 
-  axios
-    .post("/api/log-out", { username: `${user ? user.username : ""}` })
-    .then((res) => {
-      console.log(`${res.data.result}`);
-      setUser(null);
-      navigate("/");
-    })
-    .catch((error) => {
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log("Error: ", error.message);
-      }
-    });
+  const logoutUser = () => {
+    axios
+      .post("/api/log-out", { username: `${user ? user.username : ""}` })
+      .then((res) => {
+        console.log(`${res.data.result}`);
+        setUser(null);
+        navigate("/");
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log("Error: ", error.message);
+        }
+      });
+  };
+
+  return logoutUser;
 };
+
+export default useLogout;
