@@ -3,6 +3,7 @@ import { UserContext } from "../Contexts";
 import RedirectToLogin from "../components/RedirectToLogin";
 
 import axios from "axios";
+import useAxiosError from "../hooks/useAxiosError";
 
 const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
   const { setUser } = useContext(UserContext)!;
@@ -34,15 +35,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
         usernameRef.current!.value = "";
       })
       .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log("Error: ", error.message);
-        }
+        useAxiosError(error);
       });
   };
 
@@ -66,15 +59,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
         confirmPasswordRef.current!.value = "";
       })
       .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log("Error: ", error.message);
-        }
+        useAxiosError(error);
       });
   };
 
