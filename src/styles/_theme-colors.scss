@@ -72,7 +72,10 @@
   }
 
   #delete-account-button {
-    background-color: hsl(0, 70%, 70%);
+    background-color: hsl(0, 70%, 74%);
+    &:hover {
+      background-color: hsl(0, 70%, 71%);
+    }
   }
 }
 
@@ -147,5 +150,8 @@
 
   #delete-account-button {
     background-color: hsl(0, 55%, 50%);
+    &:hover {
+      background-color: hsl(0, 55%, 55%);
+    }
   }
 }

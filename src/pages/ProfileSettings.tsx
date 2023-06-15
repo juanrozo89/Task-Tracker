@@ -10,31 +10,36 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
         <h2>Update your info</h2>
         <div id="profile-settings-forms">
           <form id="change-username-form" className="left-aligned-form">
-            <label htmlFor="username-input">Change username: </label>
+            <label htmlFor="update-new-username">Change username: </label>
             <div>
-              <input type="text" name="username" id="username-input" required />
+              <input
+                type="text"
+                name="new_username"
+                id="update-new-username"
+                required
+              />
               <button type="submit" className="inline-button">
                 Apply
               </button>
             </div>
           </form>
           <form id="change-password-form" className="left-aligned-form">
-            <label htmlFor="password-input">Change password: </label>
+            <label htmlFor="update-new-password">Change password: </label>
             <input
               type="password"
-              name="password"
-              id="password-input"
+              name="new_password"
+              id="update-new-password"
               autoComplete="new-password"
               required
             />
-            <label htmlFor="confirm-password-input">
+            <label htmlFor="update-confirm-password">
               Confirm new password:{" "}
             </label>
             <div>
               <input
                 type="password"
-                name="confirm_password"
-                id="confirm-password-input"
+                name="confirm_new_password"
+                id="update-confirm-password"
                 required
               />
               <button type="submit" className="inline-button">

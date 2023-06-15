@@ -50,6 +50,10 @@ const conflictingPasswordError = (res: Response) => {
   res.status(400).json({ error: "Confirmation password does not match" });
 };
 
+const usernameExistsError = (username: string, res: Response) => {
+  res.status(409).json({ error: `Username ${username} already exists` });
+};
+
 // FUNCTIONS AND MIDDLEWARE:
 
 // get index of item
@@ -105,7 +109,7 @@ export default function (app: Express) {
         username: username,
       });
       if (user) {
-        res.status(409).json({ error: `Username ${username} already exists` });
+        usernameExistsError(username, res);
       } else if (req.body.password != req.body.confirm_password) {
         conflictingPasswordError(res);
       } else {
@@ -172,6 +176,42 @@ export default function (app: Express) {
         });
       }
     });
+
+  // update user info
+  app
+    .route("/api/update-info")
+    .put(getUser, async (req: Request, res: Response) => {
+      let user = req.user;
+      const newUsername = req.body.new_username || "";
+      const newPassword = req.body.new_password || "";
+      const confirmPassword = req.body.confirm_new_password || "";
+      if (!newUsername && !newPassword) {
+        missingFieldError("fields", res);
+      } else if (newPassword && newPassword != confirmPassword) {
+        conflictingPasswordError(res);
+      } else {
+        if (newUsername != "") {
+          const usernameExists = await User.findOne({ username: newUsername });
+          if (usernameExists) {
+            usernameExistsError(newUsername, res);
+          } else {
+            user.username = newUsername;
+          }
+        }
+        if (newPassword != "") {
+          const hashed = bcrypt.hashSync(req.body.password, saltRounds);
+          user.password = hashed;
+        }
+        try {
+          await user.save();
+          res.json({ result: "User info successfully updated", user: user });
+        } catch {
+          res.status(500).json({
+            error: "An error occurred while updating the info",
+          });
+        }
+      }
+    });
 }
 
 /*
@@ -180,49 +220,6 @@ export default function (app: Express) {
   
 
   // HANDLE USERS:
-
-  
-
-  app
-    .route("/api/profile_settings/:username")
-
-    // update user info
-    .put(getUser, async (req: Request, res: Response) => {
-      let user = req.user;
-      const newUsername = req.body.new_username || "";
-      //const newEmail = req.body.new_email || "";
-      const oldPassword = req.body.old_password;
-      const newPassword = req.body.new_password || "";
-      const confirmPassword = req.body.confirm_new_password || "";
-      if (!oldPassword) {
-        missingFieldError("password", res);
-      } else {
-        const validPassword = bcrypt.compareSync(oldPassword, user.password);
-        if (!validPassword) {
-          res.status(401).json({ error: "Invalid password" });
-        } else if (newPassword != confirmPassword) {
-          conflictingPasswordError(res);
-        } else {
-          if (newUsername != "") {
-            user.username = newUsername;
-          }
-          //if (newEmail != "") {
-            //user.email = newEmail;
-          //}
-          if (newPassword != "") {
-            user.password = newPassword;
-          }
-          try {
-            await user.save();
-            res.json({ result: "User info successfully updated" });
-          } catch (error) {
-            res.status(500).json({
-              error: "An error occurred while updating the user info",
-            });
-          }
-        }
-      }
-    })
 
     // remove a user
     .delete(getUser, async (req: Request, res: Response) => {
