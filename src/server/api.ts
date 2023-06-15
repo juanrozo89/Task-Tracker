@@ -51,7 +51,7 @@ const conflictingPasswordError = (res: Response) => {
 };
 
 const usernameExistsError = (username: string, res: Response) => {
-  res.status(409).json({ error: `Username ${username} already exists` });
+  res.status(409).json({ error: `Username '${username}' already exists` });
 };
 
 // FUNCTIONS AND MIDDLEWARE:
@@ -184,7 +184,7 @@ export default function (app: Express) {
       let user = req.user;
       const newUsername = req.body.new_username || "";
       const newPassword = req.body.new_password || "";
-      const confirmPassword = req.body.confirm_new_password || "";
+      const confirmPassword = req.body.confirm_password || "";
       if (!newUsername && !newPassword) {
         missingFieldError("fields", res);
       } else if (newPassword && newPassword != confirmPassword) {
@@ -198,13 +198,18 @@ export default function (app: Express) {
             user.username = newUsername;
           }
         }
+        let hashed = "";
         if (newPassword != "") {
-          const hashed = bcrypt.hashSync(req.body.password, saltRounds);
+          hashed = bcrypt.hashSync(newPassword, saltRounds);
           user.password = hashed;
         }
         try {
           await user.save();
-          res.json({ result: "User info successfully updated", user: user });
+          res.json({
+            result: "User info successfully updated",
+            new_username: newUsername,
+            new_password: hashed,
+          });
         } catch {
           res.status(500).json({
             error: "An error occurred while updating the info",
