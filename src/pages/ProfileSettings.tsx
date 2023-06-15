@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { UserContext } from "../Contexts";
 import RedirectToLogin from "../components/RedirectToLogin";
 
@@ -6,9 +6,14 @@ import axios from "axios";
 
 const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
   const { setUser } = useContext(UserContext)!;
+
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
   const updateUsername = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,6 +31,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
           ...prevUser!,
           username: res.data.new_username,
         }));
+        usernameRef.current!.value = "";
       })
       .catch((error) => {
         if (error.response) {
@@ -56,6 +62,8 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
           ...prevUser!,
           password: res.data.new_password,
         }));
+        passwordRef.current!.value = "";
+        confirmPasswordRef.current!.value = "";
       })
       .catch((error) => {
         if (error.response) {
@@ -90,6 +98,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
                 name="new_username"
                 id="update-new-username"
                 onChange={(e) => setNewUsername(e.target.value)}
+                ref={usernameRef}
                 required
               />
               <button type="submit" className="inline-button">
@@ -109,6 +118,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
               id="update-new-password"
               autoComplete="new-password"
               onChange={(e) => setNewPassword(e.target.value)}
+              ref={passwordRef}
               required
             />
             <label htmlFor="update-confirm-password">
@@ -120,6 +130,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
                 name="confirm_new_password"
                 id="update-confirm-password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                ref={confirmPasswordRef}
                 required
               />
               <button type="submit" className="inline-button">
