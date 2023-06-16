@@ -1,5 +1,6 @@
 import { createContext } from "react";
 
+// THEME CONTEXT
 interface ThemeContextValues {
   theme: string;
   toggleTheme: () => void;
@@ -7,6 +8,7 @@ interface ThemeContextValues {
 
 export const ThemeContext = createContext<ThemeContextValues | null>(null);
 
+// USER CONTEXT
 type User = {
   username: string;
   password: string;

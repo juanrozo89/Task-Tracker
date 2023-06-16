@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { PopupContext } from "../Contexts";
 import { NONE } from "../constants";
 
 interface DialogProps {
@@ -8,15 +7,12 @@ interface DialogProps {
 }
 
 const ConfirmationDialog: React.FC<DialogProps> = ({ title, message }) => {
-  const { setPopup, onConfirm } = useContext(PopupContext)!;
-
   const handleConfirm = (_: React.MouseEvent<HTMLElement>) => {
-    onConfirm ? onConfirm() : undefined;
-    setPopup(NONE);
+    undefined;
   };
 
   const handleCancel = (_: React.MouseEvent<HTMLElement>) => {
-    setPopup(NONE);
+    undefined;
   };
 
   return (
