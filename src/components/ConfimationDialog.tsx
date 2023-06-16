@@ -4,11 +4,16 @@ import { NONE } from "../constants";
 interface DialogProps {
   title: string;
   message: string;
+  onConfirm: (...args: any[]) => any;
 }
 
-const ConfirmationDialog: React.FC<DialogProps> = ({ title, message }) => {
+const ConfirmationDialog: React.FC<DialogProps> = ({
+  title,
+  message,
+  onConfirm,
+}) => {
   const handleConfirm = (_: React.MouseEvent<HTMLElement>) => {
-    undefined;
+    onConfirm();
   };
 
   const handleCancel = (_: React.MouseEvent<HTMLElement>) => {
