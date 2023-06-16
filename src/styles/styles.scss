@@ -252,6 +252,41 @@ button {
   }
 }
 
+#confirmation-dialog {
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 8888;
+  }
+  #dialog-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+  #confirmation-dialog-title {
+    margin: 0;
+    padding: 3px 10px 5px;
+    text-align: center;
+  }
+  #confirmation-dialog-message {
+    margin: 15px 10px;
+    text-align: center;
+  }
+  .button-pair {
+    margin: 15px auto 15px;
+    padding: 0 20px;
+    & > * {
+      margin: 0 8px;
+    }
+  }
+}
+
 /*
 @media (prefers-color-scheme: light) {
   :root {

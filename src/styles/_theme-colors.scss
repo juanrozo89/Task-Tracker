@@ -77,6 +77,20 @@
       background-color: hsl(0, 70%, 71%);
     }
   }
+
+  #confirmation-dialog {
+    #dialog-box {
+      background-color: $lightest;
+      color: $dark;
+      border: 2px solid $darkest;
+    }
+    #confirmation-dialog-title {
+      background-color: $medium-light;
+    }
+    #cancel-button {
+      background-color: $grey-light;
+    }
+  }
 }
 
 /* ------------ */
@@ -152,6 +166,23 @@
     background-color: hsl(0, 55%, 50%);
     &:hover {
       background-color: hsl(0, 55%, 55%);
+    }
+  }
+
+  #confirmation-dialog {
+    #dialog-box {
+      background-color: lighten($darkest, 5%);
+      color: $lightest;
+      border: 2px solid white;
+    }
+    #confirmation-dialog-title {
+      background-color: $medium-dark;
+    }
+    #cancel-button {
+      background-color: $grey-medium;
+      &:hover {
+        background-color: lighten($grey-medium, 8%);
+      }
     }
   }
 }
