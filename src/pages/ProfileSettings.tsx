@@ -1,4 +1,5 @@
 import { useState, useContext, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext, PopupContext } from "../Contexts";
 import RedirectToLogin from "../components/RedirectToLogin";
 import { CONFIRM } from "../constants";
@@ -13,6 +14,8 @@ const ProfileSettings = () => {
   const [newUsername, setNewUsername] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -93,6 +96,38 @@ const ProfileSettings = () => {
     setOnConfirm(updatePassword);
   };
 
+  const deleteAccount = () => {
+    const request = () => {
+      axios
+        .delete("/api/delete-account", {
+          data: { username: user!.username },
+        })
+        .then((res) => {
+          console.log(`${res.data.result}`);
+          setUser(null);
+          usernameRef.current!.value = "";
+          passwordRef.current!.value = "";
+          confirmPasswordRef.current!.value = "";
+          navigate("/");
+        })
+        .catch((error) => {
+          useAxiosError(error);
+        });
+    };
+    return request;
+  };
+
+  const confirmDeleteAccount = (_: React.MouseEvent<HTMLElement>) => {
+    setPopup({
+      type: CONFIRM,
+      title: "Confirm",
+      message:
+        "Are you sure you want to delete your account?\nThis is a permanent action and all your information will be lost",
+    });
+
+    setOnConfirm(deleteAccount);
+  };
+
   let content;
   if (!user) {
     content = <RedirectToLogin />;
@@ -153,7 +188,9 @@ const ProfileSettings = () => {
               </button>
             </div>
           </form>
-          <button id="delete-account-button">Delete account</button>
+          <button id="delete-account-button" onClick={confirmDeleteAccount}>
+            Delete account
+          </button>
         </div>
       </section>
     );

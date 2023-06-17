@@ -223,6 +223,24 @@ export default function (app: Express) {
         }
       }
     });
+
+  // remove a user
+  app
+    .route("/api/delete-account")
+    .delete(getUser, async (req: Request, res: Response) => {
+      let user = req.user;
+      let username = user.username;
+      try {
+        await User.deleteOne({ username: username });
+        res.json({
+          result: `User account for ${username} successfully deleted`,
+        });
+      } catch (error) {
+        res
+          .status(500)
+          .json({ error: "An error occurred while deleting the user" });
+      }
+    });
 }
 
 /*
@@ -231,32 +249,6 @@ export default function (app: Express) {
   
 
   // HANDLE USERS:
-
-    // remove a user
-    .delete(getUser, async (req: Request, res: Response) => {
-      let user = req.user;
-      let username = user.username;
-      const password = req.body.password;
-      if (!password) {
-        missingFieldError("password", res);
-      } else {
-        const validPassword = bcrypt.compareSync(password, user.password);
-        if (!validPassword) {
-          res.status(401).json({ error: "Invalid password" });
-        } else {
-          try {
-            await User.deleteOne({ username: username });
-            res.json({
-              result: `User account for ${username} successfully deleted`,
-            });
-          } catch (error) {
-            res
-              .status(500)
-              .json({ error: "An error occurred while deleting the user" });
-          }
-        }
-      }
-    });
 
   app
     .route("/api/:username/")
