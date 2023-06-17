@@ -27,7 +27,10 @@ const ConfirmationDialog = () => {
       <div id="overlay"></div>
       <div id="dialog-box">
         <h3 id="confirmation-dialog-title">{title}</h3>
-        <p id="confirmation-dialog-message">{message}</p>
+        <p
+          id="confirmation-dialog-message"
+          dangerouslySetInnerHTML={{ __html: message }}
+        ></p>
         <div className="button-pair">
           <button id="confirm-button" onClick={handleConfirm}>
             Ok

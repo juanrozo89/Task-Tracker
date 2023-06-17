@@ -122,7 +122,7 @@ const ProfileSettings = () => {
       type: CONFIRM,
       title: "Confirm",
       message:
-        "Are you sure you want to delete your account?\nThis is a permanent action and all your information will be lost",
+        'Are you sure you want to <span class="alert-text"><b>delete</b></span> your account?<br>This is a permanent action and all your information will be lost',
     });
 
     setOnConfirm(deleteAccount);
