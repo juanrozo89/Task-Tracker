@@ -1,27 +1,30 @@
-import { useState, useContext, useRef } from "react";
-import { UserContext } from "../Contexts";
+import { useState, useContext, useRef, useEffect } from "react";
+import { UserContext, PopupContext } from "../Contexts";
 import RedirectToLogin from "../components/RedirectToLogin";
+import ConfirmationDialog from "../components/ConfimationDialog";
+import { NONE, CONFIRM } from "../constants";
 
 import axios from "axios";
 import useAxiosError from "../hooks/useAxiosError";
 
-const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
-  const { setUser } = useContext(UserContext)!;
+const ProfileSettings = () => {
+  const { user, setUser } = useContext(UserContext)!;
+  const { setPopup, onConfirm, setOnConfirm } = useContext(PopupContext)!;
 
-  const [newUsername, setNewUsername] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newUsername, setNewUsername] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  //const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  //const [onConfirm, setOnConfirm] = useState<((...args: any[]) => any) | null>(null);
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
-  const updateUsername = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const updateUsername = () => {
     axios
       .put("/api/update-info", {
-        username: user.username,
+        username: user!.username,
         new_username: newUsername,
         new_password: "",
         confirm_password: "",
@@ -39,12 +42,26 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
       });
   };
 
+  const confirmUpdateUsername = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setPopup({
+      type: CONFIRM,
+      title: "Confirm",
+      message: `Are you sure you want to change your username from '${
+        user!.username
+      }' to '${newUsername}'?`,
+    });
+
+    setOnConfirm(updateUsername);
+  };
+
   const updatePassword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     axios
       .put("/api/update-info", {
-        username: user.username,
+        username: user!.username,
         new_username: "",
         new_password: newPassword,
         confirm_password: confirmPassword,
@@ -74,7 +91,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
           <form
             id="change-username-form"
             className="left-aligned-form"
-            onSubmit={updateUsername}
+            onSubmit={confirmUpdateUsername}
           >
             <label htmlFor="update-new-username">Change username: </label>
             <div>

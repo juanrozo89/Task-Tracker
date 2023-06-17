@@ -27,7 +27,6 @@ function App() {
   const [greeting, setGreeting] = useState<string>("");
 
   const [user, setUser] = useState<any>(null);
-  const [popup, setPopup] = useState<string>(constants.NONE);
 
   const { theme, toggleTheme } = useThemeHandler();
   const pageTitle = useTitleModifier(user);
@@ -52,14 +51,8 @@ function App() {
                 />
               }
             >
-              <Route
-                index
-                element={user ? <MyTasks tasks={user.tasks} /> : <LogIn />}
-              />
-              <Route
-                path={"profile-settings"}
-                element={<ProfileSettings user={user} />}
-              />
+              <Route index element={user ? <MyTasks /> : <LogIn />} />
+              <Route path={"profile-settings"} element={<ProfileSettings />} />
               <Route path="sign-up" element={<SignUp />} />
               <Route path="about" element={<About />} />
               <Route path="*" element={<NoPage />} />

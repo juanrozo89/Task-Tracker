@@ -190,30 +190,36 @@ export default function (app: Express) {
       } else if (newPassword && newPassword != confirmPassword) {
         conflictingPasswordError(res);
       } else {
+        let fieldUpdated = false;
         if (newUsername != "") {
           const usernameExists = await User.findOne({ username: newUsername });
           if (usernameExists) {
             usernameExistsError(newUsername, res);
+            return;
           } else {
             user.username = newUsername;
+            fieldUpdated = true;
           }
         }
         let hashed = "";
         if (newPassword != "") {
           hashed = bcrypt.hashSync(newPassword, saltRounds);
           user.password = hashed;
+          fieldUpdated = true;
         }
-        try {
-          await user.save();
-          res.json({
-            result: "User info successfully updated",
-            new_username: newUsername,
-            new_password: hashed,
-          });
-        } catch {
-          res.status(500).json({
-            error: "An error occurred while updating the info",
-          });
+        if (fieldUpdated) {
+          try {
+            await user.save();
+            res.json({
+              result: "User info successfully updated",
+              new_username: newUsername,
+              new_password: hashed,
+            });
+          } catch {
+            res.status(500).json({
+              error: "An error occurred while updating the info",
+            });
+          }
         }
       }
     });

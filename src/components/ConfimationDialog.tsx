@@ -1,23 +1,25 @@
 import { useContext } from "react";
 import { NONE } from "../constants";
+import { PopupContext } from "../Contexts";
 
-interface DialogProps {
-  title: string;
-  message: string;
-  onConfirm: (...args: any[]) => any;
-}
+const ConfirmationDialog = () => {
+  const { popup, setPopup, onConfirm, setOnConfirm } =
+    useContext(PopupContext)!;
+  const title = popup.title;
+  const message = popup.message;
 
-const ConfirmationDialog: React.FC<DialogProps> = ({
-  title,
-  message,
-  onConfirm,
-}) => {
-  const handleConfirm = (_: React.MouseEvent<HTMLElement>) => {
-    onConfirm();
+  const clearPopup = () => {
+    setPopup({
+      type: NONE,
+      title: "",
+      message: "",
+    });
+    setOnConfirm(null);
   };
 
-  const handleCancel = (_: React.MouseEvent<HTMLElement>) => {
-    undefined;
+  const handleConfirm = (_: React.MouseEvent<HTMLElement>) => {
+    onConfirm ? onConfirm() : undefined;
+    clearPopup();
   };
 
   return (
@@ -30,7 +32,7 @@ const ConfirmationDialog: React.FC<DialogProps> = ({
           <button id="confirm-button" onClick={handleConfirm}>
             Ok
           </button>
-          <button id="cancel-button" onClick={handleCancel}>
+          <button id="cancel-button" onClick={clearPopup}>
             Cancel
           </button>
         </div>
