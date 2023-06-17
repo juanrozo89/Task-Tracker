@@ -22,24 +22,27 @@ const ProfileSettings = () => {
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
   const updateUsername = () => {
-    axios
-      .put("/api/update-info", {
-        username: user!.username,
-        new_username: newUsername,
-        new_password: "",
-        confirm_password: "",
-      })
-      .then((res) => {
-        console.log(`${res.data.result}`);
-        setUser((prevUser) => ({
-          ...prevUser!,
-          username: res.data.new_username,
-        }));
-        usernameRef.current!.value = "";
-      })
-      .catch((error) => {
-        useAxiosError(error);
-      });
+    const request = () => {
+      axios
+        .put("/api/update-info", {
+          username: user!.username,
+          new_username: newUsername,
+          new_password: "",
+          confirm_password: "",
+        })
+        .then((res) => {
+          console.log(`${res.data.result}`);
+          setUser((prevUser) => ({
+            ...prevUser!,
+            username: res.data.new_username,
+          }));
+          usernameRef.current!.value = "";
+        })
+        .catch((error) => {
+          useAxiosError(error);
+        });
+    };
+    return request;
   };
 
   const confirmUpdateUsername = (event: React.FormEvent<HTMLFormElement>) => {
