@@ -1,6 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import sessions from "express-session";
+import session from "express-session";
 export const app = express();
 
 // import path from "path";
@@ -12,6 +12,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //app.use(cors());
 // app.use(helmet());
+
+const oneMonth = 1000 * 60 * 60 * 24 * 7 * 30;
+app.use(
+  session({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized: true,
+    cookie: { maxAge: oneMonth },
+    resave: false,
+  })
+);
+app.use(cookieParser());
+
+declare module "express-session" {
+  export interface SessionData {
+    user: string;
+  }
+}
+
+app.use((req, res, next) => {
+  if (req.session.user) {
+    res.send(req.session.user);
+  }
+  next();
+});
 
 apiRoutes(app);
 
