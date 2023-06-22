@@ -74,13 +74,13 @@ const getIndex = (list: Array<any>, key: string, value: any) => {
 
 // destroy session function
 const destroySession = (session: Session, res: Response) => {
-  session.destroy(function (err: any) {
+  session.destroy((err: any) => {
     if (err) {
       res.status(500).json({
         error: "An error occurred while destroying the session",
       });
     } else {
-      console.log("session successfully destroyed");
+      console.log("Session successfully destroyed");
     }
   });
 };
@@ -101,7 +101,7 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// Session authentication middleware
+// session authentication middleware
 const authenticateSession = (
   req: Request,
   res: Response,
@@ -117,6 +117,19 @@ const authenticateSession = (
 // API ROUTES:
 export default function (app: Express) {
   // HANDLE USER SESSION:
+
+  // get user from session:
+  app
+    .route("/api/user-from-session/")
+    .get(authenticateSession, async (req: Request, res: Response) => {
+      const id = req.session.user;
+      const user = await User.findById(req.session.user);
+      if (!user) {
+        notFoundError(`User with id ${id}`, res);
+      } else {
+        res.json({ user: user });
+      }
+    });
 
   // add a new user
   app.route("/api/sign-up").post(async (req: Request, res: Response) => {

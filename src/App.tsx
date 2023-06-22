@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import * as constants from "./constants";
 import "./styles/styles.scss";
+
 // contexts
 import { ThemeContext, UserContext } from "./Contexts";
 
 // custom hooks
 import useThemeHandler from "./hooks/useThemeHandler";
 import useTitleModifier from "./hooks/useTitleModifier";
+import useUserSession from "./hooks/useUserSession";
 
 // pages
 import Layout from "./pages/Layout";
@@ -19,7 +21,7 @@ import SignUp from "./pages/SignUp";
 import MyTasks from "./pages/MyTasks";
 
 function App() {
-  const [user, setUser] = useState<any>(null);
+  const { user, setUser } = useUserSession();
 
   const { theme, toggleTheme } = useThemeHandler();
   const pageTitle = useTitleModifier(user);
