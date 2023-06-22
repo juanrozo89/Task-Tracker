@@ -1,6 +1,7 @@
 "use strict";
 
 import { Express, Request, Response, NextFunction } from "express";
+import { Session } from "express-session";
 import { PENDING } from "../constants";
 
 import dotenv from "dotenv";
@@ -71,6 +72,19 @@ const getIndex = (list: Array<any>, key: string, value: any) => {
   return index;
 };
 
+// destroy session function
+const destroySession = (session: Session, res: Response) => {
+  session.destroy(function (err: any) {
+    if (err) {
+      res.status(500).json({
+        error: "An error occurred while destroying the session",
+      });
+    } else {
+      console.log("session successfully destroyed");
+    }
+  });
+};
+
 // get user middleware
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.body.username) {
@@ -114,7 +128,6 @@ export default function (app: Express) {
       missingFieldError("confirm password", res);
     } else {
       const username = req.body.username;
-      console.log("All fields are present");
       const user = await User.findOne({
         username: username,
       });
@@ -184,15 +197,7 @@ export default function (app: Express) {
       user.logged_in = false;
       try {
         await user.save();
-        req.session.destroy(function (err) {
-          if (err) {
-            res.status(500).json({
-              error: "An error occurred while destroying the session",
-            });
-          } else {
-            console.log("session successfully destroyed");
-          }
-        });
+        destroySession(req.session, res);
         res.json({ result: `${user.username} logged out` });
       } catch {
         res.status(500).json({
@@ -259,6 +264,7 @@ export default function (app: Express) {
         let username = user.username;
         try {
           await User.deleteOne({ username: username });
+          destroySession(req.session, res);
           res.json({
             result: `User account for ${username} successfully deleted`,
           });
