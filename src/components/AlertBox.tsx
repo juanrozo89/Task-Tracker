@@ -19,11 +19,16 @@ const AlertBox = () => {
     <section id="alert-box" className="popup">
       <div className="overlay"></div>
       <div className="popup-box">
-        <h3 id="popup-title">{title}</h3>
-        <p id="popup-message" dangerouslySetInnerHTML={{ __html: message }}></p>
-        <button className="confirm-button" onClick={closeAlert}>
-          Ok
-        </button>
+        <h3 className="popup-title">{title}</h3>
+        <p
+          className="popup-message"
+          dangerouslySetInnerHTML={{ __html: message }}
+        ></p>
+        <div className="popup-buttons">
+          <button className="confirm-button" onClick={closeAlert}>
+            Ok
+          </button>
+        </div>
       </div>
     </section>
   );

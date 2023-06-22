@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header, { HeaderProps } from "../components/Header";
 import ConfirmationDialog from "../components/ConfimationDialog";
+import AlertBox from "../components/AlertBox";
 import { ThemeContext, PopupContext } from "../Contexts";
 import { NONE, CONFIRM, ALERT } from "../constants";
 
@@ -21,6 +22,7 @@ const Layout: React.FC<HeaderProps> = ({ username, pageTitle }) => {
         <hr />
         <Outlet />
         {popup.type == CONFIRM && <ConfirmationDialog></ConfirmationDialog>}
+        {popup.type == ALERT && <AlertBox></AlertBox>}
       </div>
     </PopupContext.Provider>
   );
