@@ -1,66 +1,131 @@
 import { useState, useContext, useRef } from "react";
-import { UserContext } from "../Contexts";
+import { useNavigate } from "react-router-dom";
+import { UserContext, PopupContext } from "../Contexts";
 import RedirectToLogin from "../components/RedirectToLogin";
+import { CONFIRM } from "../constants";
 
 import axios from "axios";
 import useAxiosError from "../hooks/useAxiosError";
 
-const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
-  const { setUser } = useContext(UserContext)!;
+const ProfileSettings = () => {
+  const { user, setUser } = useContext(UserContext)!;
+  const { setPopup, setOnConfirm } = useContext(PopupContext)!;
 
-  const [newUsername, setNewUsername] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newUsername, setNewUsername] = useState<string>("");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
-  const updateUsername = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    axios
-      .put("/api/update-info", {
-        username: user.username,
-        new_username: newUsername,
-        new_password: "",
-        confirm_password: "",
-      })
-      .then((res) => {
-        console.log(`${res.data.result}`);
-        setUser((prevUser) => ({
-          ...prevUser!,
-          username: res.data.new_username,
-        }));
-        usernameRef.current!.value = "";
-      })
-      .catch((error) => {
-        useAxiosError(error);
-      });
+  const updateUsername = () => {
+    const request = () => {
+      axios
+        .put("/api/update-info", {
+          username: user!.username,
+          new_username: newUsername,
+          new_password: "",
+          confirm_password: "",
+        })
+        .then((res) => {
+          console.log(`${res.data.result}`);
+          setUser((prevUser) => ({
+            ...prevUser!,
+            username: res.data.new_username,
+          }));
+          usernameRef.current!.value = "";
+        })
+        .catch((error) => {
+          useAxiosError(error);
+        });
+    };
+    return request;
   };
 
-  const updatePassword = (event: React.FormEvent<HTMLFormElement>) => {
+  const confirmUpdateUsername = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    axios
-      .put("/api/update-info", {
-        username: user.username,
-        new_username: "",
-        new_password: newPassword,
-        confirm_password: confirmPassword,
-      })
-      .then((res) => {
-        console.log(`${res.data.result}`);
-        setUser((prevUser) => ({
-          ...prevUser!,
-          password: res.data.new_password,
-        }));
-        passwordRef.current!.value = "";
-        confirmPasswordRef.current!.value = "";
-      })
-      .catch((error) => {
-        useAxiosError(error);
-      });
+    setPopup({
+      type: CONFIRM,
+      title: "Confirm",
+      message: `Are you sure you want to change your username from '${
+        user!.username
+      }' to '${newUsername}'?`,
+    });
+
+    setOnConfirm(updateUsername);
+  };
+
+  const updatePassword = () => {
+    const request = () => {
+      axios
+        .put("/api/update-info", {
+          username: user!.username,
+          new_username: "",
+          new_password: newPassword,
+          confirm_password: confirmPassword,
+        })
+        .then((res) => {
+          console.log(`${res.data.result}`);
+          setUser((prevUser) => ({
+            ...prevUser!,
+            password: res.data.new_password,
+          }));
+          passwordRef.current!.value = "";
+          confirmPasswordRef.current!.value = "";
+        })
+        .catch((error) => {
+          useAxiosError(error);
+        });
+    };
+    return request;
+  };
+
+  const confirmUpdatePassword = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setPopup({
+      type: CONFIRM,
+      title: "Confirm",
+      message: "Are you sure you want to change your password?",
+    });
+
+    setOnConfirm(updatePassword);
+  };
+
+  const deleteAccount = () => {
+    const request = () => {
+      axios
+        .delete("/api/delete-account", {
+          data: { username: user!.username },
+        })
+        .then((res) => {
+          console.log(`${res.data.result}`);
+          setUser(null);
+          usernameRef.current!.value = "";
+          passwordRef.current!.value = "";
+          confirmPasswordRef.current!.value = "";
+          navigate("/");
+        })
+        .catch((error) => {
+          useAxiosError(error);
+        });
+    };
+    return request;
+  };
+
+  const confirmDeleteAccount = (_: React.MouseEvent<HTMLElement>) => {
+    setPopup({
+      type: CONFIRM,
+      title: "Confirm",
+      message:
+        'Are you sure you want to <span class="alert-text"><b>delete</b></span> your account?<br>This is a permanent action and all your information will be lost',
+    });
+
+    setOnConfirm(deleteAccount);
   };
 
   let content;
@@ -74,7 +139,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
           <form
             id="change-username-form"
             className="left-aligned-form"
-            onSubmit={updateUsername}
+            onSubmit={confirmUpdateUsername}
           >
             <label htmlFor="update-new-username">Change username: </label>
             <div>
@@ -94,7 +159,7 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
           <form
             id="change-password-form"
             className="left-aligned-form"
-            onSubmit={updatePassword}
+            onSubmit={confirmUpdatePassword}
           >
             <label htmlFor="update-new-password">Change password: </label>
             <input
@@ -123,7 +188,9 @@ const ProfileSettings: React.FC<{ user: any }> = ({ user }) => {
               </button>
             </div>
           </form>
-          <button id="delete-account-button">Delete account</button>
+          <button id="delete-account-button" onClick={confirmDeleteAccount}>
+            Delete account
+          </button>
         </div>
       </section>
     );

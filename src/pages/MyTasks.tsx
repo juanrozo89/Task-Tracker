@@ -1,7 +1,11 @@
 import Task from "../components/Task";
 import RedirectToLogin from "../components/RedirectToLogin";
+import { UserContext } from "../Contexts";
+import { useContext } from "react";
 
-const MyTasks: React.FC<{ tasks: any[] | null }> = ({ tasks }) => {
+const MyTasks = () => {
+  const { user } = useContext(UserContext)!;
+  const tasks = user?.tasks;
   return (
     <section id="my-tasks" className="content">
       <button id="add-task-button">Add task</button>

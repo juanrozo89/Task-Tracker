@@ -77,6 +77,26 @@
       background-color: hsl(0, 70%, 71%);
     }
   }
+
+  #confirmation-dialog {
+    #dialog-box {
+      background-color: $lightest;
+      color: $dark;
+    }
+    #confirmation-dialog-title {
+      background-color: $medium-light;
+    }
+    #cancel-button {
+      background-color: $grey-light;
+      &:hover {
+        background-color: darken($grey-light, 5%);
+      }
+    }
+  }
+
+  .alert-text {
+    color: $warning-medium;
+  }
 }
 
 /* ------------ */
@@ -149,9 +169,29 @@
   }
 
   #delete-account-button {
-    background-color: hsl(0, 55%, 50%);
+    background-color: $warning-medium;
     &:hover {
-      background-color: hsl(0, 55%, 55%);
+      background-color: lighten($warning-medium, 3%);
     }
+  }
+
+  #confirmation-dialog {
+    #dialog-box {
+      background-color: lighten($darkest, 5%);
+      color: $lightest;
+    }
+    #confirmation-dialog-title {
+      background-color: $medium-dark;
+    }
+    #cancel-button {
+      background-color: $grey-medium;
+      &:hover {
+        background-color: lighten($grey-medium, 8%);
+      }
+    }
+  }
+
+  .alert-text {
+    color: $warning-light;
   }
 }
