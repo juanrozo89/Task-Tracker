@@ -47,11 +47,6 @@ app.use(
   })
 );
 
-/*app.use((_, res, next) => {
-  res.setHeader("Content-Type", "application/json");
-  next();
-});*/
-
 declare module "express-session" {
   export interface SessionData {
     user: string;

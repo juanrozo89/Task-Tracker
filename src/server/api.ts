@@ -87,6 +87,19 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+// Session authentication middleware
+const authenticateSession = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.session.user) {
+    next();
+  } else {
+    res.status(401).json({ error: "Unauthorized request. Please log in" });
+  }
+};
+
 // API ROUTES:
 export default function (app: Express) {
   // HANDLE USER SESSION:
@@ -118,6 +131,7 @@ export default function (app: Express) {
         });
         try {
           await User.create(newUser);
+          req.session.user = `${newUser._id}`;
           res.json({
             result: `New user account for ${username} successfully created`,
             user: newUser,
@@ -148,7 +162,7 @@ export default function (app: Express) {
           user.logged_in = true;
           try {
             await user.save();
-            req.session.user = user._id;
+            req.session.user = `${user._id}`;
             res.json({
               result: `${username} logged in`,
               user: user,
@@ -165,7 +179,7 @@ export default function (app: Express) {
   // log out a user
   app
     .route("/api/log-out")
-    .post(getUser, async (req: Request, res: Response) => {
+    .post(getUser, authenticateSession, async (req: Request, res: Response) => {
       let user = req.user;
       user.logged_in = false;
       try {
@@ -190,7 +204,7 @@ export default function (app: Express) {
   // update user info
   app
     .route("/api/update-info")
-    .put(getUser, async (req: Request, res: Response) => {
+    .put(getUser, authenticateSession, async (req: Request, res: Response) => {
       let user = req.user;
       const newUsername = req.body.new_username || "";
       const newPassword = req.body.new_password || "";
