@@ -1,41 +1,62 @@
 import express from "express";
+export const app = express();
+
+import dotenv from "dotenv";
+dotenv.config();
+
+import apiRoutes from "./api.ts";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-export const app = express();
+
+import MongoDBSession from "connect-mongodb-session";
+const MongoDBStore = MongoDBSession(session);
+const store = new MongoDBStore(
+  {
+    uri: process.env.MONGO_URI_SESSIONS!,
+    collection: "sessions",
+  },
+  (error) => {
+    if (error) {
+      console.error("Error connecting to MongoDBStore: ", error);
+    }
+  }
+);
+store.on("connected", () => {
+  console.log("Succesfully connected to MongoDBStore");
+});
 
 // import path from "path";
 // import helmet from "helmet";
-import apiRoutes from "./api.ts";
 // import cors from "cors";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 //app.use(cors());
 // app.use(helmet());
 
 const oneMonth = 1000 * 60 * 60 * 24 * 7 * 30;
 app.use(
   session({
-    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    secret: process.env.SESSIONS_KEY!,
     saveUninitialized: true,
+    store: store,
+    unset: "destroy",
     cookie: { maxAge: oneMonth },
     resave: false,
   })
 );
-app.use(cookieParser());
+
+/*app.use((_, res, next) => {
+  res.setHeader("Content-Type", "application/json");
+  next();
+});*/
 
 declare module "express-session" {
   export interface SessionData {
     user: string;
   }
 }
-
-app.use((req, res, next) => {
-  if (req.session.user) {
-    res.send(req.session.user);
-  }
-  next();
-});
 
 apiRoutes(app);
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import * as constants from "./constants";
 import "./styles/styles.scss";
@@ -18,23 +18,12 @@ import ProfileSettings from "./pages/ProfileSettings";
 import SignUp from "./pages/SignUp";
 import MyTasks from "./pages/MyTasks";
 
-const getGreeting = async function () {
-  const res = await fetch("/api/test");
-  return await res.json();
-};
-
 function App() {
-  const [greeting, setGreeting] = useState<string>("");
-
   const [user, setUser] = useState<any>(null);
   const [popup, setPopup] = useState<string>(constants.NONE);
 
   const { theme, toggleTheme } = useThemeHandler();
   const pageTitle = useTitleModifier(user);
-
-  useEffect(() => {
-    getGreeting().then((res) => setGreeting(res.greeting));
-  }, []);
 
   return (
     <>

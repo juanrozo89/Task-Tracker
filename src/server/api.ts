@@ -12,15 +12,16 @@ const saltRounds = 10;
 import mongoose from "mongoose";
 mongoose
   .connect(process.env.MONGO_URI!)
-  .then(() => console.log("Successfully connected to database"))
-  .catch((err) => console.log(err));
+  .then(() => console.log("Successfully connected to 'task-tracker' database"))
+  .catch((err) =>
+    console.log("Error connecting to 'task-tracker' database: ", err)
+  );
 
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  //email: { type: String, required: true },
   logged_in: { type: Boolean, default: true },
   tasks: [
     {
@@ -88,10 +89,6 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
 
 // API ROUTES:
 export default function (app: Express) {
-  app.get("/api/test", (_, res) =>
-    res.json({ greeting: process.env.MONGO_URI })
-  );
-
   // HANDLE USER SESSION:
 
   // add a new user
@@ -151,7 +148,11 @@ export default function (app: Express) {
           user.logged_in = true;
           try {
             await user.save();
-            res.json({ result: `${username} logged in`, user: user });
+            req.session.user = user._id;
+            res.json({
+              result: `${username} logged in`,
+              user: user,
+            });
           } catch {
             res.status(500).json({
               error: "An error occurred while logging in the user",
@@ -169,6 +170,15 @@ export default function (app: Express) {
       user.logged_in = false;
       try {
         await user.save();
+        req.session.destroy(function (err) {
+          if (err) {
+            res.status(500).json({
+              error: "An error occurred while destroying the session",
+            });
+          } else {
+            console.log("session successfully destroyed");
+          }
+        });
         res.json({ result: `${user.username} logged out` });
       } catch {
         res.status(500).json({
@@ -196,24 +206,24 @@ export default function (app: Express) {
             usernameExistsError(newUsername, res);
           } else {
             user.username = newUsername;
+            let hashed = "";
+            if (newPassword != "") {
+              hashed = bcrypt.hashSync(newPassword, saltRounds);
+              user.password = hashed;
+            }
+            try {
+              await user.save();
+              res.json({
+                result: "User info successfully updated",
+                new_username: newUsername,
+                new_password: hashed,
+              });
+            } catch {
+              res.status(500).json({
+                error: "An error occurred while updating the info",
+              });
+            }
           }
-        }
-        let hashed = "";
-        if (newPassword != "") {
-          hashed = bcrypt.hashSync(newPassword, saltRounds);
-          user.password = hashed;
-        }
-        try {
-          await user.save();
-          res.json({
-            result: "User info successfully updated",
-            new_username: newUsername,
-            new_password: hashed,
-          });
-        } catch {
-          res.status(500).json({
-            error: "An error occurred while updating the info",
-          });
         }
       }
     });
