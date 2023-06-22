@@ -10,16 +10,13 @@ const useUserSession = () => {
     const getUserData = async () => {
       try {
         const response = await axios.get("/api/user-from-session");
-        setUser(response.data.user);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          useAxiosError(error);
-          if (error.response?.status === 401) {
-            setUser(null);
-          }
-        } else {
-          console.log("Error: " + error);
+        if (response.data.user) {
+          setUser(response.data.user);
         }
+      } catch (error) {
+        axios.isAxiosError(error)
+          ? useAxiosError(error)
+          : console.log("Error: " + error);
       }
     };
     getUserData();

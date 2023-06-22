@@ -121,13 +121,17 @@ export default function (app: Express) {
   // get user from session:
   app
     .route("/api/user-from-session/")
-    .get(authenticateSession, async (req: Request, res: Response) => {
-      const id = req.session.user;
-      const user = await User.findById(req.session.user);
-      if (!user) {
-        notFoundError(`User with id ${id}`, res);
+    .get(async (req: Request, res: Response) => {
+      if (!req.session.user) {
+        res.status(204).json({ result: "No logged-in user" });
       } else {
-        res.json({ user: user });
+        const id = req.session.user;
+        const user = await User.findById(req.session.user);
+        if (!user) {
+          notFoundError(`User with id ${id}`, res);
+        } else {
+          res.json({ user: user });
+        }
       }
     });
 
