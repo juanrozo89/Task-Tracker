@@ -24,7 +24,7 @@ const ConfirmationDialog = () => {
 
   return (
     <section id="confirmation-dialog">
-      <div id="overlay"></div>
+      <div className="overlay"></div>
       <div id="dialog-box">
         <h3 id="confirmation-dialog-title">{title}</h3>
         <p
