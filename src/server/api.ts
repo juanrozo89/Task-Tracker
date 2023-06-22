@@ -251,20 +251,24 @@ export default function (app: Express) {
   // remove a user
   app
     .route("/api/delete-account")
-    .delete(getUser, async (req: Request, res: Response) => {
-      let user = req.user;
-      let username = user.username;
-      try {
-        await User.deleteOne({ username: username });
-        res.json({
-          result: `User account for ${username} successfully deleted`,
-        });
-      } catch (error) {
-        res
-          .status(500)
-          .json({ error: "An error occurred while deleting the user" });
+    .delete(
+      getUser,
+      authenticateSession,
+      async (req: Request, res: Response) => {
+        let user = req.user;
+        let username = user.username;
+        try {
+          await User.deleteOne({ username: username });
+          res.json({
+            result: `User account for ${username} successfully deleted`,
+          });
+        } catch (error) {
+          res
+            .status(500)
+            .json({ error: "An error occurred while deleting the user" });
+        }
       }
-    });
+    );
 }
 
 /*
