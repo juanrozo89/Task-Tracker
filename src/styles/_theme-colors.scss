@@ -78,15 +78,15 @@
     }
   }
 
-  #confirmation-dialog {
-    #dialog-box {
+  .popup {
+    .popup-box {
       background-color: $lightest;
       color: $dark;
     }
-    #confirmation-dialog-title {
+    .popup-title {
       background-color: $medium-light;
     }
-    #cancel-button {
+    .cancel-button {
       background-color: $grey-light;
       &:hover {
         background-color: darken($grey-light, 5%);
@@ -175,22 +175,21 @@
     }
   }
 
-  #confirmation-dialog {
-    #dialog-box {
+  .popup {
+    .popup-box {
       background-color: lighten($darkest, 5%);
       color: $lightest;
     }
-    #confirmation-dialog-title {
+    .popup-title {
       background-color: $medium-dark;
     }
-    #cancel-button {
+    .cancel-button {
       background-color: $grey-medium;
       &:hover {
         background-color: lighten($grey-medium, 8%);
       }
     }
   }
-
   .alert-text {
     color: $warning-light;
   }

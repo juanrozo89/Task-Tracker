@@ -23,19 +23,19 @@ const ConfirmationDialog = () => {
   };
 
   return (
-    <section id="confirmation-dialog">
+    <section id="confirmation-dialog" className="popup">
       <div className="overlay"></div>
-      <div id="dialog-box">
-        <h3 id="confirmation-dialog-title">{title}</h3>
+      <div className="popup-box">
+        <h3 className="popup-title">{title}</h3>
         <p
-          id="confirmation-dialog-message"
+          className="popup-message"
           dangerouslySetInnerHTML={{ __html: message }}
         ></p>
         <div className="button-pair">
-          <button id="confirm-button" onClick={handleConfirm}>
+          <button className="confirm-button" onClick={handleConfirm}>
             Ok
           </button>
-          <button id="cancel-button" onClick={clearPopup}>
+          <button className="cancel-button" onClick={clearPopup}>
             Cancel
           </button>
         </div>

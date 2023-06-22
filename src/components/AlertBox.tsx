@@ -16,12 +16,12 @@ const AlertBox = () => {
   };
 
   return (
-    <section id="alert-box">
+    <section id="alert-box" className="popup">
       <div className="overlay"></div>
-      <div id="alert-box-content">
-        <h3 id="alert-title">{title}</h3>
-        <p id="alert-message" dangerouslySetInnerHTML={{ __html: message }}></p>
-        <button id="confirm-button" onClick={closeAlert}>
+      <div className="popup-box">
+        <h3 id="popup-title">{title}</h3>
+        <p id="popup-message" dangerouslySetInnerHTML={{ __html: message }}></p>
+        <button className="confirm-button" onClick={closeAlert}>
           Ok
         </button>
       </div>
