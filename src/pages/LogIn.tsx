@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
-import { UserContext } from "../Contexts";
+import { UserContext, PopupContext } from "../Contexts";
 
 import axios from "axios";
-import { handleAxiosError } from "../utils/alertFunctions";
+import { handleErrorAlert } from "../utils/alertFunctions";
 
 const LogIn = () => {
   const [username, setUsername] = useState("");
@@ -12,6 +12,7 @@ const LogIn = () => {
   const navigate = useNavigate();
 
   const { setUser } = useContext(UserContext)!;
+  const { setPopup } = useContext(PopupContext)!;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,7 +28,7 @@ const LogIn = () => {
         navigate("/");
       })
       .catch((error) => {
-        handleAxiosError(error);
+        handleErrorAlert(error, setPopup);
       });
   };
 
