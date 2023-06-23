@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import axios from "axios";
-import useAxiosError from "../hooks/useAxiosError";
+import { handleAxiosError } from "../utils/alertFunctions";
 
 const useUserSession = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -15,7 +15,7 @@ const useUserSession = () => {
         }
       } catch (error) {
         axios.isAxiosError(error)
-          ? useAxiosError(error)
+          ? handleAxiosError(error)
           : console.log("Error: " + error);
       }
     };

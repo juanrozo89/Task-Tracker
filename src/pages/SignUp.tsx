@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import { UserContext } from "../Contexts";
 
 import axios from "axios";
-import useAxiosError from "../hooks/useAxiosError";
+import { handleAxiosError } from "../utils/alertFunctions";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -29,7 +29,7 @@ const SignUp = () => {
         navigate("/");
       })
       .catch((error) => {
-        useAxiosError(error);
+        handleAxiosError(error);
       });
   };
 
