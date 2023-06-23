@@ -2,10 +2,10 @@ import { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext, PopupContext } from "../Contexts";
 import RedirectToLogin from "../components/RedirectToLogin";
-import { CONFIRM } from "../constants";
+import { CONFIRM, ALERT } from "../constants";
 
-import axios from "axios";
-import { handleErrorAlert, handleSuccessAlert } from "../utils/alertFunctions";
+import axios, { AxiosResponse } from "axios";
+import useAxiosError from "../hooks/useAxiosError";
 
 const ProfileSettings = () => {
   const { user, setUser } = useContext(UserContext)!;
@@ -21,6 +21,27 @@ const ProfileSettings = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
+  const handleErrorAlert = (error: any) => {
+    if (error.response.status) {
+      setPopup({
+        type: ALERT,
+        title: "Error",
+        message: `${error.response.data.error}`,
+      });
+    }
+    useAxiosError(error);
+  };
+
+  const handleSuccessAlert = (res: AxiosResponse) => {
+    const result = `${res.data.result}`;
+    console.log(result);
+    setPopup({
+      type: ALERT,
+      title: "Success",
+      message: result,
+    });
+  };
+
   const updateUsername = () => {
     const request = () => {
       axios
@@ -31,7 +52,7 @@ const ProfileSettings = () => {
           confirm_password: "",
         })
         .then((res) => {
-          handleSuccessAlert(res, setPopup);
+          handleSuccessAlert(res);
           setUser((prevUser) => ({
             ...prevUser!,
             username: res.data.new_username,
@@ -39,7 +60,7 @@ const ProfileSettings = () => {
           usernameRef.current!.value = "";
         })
         .catch((error) => {
-          handleErrorAlert(error, setPopup);
+          handleErrorAlert(error);
         });
     };
     return request;
@@ -69,7 +90,7 @@ const ProfileSettings = () => {
           confirm_password: confirmPassword,
         })
         .then((res) => {
-          handleSuccessAlert(res, setPopup);
+          handleSuccessAlert(res);
           setUser((prevUser) => ({
             ...prevUser!,
             password: res.data.new_password,
@@ -78,7 +99,7 @@ const ProfileSettings = () => {
           confirmPasswordRef.current!.value = "";
         })
         .catch((error) => {
-          handleErrorAlert(error, setPopup);
+          handleErrorAlert(error);
         });
     };
     return request;
@@ -103,7 +124,7 @@ const ProfileSettings = () => {
           data: { username: user!.username },
         })
         .then((res) => {
-          handleSuccessAlert(res, setPopup);
+          handleSuccessAlert(res);
           setUser(null);
           usernameRef.current!.value = "";
           passwordRef.current!.value = "";
@@ -111,7 +132,7 @@ const ProfileSettings = () => {
           navigate("/");
         })
         .catch((error) => {
-          handleErrorAlert(error, setPopup);
+          handleErrorAlert(error);
         });
     };
     return request;
