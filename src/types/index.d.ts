@@ -7,6 +7,10 @@ declare global {
     }
   }
 
+  type PopupType = "confirm" | "alert" | "";
+  type ThemeType = "light" | "dark";
+  type StatusType = "In progress" | "Pending" | "Accomplished";
+
   type User = {
     username: string;
     password: string;

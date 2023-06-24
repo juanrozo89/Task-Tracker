@@ -9,18 +9,15 @@ export const SIGN_UP = "Sign Up";
 export const NO_PAGE = "Not Found";
 
 // Popup types
-export type Popup = "confirm" | "alert" | "";
-export const CONFIRM: Popup = "confirm";
-export const ALERT: Popup = "alert";
-export const NONE: Popup = "";
+export const CONFIRM: PopupType = "confirm";
+export const ALERT: PopupType = "alert";
+export const NONE: PopupType = "";
 
 // Theme options
-export type Theme = "light" | "dark";
-export const LIGHT: Theme = "light";
-export const DARK: Theme = "dark";
+export const LIGHT: ThemeType = "light";
+export const DARK: ThemeType = "dark";
 
 // Task status
-export type StatusType = "In progress" | "Pending" | "Accomplished";
 export const IN_PROGRESS: StatusType = "In progress";
 export const PENDING: StatusType = "Pending";
 export const ACCOMPLISHED: StatusType = "Accomplished";

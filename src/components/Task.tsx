@@ -1,4 +1,4 @@
-import { StatusType, IN_PROGRESS, PENDING, ACCOMPLISHED } from "../constants";
+import { IN_PROGRESS, PENDING, ACCOMPLISHED } from "../constants";
 import { useState } from "react";
 
 interface TaskProps {
@@ -51,22 +51,3 @@ const Task: React.FC<TaskProps> = ({
 };
 
 export default Task;
-
-/*
-`<div class="issue ${openstatus}" id="${id}" data-title="${title}">`,
-              `<p class="issueId">id: ${id}</p>`,
-              `<h3 class="issueTitle">${title} - (${openstatus})</h3>`,
-              '<button class="expandCollapse">▼</button>',
-              '<a href="#" class="closeDelete closeIssue">close</a><a href="#" class="closeDelete deleteIssue">delete</a>',
-              '<div class="issueContent">',
-                '<hr>',
-                `<p>${text}</p>`,
-                '<br>',
-                `<p><b>Status:</b> ${status}</p>`,
-                `<p><b>Created by:</b> ${createdBy}</p>`,
-                `<p><b>Assigned to:</b> ${assignedTo}</p>`,
-                `<p><b>Created on:</b> ${createdOn}</p>`,
-                `<p><b>Last updated:</b> ${updatedOn}</p>`,
-              '</div>',
-            '</div>'
-*/
