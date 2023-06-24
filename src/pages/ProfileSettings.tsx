@@ -25,7 +25,6 @@ const ProfileSettings = () => {
     const request = () => {
       axios
         .put("/api/update-info", {
-          username: user!.username,
           new_username: newUsername,
           new_password: "",
           confirm_password: "",
@@ -63,7 +62,6 @@ const ProfileSettings = () => {
     const request = () => {
       axios
         .put("/api/update-info", {
-          username: user!.username,
           new_username: "",
           new_password: newPassword,
           confirm_password: confirmPassword,
@@ -99,9 +97,7 @@ const ProfileSettings = () => {
   const deleteAccount = () => {
     const request = () => {
       axios
-        .delete("/api/delete-account", {
-          data: { username: user!.username },
-        })
+        .delete("/api/delete-account")
         .then((res) => {
           handleSuccessAlert(res, setPopup);
           setUser(null);

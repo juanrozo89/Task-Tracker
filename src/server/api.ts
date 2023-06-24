@@ -23,7 +23,6 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  logged_in: { type: Boolean, default: true },
   tasks: [
     {
       category: { type: String, required: true },
@@ -79,19 +78,26 @@ const destroySession = (session: Session, res: Response) => {
       res.status(500).json({
         error: "An error occurred while destroying the session",
       });
+      return;
     } else {
       console.log("Session successfully destroyed");
     }
   });
 };
 
-// get user middleware
+// get user from id or usernamemiddleware
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
-  if (!req.body.username) {
-    missingFieldError("username", res);
+  const id = req.session.user || null;
+  const username = req.body.username || null;
+  let user;
+  if (!username && !id) {
+    missingFieldError("username or id", res);
   } else {
-    const username = req.body.username;
-    const user = await User.findOne({ username: username });
+    if (id) {
+      user = await User.findById(id);
+    } else if (username) {
+      user = await User.findOne({ username: username });
+    }
     if (!user) {
       notFoundError(`User ${username}`, res);
     } else {
@@ -116,7 +122,7 @@ const authenticateSession = (
 
 // API ROUTES:
 export default function (app: Express) {
-  // HANDLE USER SESSION:
+  // ~~~ HANDLE USER SESSION ~~~
 
   // get user from session:
   app
@@ -209,24 +215,15 @@ export default function (app: Express) {
   // log out a user
   app
     .route("/api/log-out")
-    .post(getUser, authenticateSession, async (req: Request, res: Response) => {
-      let user = req.user;
-      user.logged_in = false;
-      try {
-        await user.save();
-        destroySession(req.session, res);
-        res.json({ result: `${user.username} logged out` });
-      } catch {
-        res.status(500).json({
-          error: "An error occurred while logging out the user",
-        });
-      }
+    .post(authenticateSession, async (req: Request, res: Response) => {
+      destroySession(req.session, res);
+      res.json({ result: "Succesfully logged out" });
     });
 
   // update user info
   app
     .route("/api/update-info")
-    .put(getUser, authenticateSession, async (req: Request, res: Response) => {
+    .put(authenticateSession, getUser, async (req: Request, res: Response) => {
       let user = req.user;
       const newUsername = req.body.new_username || "";
       const newPassword = req.body.new_password || "";
@@ -274,8 +271,8 @@ export default function (app: Express) {
   app
     .route("/api/delete-account")
     .delete(
-      getUser,
       authenticateSession,
+      getUser,
       async (req: Request, res: Response) => {
         let user = req.user;
         let username = user.username;
@@ -366,38 +363,6 @@ export default function (app: Express) {
     })
 
     // create a new task
-    .post(getUser, async (req: Request, res: Response) => {
-      let user = req.user;
-      if (!req.body.task_title) {
-        missingFieldError("title", res);
-      } else if (!req.body.category) {
-        missingFieldError("category", res);
-      } else {
-        const task_title = req.body.task_title;
-        const category = req.body.category;
-        const task_text = req.body.task_text || "";
-        const due_date = req.body.due_date || null;
-        const date = new Date();
-        let newTask = {
-          category: category,
-          status: PENDING,
-          task_title: task_title,
-          task_text: task_text,
-          created_on: date,
-          updated_on: date,
-          due_date: due_date,
-        };
-        user.tasks = user.tasks.unshift(newTask);
-        try {
-          user = await user.save();
-          res.json({ result: "Task successfully created." });
-        } catch {
-          res
-            .status(500)
-            .json({ error: "An error occurred while creating the task" });
-        }
-      }
-    })
 
     // update a task
     .put(getUser, async (req: Request, res: Response) => {
