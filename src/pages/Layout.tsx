@@ -11,7 +11,7 @@ const Layout: React.FC<HeaderProps> = ({ username, pageTitle }) => {
   const [popup, setPopup] = useState<Popup>({
     type: NONE,
     title: "",
-    message: "",
+    content: "",
   });
   const [onConfirm, setOnConfirm] = useState<AnyFunction | null>(null);
 

@@ -50,7 +50,7 @@ const ProfileSettings = () => {
     setPopup({
       type: CONFIRM,
       title: "Confirm",
-      message: `Are you sure you want to change your username from '${
+      content: `Are you sure you want to change your username from '${
         user!.username
       }' to '${newUsername}'?`,
     });
@@ -88,7 +88,7 @@ const ProfileSettings = () => {
     setPopup({
       type: CONFIRM,
       title: "Confirm",
-      message: "Are you sure you want to change your password?",
+      content: "Are you sure you want to change your password?",
     });
 
     setOnConfirm(updatePassword);
@@ -117,7 +117,7 @@ const ProfileSettings = () => {
     setPopup({
       type: CONFIRM,
       title: "Confirm",
-      message:
+      content:
         'Are you sure you want to <span class="alert-text"><b>delete</b></span> your account?<br>This is a permanent action and all your information will be lost',
     });
 

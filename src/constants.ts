@@ -11,6 +11,7 @@ export const NO_PAGE = "Not Found";
 // Popup types
 export const CONFIRM: PopupType = "confirm";
 export const ALERT: PopupType = "alert";
+export const NEW_TASK: PopupType = "new task";
 export const NONE: PopupType = "";
 
 // Theme options

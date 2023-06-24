@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { NONE } from "../constants";
 import { PopupContext } from "../Contexts";
 
-const AlertBox = () => {
+const NewTask = () => {
   const { popup, setPopup } = useContext(PopupContext)!;
   const title = popup.title;
   const content = popup.content;
@@ -34,4 +34,4 @@ const AlertBox = () => {
   );
 };
 
-export default AlertBox;
+export default NewTask;

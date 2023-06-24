@@ -23,7 +23,7 @@ declare global {
     due_date: Date | null;
   }
 
-  type PopupType = "confirm" | "alert" | "";
+  type PopupType = "confirm" | "alert" | "new task" | "";
   type ThemeType = "light" | "dark";
   type StatusType = "In progress" | "Pending" | "Accomplished";
 
@@ -37,7 +37,7 @@ declare global {
   type Popup = {
     type: string;
     title: string;
-    message: string;
+    content: string;
   };
 
   type AnyFunction = (...args: any[]) => any;
