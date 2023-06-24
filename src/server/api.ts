@@ -289,6 +289,44 @@ export default function (app: Express) {
         }
       }
     );
+
+  // ~~~ HANDLE TASKS ~~~
+
+  // add a new task:
+  app
+    .route("/api/new-task")
+    .post(authenticateSession, getUser, async (req: Request, res: Response) => {
+      let user = req.user;
+      if (!req.body.task_title) {
+        missingFieldError("title", res);
+      } else if (!req.body.category) {
+        missingFieldError("category", res);
+      } else {
+        const task_title = req.body.task_title;
+        const category = req.body.category;
+        const task_text = req.body.task_text || "";
+        const due_date = new Date(req.body.due_date) || null;
+        const date = new Date();
+        let newTask = {
+          category: category,
+          status: PENDING,
+          task_title: task_title,
+          task_text: task_text,
+          created_on: date,
+          updated_on: date,
+          due_date: due_date,
+        };
+        user.tasks = user.tasks.unshift(newTask);
+        try {
+          user = await user.save();
+          res.json({ result: "Task successfully created" });
+        } catch {
+          res
+            .status(500)
+            .json({ error: "An error occurred while creating the task" });
+        }
+      }
+    });
 }
 
 /*
