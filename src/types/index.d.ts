@@ -7,6 +7,22 @@ declare global {
     }
   }
 
+  interface HeaderProps {
+    username: string;
+    pageTitle: string;
+  }
+
+  interface TaskProps {
+    _id: string;
+    category: string;
+    status: StatusType;
+    task_title: string;
+    task_text: string;
+    created_on: Date;
+    updated_on: Date | null;
+    due_date: Date | null;
+  }
+
   type PopupType = "confirm" | "alert" | "";
   type ThemeType = "light" | "dark";
   type StatusType = "In progress" | "Pending" | "Accomplished";

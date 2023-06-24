@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
-import Header, { HeaderProps } from "../components/Header";
+import Header from "../components/Header";
 import ConfirmationDialog from "../components/ConfimationDialog";
 import AlertBox from "../components/AlertBox";
 import { ThemeContext, PopupContext } from "../Contexts";

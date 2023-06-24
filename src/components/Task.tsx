@@ -1,17 +1,6 @@
 import { IN_PROGRESS, PENDING, ACCOMPLISHED } from "../constants";
 import { useState } from "react";
 
-interface TaskProps {
-  _id: string;
-  category: string;
-  status: StatusType;
-  task_title: string;
-  task_text: string;
-  created_on: Date;
-  updated_on: Date | null;
-  due_date: Date | null;
-}
-
 const Task: React.FC<TaskProps> = ({
   _id,
   category,
