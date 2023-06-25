@@ -14,10 +14,10 @@ declare global {
 
   interface TaskProps {
     _id: string;
-    category: string;
-    status: StatusType;
     task_title: string;
     task_text: string;
+    category: string;
+    status: StatusType;
     created_on: Date;
     updated_on: Date | null;
     due_date: Date | null;
@@ -36,8 +36,8 @@ declare global {
 
   type Popup = {
     type: string;
-    title: string;
-    content: string;
+    title?: string;
+    content?: string;
   };
 
   type AnyFunction = (...args: any[]) => any;

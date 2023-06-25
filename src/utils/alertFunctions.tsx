@@ -26,7 +26,7 @@ export const handleErrorAlert = (
     setPopupFunc({
       type: ALERT,
       title: "Error",
-      message: `${error.response.data.error}`,
+      content: `${error.response.data.error}`,
     });
   }
   handleAxiosError(error);
@@ -41,6 +41,6 @@ export const handleSuccessAlert = (
   setPopupFunc({
     type: ALERT,
     title: "Success",
-    message: result,
+    content: result,
   });
 };

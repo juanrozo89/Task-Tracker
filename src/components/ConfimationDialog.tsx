@@ -17,7 +17,7 @@ const ConfirmationDialog = () => {
     setOnConfirm(null);
   };
 
-  const handleConfirm = (_: React.MouseEvent<HTMLElement>) => {
+  const handleConfirm = () => {
     onConfirm ? onConfirm() : undefined;
     clearPopup();
   };
@@ -29,7 +29,7 @@ const ConfirmationDialog = () => {
         <h3 className="popup-title">{title}</h3>
         <p
           className="popup-content"
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: content! }}
         ></p>
         <div className="popup-buttons">
           <button className="confirm-button" onClick={handleConfirm}>

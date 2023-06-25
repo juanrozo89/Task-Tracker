@@ -158,64 +158,67 @@ hr {
   height: fit-content;
   padding: 0 15vw 40px;
   margin: 0;
+}
 
-  h2 {
-    margin: 10vh 0 30px;
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  button {
+    margin-top: 15px;
   }
+}
 
-  #contact-info {
-    width: 100vw;
-    height: 120px;
-    padding-top: 8vh;
-    text-align: center;
+.left-aligned-form {
+  align-items: start;
+}
+
+#profile-settings-forms {
+  & > * {
+    margin-bottom: 10px;
   }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: fit-content;
-    button {
-      margin-top: 15px;
-    }
-  }
-
-  #profile-settings-forms {
-    & > * {
-      margin-bottom: 10px;
-    }
-    #delete-account-button {
-      border-radius: 5px;
-      width: 146px;
-      height: 36px;
-      padding: 0 0 2px;
-      margin-top: 23px;
-    }
-  }
-
-  .left-aligned-form {
-    align-items: start;
-  }
-
-  .inline-button {
-    height: 28px;
-    width: 62px;
-    margin: 0 10px;
-    padding: 0 0 4px;
+  #delete-account-button {
     border-radius: 5px;
+    width: 146px;
+    height: 36px;
+    padding: 0 0 2px;
+    margin-top: 23px;
   }
+}
 
-  #add-task-button {
-    margin: 20px;
-  }
+.inline-button {
+  height: 28px;
+  width: 62px;
+  margin: 0 10px;
+  padding: 0 0 4px;
+  border-radius: 5px;
+}
 
-  input[type="text"],
-  input[type="password"] {
-    border-radius: 2px;
-    height: 22px;
-    width: 160px;
-  }
+#add-task-button {
+  margin: 20px;
+}
+
+input {
+  border-radius: 2px;
+  height: 22px;
+  width: 160px;
+}
+
+textarea {
+  border-radius: 2px;
+}
+
+h2 {
+  margin: 10vh 0 30px;
+}
+
+#contact-info {
+  width: 100vw;
+  height: 120px;
+  padding-top: 8vh;
+  text-align: center;
 }
 
 #about {
@@ -268,7 +271,7 @@ button {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
-    width: 300px;
+    width: $popup-width;
     border-radius: 5px;
 
     .popup-title {
@@ -281,6 +284,10 @@ button {
     .popup-content {
       margin: 15px 20px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     .popup-buttons {
@@ -289,6 +296,13 @@ button {
       margin: 15px auto 10px;
       padding: 0 20px;
     }
+  }
+}
+
+#new-task-form {
+  input,
+  textarea {
+    width: calc($popup-width - 60px);
   }
 }
 

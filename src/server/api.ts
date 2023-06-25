@@ -55,6 +55,11 @@ const usernameExistsError = (username: string, res: Response) => {
   res.status(409).json({ error: `Username '${username}' already exists` });
 };
 
+const handle500Error = (error: any, errorMessage: string, res: Response) => {
+  console.log(errorMessage + ": ", error);
+  res.status(500).json({ error: errorMessage });
+};
+
 // FUNCTIONS AND MIDDLEWARE:
 
 // get index of item
@@ -75,9 +80,11 @@ const getIndex = (list: Array<any>, key: string, value: any) => {
 const destroySession = (session: Session, res: Response) => {
   session.destroy((err: any) => {
     if (err) {
-      res.status(500).json({
-        error: "An error occurred while destroying the session",
-      });
+      handle500Error(
+        err,
+        "An internal error occurred while destroying the session",
+        res
+      );
       return;
     } else {
       console.log("Session successfully destroyed");
@@ -173,9 +180,11 @@ export default function (app: Express) {
             user: newUser,
           });
         } catch (error) {
-          res.status(500).json({
-            error: "An error occurred while creating the user account." + error,
-          });
+          handle500Error(
+            error,
+            "An internal error occurred while creating the user account",
+            res
+          );
         }
       }
     }
@@ -195,7 +204,6 @@ export default function (app: Express) {
         if (!validPassword) {
           res.status(401).json({ error: "Invalid password" });
         } else {
-          user.logged_in = true;
           try {
             await user.save();
             req.session.user = `${user._id}`;
@@ -203,10 +211,12 @@ export default function (app: Express) {
               result: `${username} logged in`,
               user: user,
             });
-          } catch {
-            res.status(500).json({
-              error: "An error occurred while logging in the user",
-            });
+          } catch (error) {
+            handle500Error(
+              error,
+              "An internal error occurred while logging in",
+              res
+            );
           }
         }
       }
@@ -258,10 +268,12 @@ export default function (app: Express) {
               new_username: newUsername,
               new_password: hashed,
             });
-          } catch {
-            res.status(500).json({
-              error: "An error occurred while updating the info",
-            });
+          } catch (error) {
+            handle500Error(
+              error,
+              "An internal error occurred while updating the info",
+              res
+            );
           }
         }
       }
@@ -283,9 +295,9 @@ export default function (app: Express) {
             result: `User account for ${username} successfully deleted`,
           });
         } catch (error) {
-          res
-            .status(500)
-            .json({ error: "An error occurred while deleting the user" });
+          const errorMessage = "An error occurred while deleting the user";
+          console.log(errorMessage + ": ", error);
+          res.status(500).json({ error: errorMessage });
         }
       }
     );
@@ -305,25 +317,27 @@ export default function (app: Express) {
         const task_title = req.body.task_title;
         const category = req.body.category;
         const task_text = req.body.task_text || "";
-        const due_date = new Date(req.body.due_date) || null;
+        const due_date = req.body.due_date ? new Date(req.body.due_date) : null;
         const date = new Date();
         let newTask = {
-          category: category,
-          status: PENDING,
           task_title: task_title,
           task_text: task_text,
+          category: category,
+          status: PENDING,
           created_on: date,
           updated_on: date,
           due_date: due_date,
         };
-        user.tasks = user.tasks.unshift(newTask);
+        user.tasks.unshift(newTask);
         try {
           user = await user.save();
-          res.json({ result: "Task successfully created" });
-        } catch {
-          res
-            .status(500)
-            .json({ error: "An error occurred while creating the task" });
+          res.json({ result: "Task successfully created", tasks: user.tasks });
+        } catch (error) {
+          handle500Error(
+            error,
+            "An internal error occurred while creating the task",
+            res
+          );
         }
       }
     });

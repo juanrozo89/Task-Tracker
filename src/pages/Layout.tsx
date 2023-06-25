@@ -3,8 +3,9 @@ import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import ConfirmationDialog from "../components/ConfimationDialog";
 import AlertBox from "../components/AlertBox";
+import NewTask from "../components/NewTask";
 import { ThemeContext, PopupContext } from "../Contexts";
-import { NONE, CONFIRM, ALERT } from "../constants";
+import { NONE, CONFIRM, ALERT, NEW_TASK } from "../constants";
 
 const Layout: React.FC<HeaderProps> = ({ username, pageTitle }) => {
   const { theme } = useContext(ThemeContext)!;
@@ -22,6 +23,7 @@ const Layout: React.FC<HeaderProps> = ({ username, pageTitle }) => {
         <hr />
         <Outlet />
         {popup.type == CONFIRM && <ConfirmationDialog></ConfirmationDialog>}
+        {popup.type == NEW_TASK && <NewTask></NewTask>}
         {popup.type == ALERT && <AlertBox></AlertBox>}
       </div>
     </PopupContext.Provider>
