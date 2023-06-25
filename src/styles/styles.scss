@@ -1,6 +1,10 @@
 @use "constants" as *;
 @use "theme-colors";
 
+/* -------------- */
+/* GENERAL STYLES */
+/* -------------- */
+
 * {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -25,6 +29,85 @@
   display: flex;
   flex-direction: column;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  button {
+    margin-top: 15px;
+  }
+}
+
+input {
+  border-radius: 2px;
+  height: 22px;
+  width: 160px;
+}
+
+textarea {
+  border-radius: 2px;
+}
+
+h2 {
+  margin: 10vh 0 30px;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+  &:hover {
+    color: #535bf2;
+  }
+}
+
+button {
+  border-radius: 8px;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  width: 105px;
+  cursor: pointer;
+  &:hover {
+    transition: background-color 0.2s;
+  }
+}
+
+.content {
+  position: relative;
+  top: $header-height;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: start;
+  left: 0;
+  width: 100vw;
+  min-height: calc(100vh - $header-height);
+  height: fit-content;
+  padding: 0 15vw 40px;
+  margin: 0;
+}
+
+.left-aligned-form {
+  align-items: start;
+}
+
+.inline-button {
+  height: 28px;
+  width: 62px;
+  margin: 0 10px;
+  padding: 0 0 4px;
+  border-radius: 5px;
+}
+
+/* -------------- */
+/*     HEADER     */
+/* -------------- */
 
 header {
   position: fixed;
@@ -144,36 +227,9 @@ hr {
   z-index: 1;
 }
 
-.content {
-  position: relative;
-  top: $header-height;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-items: start;
-  left: 0;
-  width: 100vw;
-  min-height: calc(100vh - $header-height);
-  height: fit-content;
-  padding: 0 15vw 40px;
-  margin: 0;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  button {
-    margin-top: 15px;
-  }
-}
-
-.left-aligned-form {
-  align-items: start;
-}
+/* ---------------- */
+/* PROFILE SETTINGS */
+/* ---------------- */
 
 #profile-settings-forms {
   & > * {
@@ -188,31 +244,17 @@ form {
   }
 }
 
-.inline-button {
-  height: 28px;
-  width: 62px;
-  margin: 0 10px;
-  padding: 0 0 4px;
-  border-radius: 5px;
-}
+/* -------------- */
+/*    MY TASKS    */
+/* -------------- */
 
 #add-task-button {
   margin: 20px;
 }
 
-input {
-  border-radius: 2px;
-  height: 22px;
-  width: 160px;
-}
-
-textarea {
-  border-radius: 2px;
-}
-
-h2 {
-  margin: 10vh 0 30px;
-}
+/* ----------- */
+/*    ABOUT    */
+/* ----------- */
 
 #contact-info {
   width: 100vw;
@@ -225,6 +267,10 @@ h2 {
   padding-top: 10vh;
 }
 
+/* ------------ */
+/*    NO PAGE   */
+/* ------------ */
+
 #no-page {
   position: relative;
   display: block;
@@ -233,27 +279,9 @@ h2 {
   top: 0;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-  &:hover {
-    color: #535bf2;
-  }
-}
-
-button {
-  border-radius: 8px;
-  padding: 0.6em 1em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  width: 105px;
-  cursor: pointer;
-  &:hover {
-    transition: background-color 0.2s;
-  }
-}
+/* ------------- */
+/*     POPUP     */
+/* ------------- */
 
 .popup {
   .overlay {

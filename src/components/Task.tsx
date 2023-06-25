@@ -1,4 +1,3 @@
-import { IN_PROGRESS, PENDING, ACCOMPLISHED } from "../constants";
 import { useState } from "react";
 
 const Task: React.FC<TaskProps> = ({
