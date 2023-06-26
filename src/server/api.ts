@@ -76,7 +76,7 @@ const getIndex = (list: Array<any>, key: string, value: any) => {
   return index;
 };
 
-// destroy session function
+// destroy session
 const destroySession = (session: Session, res: Response) => {
   session.destroy((err: any) => {
     if (err) {
@@ -92,7 +92,7 @@ const destroySession = (session: Session, res: Response) => {
   });
 };
 
-// get user from id or usernamemiddleware
+// middleware: get user from id or username
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.session.user || null;
   const username = req.body.username || null;
@@ -114,7 +114,7 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// session authentication middleware
+// middleware: session authentication
 const authenticateSession = (
   req: Request,
   res: Response,
@@ -341,6 +341,32 @@ export default function (app: Express) {
         }
       }
     });
+
+  // delete a task
+  app
+    .route("/api/delete-task")
+    .delete(
+      authenticateSession,
+      getUser,
+      async (req: Request, res: Response) => {
+        let user = req.user;
+        if (!req.body._id) {
+          missingFieldError("id", res);
+        } else {
+          const _id = req.body._id;
+          const task_index = getIndex(user.tasks, "_id", _id);
+          user.tasks.splice(task_index, 1);
+          try {
+            user = await user.save();
+            res.json({ result: "Task successfully deleted" });
+          } catch {
+            res
+              .status(500)
+              .json({ error: "An error occurred while deleting the task" });
+          }
+        }
+      }
+    );
 }
 
 /*
@@ -466,25 +492,6 @@ export default function (app: Express) {
         }
       }
     })
-
-    // delete a task
-    .delete(getUser, async (req: Request, res: Response) => {
-      let user = req.user;
-      if (!req.body._id) {
-        missingFieldError("id", res);
-      } else {
-        const _id = req.body._id;
-        const task_index = getIndex(user.tasks, "_id", _id);
-        user.tasks.splice(task_index, 1);
-        try {
-          user = await user.save();
-          res.json({ result: "Task successfully deleted" });
-        } catch {
-          res
-            .status(500)
-            .json({ error: "An error occurred while deleting the task" });
-        }
-      }
-    });
+  });
 }
 */

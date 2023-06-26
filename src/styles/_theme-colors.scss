@@ -94,6 +94,43 @@
     }
   }
 
+  .task-cell {
+    background-color: white;
+    .task-header {
+      .task-title {
+        color: $dark;
+      }
+      .expand-collapse {
+        width: 30px;
+        aspect-ratio: 1/1;
+        padding: 0 0 3px;
+        font-family: "Arial" sans-serif;
+        font-size: 16px;
+        text-align: center;
+      }
+    }
+    .task-info-subtitle {
+      color: $medium-dark;
+    }
+    .delete-task-btn {
+      text-decoration: underline;
+    }
+    .task-content {
+      .task-text {
+      }
+      .task-category {
+      }
+      .task-status {
+      }
+      .created-on {
+      }
+      .updated-on {
+      }
+      .due-date {
+      }
+    }
+  }
+
   .alert-text {
     color: $warning-medium;
   }
