@@ -14,24 +14,59 @@ const Task: React.FC<TaskProps> = ({
   const toggleShowFull = () => {
     setShowAll(!showFull);
   };
+  const formattedDate = (date: Date) => {
+    const dateF = new Date(date);
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric" as const,
+      month: "long" as const,
+      day: "numeric" as const,
+      hour: "numeric" as const,
+      minute: "numeric" as const,
+    };
+
+    const formattedDate = dateF.toLocaleDateString("en-US", options);
+    return formattedDate;
+  };
 
   return (
     <div className={`${status} task-cell`} id={_id}>
-      <h3 className="task-title">{task_title}</h3>
-      <button className="expand-collapse" onClick={toggleShowFull}>
-        ▼
-      </button>
-      <div className="delete-task-btn">delete</div>
+      <div className="task-header">
+        <h3 className="task-title">{task_title}</h3>
+        {showFull ? (
+          <button className="expand-collapse" onClick={toggleShowFull}>
+            ⏶
+          </button>
+        ) : (
+          <button className="expand-collapse" onClick={toggleShowFull}>
+            ⏷
+          </button>
+        )}
+      </div>
       {showFull && (
         <div className="task-content">
           <div className="task-text">{task_text}</div>
-          <div className="task-category">{category}</div>
-          <div className="task-status">{status}</div>
-          <div className="created-on">Created on: {`${created_on}`}</div>
+          <div className="task-category">
+            <span className="task-info-subtitle">Category: </span>
+            {category}
+          </div>
+          <div className="task-status">- {status} -</div>
+          <div className="created-on">
+            <span className="task-info-subtitle">Created on: </span>{" "}
+            {`${formattedDate(created_on)}`}
+          </div>
           {updated_on && (
-            <div className="updated-on">Last updated: {`${updated_on}`}</div>
+            <div className="updated-on">
+              <span className="task-info-subtitle">Last updated: </span>
+              {`${formattedDate(updated_on)}`}
+            </div>
           )}
-          {due_date && <div className="due-date">Due by: {`${due_date}`}</div>}
+          {due_date && (
+            <div className="due-date">
+              <span className="task-info-subtitle">Due by: </span>{" "}
+              {`${formattedDate(due_date)}`}
+            </div>
+          )}
+          <div className="delete-task-btn">delete</div>
         </div>
       )}
     </div>

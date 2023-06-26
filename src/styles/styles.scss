@@ -252,6 +252,53 @@ hr {
   margin: 20px;
 }
 
+.task-cell {
+  /*border: 2px solid grey;*/
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  border-radius: 5px;
+  width: 300px;
+  margin-bottom: 7px;
+  .task-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .task-title {
+      align-self: center;
+      margin: 0;
+    }
+    .expand-collapse {
+      width: 30px;
+      aspect-ratio: 1/1;
+      padding: 0 0 3px;
+      font-family: "Arial" sans-serif;
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+  .task-info-subtitle {
+    font-weight: bold;
+  }
+  .delete-task-btn {
+    text-decoration: underline;
+  }
+  .task-content {
+    .task-text {
+    }
+    .task-category {
+    }
+    .task-status {
+    }
+    .created-on {
+    }
+    .updated-on {
+    }
+    .due-date {
+    }
+  }
+}
+
 /* ----------- */
 /*    ABOUT    */
 /* ----------- */

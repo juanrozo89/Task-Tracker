@@ -41,7 +41,7 @@ const NewTask = () => {
         due_date: dueDate,
       })
       .then((res) => {
-        handleSuccessAlert(res, setPopup);
+        //handleSuccessAlert(res, setPopup);
         setUser((prevUser) => ({
           ...prevUser!,
           tasks: res.data.tasks,
