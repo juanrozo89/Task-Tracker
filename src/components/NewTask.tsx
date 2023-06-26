@@ -1,7 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import { NONE } from "../constants";
 import { PopupContext, UserContext } from "../Contexts";
-import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
+import { handleErrorAlert } from "../utils/alertFunctions";
 
 import axios from "axios";
 

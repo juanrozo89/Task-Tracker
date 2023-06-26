@@ -358,7 +358,10 @@ export default function (app: Express) {
           user.tasks.splice(task_index, 1);
           try {
             user = await user.save();
-            res.json({ result: "Task successfully deleted" });
+            res.json({
+              result: "Task successfully deleted",
+              tasks: user.tasks,
+            });
           } catch {
             res
               .status(500)

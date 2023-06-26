@@ -281,7 +281,12 @@ hr {
     font-weight: bold;
   }
   .delete-task-btn {
-    text-decoration: underline;
+    margin: 10px auto 2px;
+    width: 60px;
+    height: 30px;
+    line-height: 27px;
+    border-radius: 7px;
+    cursor: pointer;
   }
   .task-content {
     .task-text {

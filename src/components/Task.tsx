@@ -1,4 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext, PopupContext } from "../Contexts";
+import { CONFIRM } from "../constants";
+
+import axios from "axios";
+import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
 
 const Task: React.FC<TaskProps> = ({
   _id,
@@ -11,9 +16,13 @@ const Task: React.FC<TaskProps> = ({
   due_date,
 }) => {
   const [showFull, setShowAll] = useState<boolean>(false);
+  const { setPopup, setOnConfirm } = useContext(PopupContext)!;
+  const { setUser } = useContext(UserContext)!;
+
   const toggleShowFull = () => {
     setShowAll(!showFull);
   };
+
   const formattedDate = (date: Date) => {
     const dateF = new Date(date);
     const options: Intl.DateTimeFormatOptions = {
@@ -26,6 +35,33 @@ const Task: React.FC<TaskProps> = ({
 
     const formattedDate = dateF.toLocaleDateString("en-US", options);
     return formattedDate;
+  };
+
+  const deleteTask = () => {
+    const request = () => {
+      axios
+        .delete("/api/delete-task", { data: { _id: _id } })
+        .then((res) => {
+          handleSuccessAlert(res, setPopup);
+          setUser((prevUser) => ({
+            ...prevUser!,
+            tasks: res.data.tasks,
+          }));
+        })
+        .catch((error) => {
+          handleErrorAlert(error, setPopup);
+        });
+    };
+    return request;
+  };
+
+  const confirmDeleteTask = () => {
+    setPopup({
+      type: CONFIRM,
+      title: "Confirm",
+      content: `Are you sure you want to delete task '${task_title}'?`,
+    });
+    setOnConfirm(deleteTask);
   };
 
   return (
@@ -66,7 +102,9 @@ const Task: React.FC<TaskProps> = ({
               {`${formattedDate(due_date)}`}
             </div>
           )}
-          <div className="delete-task-btn">delete</div>
+          <div className="delete-task-btn" onClick={confirmDeleteTask}>
+            delete
+          </div>
         </div>
       )}
     </div>

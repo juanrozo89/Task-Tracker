@@ -72,9 +72,9 @@
   }
 
   #delete-account-button {
-    background-color: hsl(0, 70%, 74%);
+    background-color: $warning-lightest;
     &:hover {
-      background-color: hsl(0, 70%, 71%);
+      background-color: darken($warning-lightest, 3%);
     }
   }
 
@@ -101,19 +101,17 @@
         color: $dark;
       }
       .expand-collapse {
-        width: 30px;
-        aspect-ratio: 1/1;
-        padding: 0 0 3px;
-        font-family: "Arial" sans-serif;
-        font-size: 16px;
-        text-align: center;
       }
     }
     .task-info-subtitle {
       color: $medium-dark;
     }
     .delete-task-btn {
-      text-decoration: underline;
+      background-color: $light;
+      color: $warning-dark;
+      &:hover {
+        background-color: darken($light, 3%);
+      }
     }
     .task-content {
       .task-text {
@@ -227,6 +225,42 @@
       }
     }
   }
+
+  .task-cell {
+    background-color: $dark;
+    .task-header {
+      .task-title {
+        color: $lightest;
+      }
+      .expand-collapse {
+      }
+    }
+    .task-info-subtitle {
+      color: $lightest;
+    }
+    .delete-task-btn {
+      background-color: $warning-medium;
+      color: $lightest;
+      &:hover {
+        background-color: darken($light, 3%);
+      }
+    }
+    .task-content {
+      .task-text {
+      }
+      .task-category {
+      }
+      .task-status {
+      }
+      .created-on {
+      }
+      .updated-on {
+      }
+      .due-date {
+      }
+    }
+  }
+
   .alert-text {
     color: $warning-light;
   }
