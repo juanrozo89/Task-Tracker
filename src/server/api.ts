@@ -325,7 +325,7 @@ export default function (app: Express) {
           category: category,
           status: PENDING,
           created_on: date,
-          updated_on: date,
+          updated_on: null,
           due_date: due_date,
         };
         user.tasks.unshift(newTask);

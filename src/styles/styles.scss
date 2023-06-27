@@ -277,29 +277,37 @@ hr {
       text-align: center;
     }
   }
-  .task-info-subtitle {
-    font-weight: bold;
-  }
-  .delete-task-btn {
-    margin: 10px auto 2px;
-    width: 60px;
-    height: 30px;
-    line-height: 27px;
-    border-radius: 7px;
-    cursor: pointer;
-  }
   .task-content {
+    padding: 5px 12px;
+    text-align: left;
+    & > * {
+      margin-top: 8px;
+    }
+    .task-info-subtitle {
+      font-weight: bold;
+    }
     .task-text {
     }
     .task-category {
     }
     .task-status {
+      border: 1px solid green;
+      border-radius: 5px;
     }
     .created-on {
     }
     .updated-on {
     }
     .due-date {
+    }
+    .delete-task-btn {
+      text-align: center;
+      margin: 10px auto 0;
+      width: 60px;
+      height: 30px;
+      line-height: 27px;
+      border-radius: 7px;
+      cursor: pointer;
     }
   }
 }

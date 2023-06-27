@@ -80,26 +80,27 @@ const Task: React.FC<TaskProps> = ({
       </div>
       {showFull && (
         <div className="task-content">
-          <div className="task-text">{task_text}</div>
           <div className="task-category">
             <span className="task-info-subtitle">Category: </span>
             {category}
           </div>
-          <div className="task-status">- {status} -</div>
+          <div className="task-text">{task_text}</div>
+          <div className="task-status">{status}</div>
+          {due_date && (
+            <div className="due-date">
+              <span className="task-info-subtitle">Due by:</span>
+              <br /> {`${formattedDate(due_date)}`}
+            </div>
+          )}
           <div className="created-on">
-            <span className="task-info-subtitle">Created on: </span>{" "}
-            {`${formattedDate(created_on)}`}
+            <span className="task-info-subtitle">Created on:</span>
+            <br /> {`${formattedDate(created_on)}`}
           </div>
           {updated_on && (
             <div className="updated-on">
-              <span className="task-info-subtitle">Last updated: </span>
+              <span className="task-info-subtitle">Last updated:</span>
+              <br />
               {`${formattedDate(updated_on)}`}
-            </div>
-          )}
-          {due_date && (
-            <div className="due-date">
-              <span className="task-info-subtitle">Due by: </span>{" "}
-              {`${formattedDate(due_date)}`}
             </div>
           )}
           <div className="delete-task-btn" onClick={confirmDeleteTask}>
