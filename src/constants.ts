@@ -19,6 +19,6 @@ export const LIGHT: ThemeType = "light";
 export const DARK: ThemeType = "dark";
 
 // Task status
-export const IN_PROGRESS: StatusType = "In progress";
+export const ONGOING: StatusType = "Ongoing";
 export const PENDING: StatusType = "Pending";
-export const ACCOMPLISHED: StatusType = "Accomplished";
+export const DONE: StatusType = "Done";

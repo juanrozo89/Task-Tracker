@@ -290,9 +290,24 @@ hr {
     }
     .task-category {
     }
-    .task-status {
-      border: 1px solid green;
-      border-radius: 5px;
+    .task-status-container {
+      display: flex;
+      flex-direction: row;
+      margin: 10px auto 8px;
+      justify-content: space-between;
+      align-items: center;
+      .task-status {
+        border-radius: 5px;
+        width: 80px;
+        height: 28px;
+        text-align: center;
+        padding-bottom: 3px;
+      }
+      .current-status {
+        font-weight: bold;
+        height: 32px;
+        padding-top: 2px;
+      }
     }
     .created-on {
     }

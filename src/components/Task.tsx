@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { UserContext, PopupContext } from "../Contexts";
-import { CONFIRM } from "../constants";
+import { CONFIRM, PENDING, ONGOING, DONE } from "../constants";
 
 import axios from "axios";
 import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
@@ -68,15 +68,9 @@ const Task: React.FC<TaskProps> = ({
     <div className={`${status} task-cell`} id={_id}>
       <div className="task-header">
         <h3 className="task-title">{task_title}</h3>
-        {showFull ? (
-          <button className="expand-collapse" onClick={toggleShowFull}>
-            ⏶
-          </button>
-        ) : (
-          <button className="expand-collapse" onClick={toggleShowFull}>
-            ⏷
-          </button>
-        )}
+        <button className="expand-collapse" onClick={toggleShowFull}>
+          {showFull ? "⏶" : "⏷"}
+        </button>
       </div>
       {showFull && (
         <div className="task-content">
@@ -85,7 +79,35 @@ const Task: React.FC<TaskProps> = ({
             {category}
           </div>
           <div className="task-text">{task_text}</div>
-          <div className="task-status">{status}</div>
+          <div className="task-status-container">
+            <div
+              className={
+                status == PENDING
+                  ? "task-status pending-status current-status"
+                  : "task-status pending-status"
+              }
+            >
+              {PENDING}
+            </div>
+            <div
+              className={
+                status == ONGOING
+                  ? "task-status ongoing-status current-status"
+                  : "task-status ongoing-status"
+              }
+            >
+              {ONGOING}
+            </div>
+            <div
+              className={
+                status == DONE
+                  ? "task-status done-status current-status"
+                  : "task-status done-status"
+              }
+            >
+              {DONE}
+            </div>
+          </div>
           {due_date && (
             <div className="due-date">
               <span className="task-info-subtitle">Due by:</span>

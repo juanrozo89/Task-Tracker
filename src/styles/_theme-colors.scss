@@ -103,28 +103,67 @@
       .expand-collapse {
       }
     }
-    .task-info-subtitle {
-      color: $medium-dark;
-    }
-    .delete-task-btn {
-      background-color: $light;
-      color: $warning-dark;
-      &:hover {
-        background-color: darken($light, 3%);
-      }
-    }
     .task-content {
+      .task-info-subtitle {
+        color: $medium-dark;
+      }
       .task-text {
       }
       .task-category {
       }
-      .task-status {
+      .task-status-container {
+        color: $grey-darkest;
+        .task-status {
+          &:hover {
+            cursor: pointer;
+          }
+        }
+        .pending-status {
+          background-color: rgba(
+            red($pending-light),
+            green($pending-light),
+            blue($pending-light),
+            0.4
+          );
+          &.current-status {
+            background-color: $pending-light;
+          }
+        }
+        .ongoing-status {
+          background-color: rgba(
+            red($ongoing-light),
+            green($ongoing-light),
+            blue($ongoing-light),
+            0.4
+          );
+          &.current-status {
+            background-color: $ongoing-light;
+          }
+        }
+        .done-status {
+          background-color: rgba(
+            red($done-light),
+            green($done-light),
+            blue($done-light),
+            0.4
+          );
+          &.current-status {
+            background-color: $done-light;
+          }
+        }
       }
       .created-on {
       }
       .updated-on {
       }
       .due-date {
+      }
+      .delete-task-btn {
+        background-color: $light;
+        color: $warning-dark;
+        &:hover {
+          background-color: darken($light, 3%);
+        }
       }
     }
   }
@@ -235,28 +274,67 @@
       .expand-collapse {
       }
     }
-    .task-info-subtitle {
-      color: $lightest;
-    }
-    .delete-task-btn {
-      background-color: $warning-medium;
-      color: $lightest;
-      &:hover {
-        background-color: darken($light, 3%);
-      }
-    }
     .task-content {
+      .task-info-subtitle {
+        color: $lightest;
+      }
       .task-text {
       }
       .task-category {
       }
-      .task-status {
+      .task-status-container {
+        color: $grey-darkest;
+        .task-status {
+          &:hover {
+            cursor: pointer;
+          }
+        }
+        .pending-status {
+          background-color: rgba(
+            red($pending-dark),
+            green($pending-dark),
+            blue($pending-dark),
+            0.6
+          );
+          &.current-status {
+            background-color: $pending-dark;
+          }
+        }
+        .ongoing-status {
+          background-color: rgba(
+            red($ongoing-dark),
+            green($ongoing-dark),
+            blue($ongoing-dark),
+            0.6
+          );
+          &.current-status {
+            background-color: $ongoing-dark;
+          }
+        }
+        .done-status {
+          background-color: rgba(
+            red($done-dark),
+            green($done-dark),
+            blue($done-dark),
+            0.6
+          );
+          &.current-status {
+            background-color: $done-dark;
+          }
+        }
       }
       .created-on {
       }
       .updated-on {
       }
       .due-date {
+      }
+      .delete-task-btn {
+        background-color: $warning-medium;
+        color: $lightest;
+        &:hover {
+          background-color: darken($light, 3%);
+        }
       }
     }
   }

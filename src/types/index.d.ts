@@ -25,7 +25,7 @@ declare global {
 
   type PopupType = "confirm" | "alert" | "new task" | "";
   type ThemeType = "light" | "dark";
-  type StatusType = "In progress" | "Pending" | "Accomplished";
+  type StatusType = "Ongoing" | "Pending" | "Done";
 
   type User = {
     username: string;
