@@ -37,6 +37,20 @@ const Task: React.FC<TaskProps> = ({
     return formattedDate;
   };
 
+  const changeStatus = (status: StatusType) => {
+    axios
+      .put("/api/update-task", { _id: _id, status: status })
+      .then((res) => {
+        setUser((prevUser) => ({
+          ...prevUser!,
+          tasks: res.data.tasks,
+        }));
+      })
+      .catch((error) => {
+        handleErrorAlert(error, setPopup);
+      });
+  };
+
   const deleteTask = () => {
     const request = () => {
       axios
@@ -86,6 +100,7 @@ const Task: React.FC<TaskProps> = ({
                   ? "task-status pending-status current-status"
                   : "task-status pending-status"
               }
+              onClick={() => changeStatus(PENDING)}
             >
               {PENDING}
             </div>
@@ -95,6 +110,7 @@ const Task: React.FC<TaskProps> = ({
                   ? "task-status ongoing-status current-status"
                   : "task-status ongoing-status"
               }
+              onClick={() => changeStatus(ONGOING)}
             >
               {ONGOING}
             </div>
@@ -104,6 +120,7 @@ const Task: React.FC<TaskProps> = ({
                   ? "task-status done-status current-status"
                   : "task-status done-status"
               }
+              onClick={() => changeStatus(DONE)}
             >
               {DONE}
             </div>

@@ -342,6 +342,64 @@ export default function (app: Express) {
       }
     });
 
+  // update a task
+  app
+    .route("/api/update-task")
+    .put(authenticateSession, getUser, async (req: Request, res: Response) => {
+      let user = req.user;
+      if (!req.body._id) {
+        missingFieldError("id", res);
+      } else {
+        const _id = req.body._id;
+        let task_index = getIndex(user.tasks, "_id", _id);
+        if (task_index == -1) {
+          notFoundError("Task", res);
+        }
+        let noFields = true;
+        for (let prop in req.body) {
+          if (prop != "_id" && req.body[prop]) {
+            noFields = false;
+          }
+        }
+        if (noFields) {
+          missingFieldError("fields", res);
+        } else {
+          const validKeys = [
+            "_id",
+            "category",
+            "status",
+            "task_title",
+            "task_text",
+            "due_date",
+          ];
+          for (let prop in req.body) {
+            if (!validKeys.includes(prop)) {
+              res.status(400).json({
+                error: `Invalid fields found. Updatable fields are ${validKeys
+                  .map((key) => `"${key}"`)
+                  .join(", ")}`,
+              });
+              return;
+            } else if (req.body[prop]) {
+              user.tasks[task_index][prop] = req.body[prop];
+            }
+          }
+          user.tasks[task_index].updated_on = new Date();
+          try {
+            user = await user.save();
+            res.json({
+              result: "Task successfully updated",
+              tasks: user.tasks,
+            });
+          } catch {
+            res
+              .status(500)
+              .json({ error: "An error occurred while updating the task" });
+          }
+        }
+      }
+    });
+
   // delete a task
   app
     .route("/api/delete-task")
@@ -443,58 +501,6 @@ export default function (app: Express) {
       }
     })
 
-    // create a new task
-
-    // update a task
-    .put(getUser, async (req: Request, res: Response) => {
-      let user = req.user;
-      if (!req.body._id) {
-        missingFieldError("id", res);
-      } else {
-        const _id = req.body._id;
-        let task_index = getIndex(user.tasks, "_id", _id);
-        if (task_index == -1) {
-          notFoundError(`Task`, res);
-        }
-        let noFields = true;
-        for (let prop in req.body) {
-          if (prop != "_id" && req.body[prop]) {
-            noFields = false;
-          }
-        }
-        if (noFields) {
-          missingFieldError("fields", res);
-        } else {
-          const validKeys = [
-            "category",
-            "status",
-            "task_title",
-            "task_text",
-            "due_date",
-          ];
-          for (let prop in req.body) {
-            if (!validKeys.includes(prop)) {
-              res.status(400).json({
-                error: `Invalid fields found. Updatable fields are ${validKeys
-                  .map((key) => `"${key}"`)
-                  .join(", ")}`,
-              });
-            } else if (req.body[prop]) {
-              user.task[task_index][prop] = req.body[prop];
-            }
-          }
-          user.tasks[task_index].updated_on = new Date();
-          try {
-            user = await user.save();
-            res.json({ result: "Task successfully updated" });
-          } catch {
-            res
-              .status(500)
-              .json({ error: "An error occurred while updating the task" });
-          }
-        }
-      }
-    })
   });
 }
 */
