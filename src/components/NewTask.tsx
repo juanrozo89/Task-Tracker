@@ -83,7 +83,6 @@ const NewTask = () => {
               id="catgeory"
               type="text"
               name="category"
-              placeholder="*Category"
               ref={categoryRef}
               onChange={(e) => setCategory(e.target.value)}
               required

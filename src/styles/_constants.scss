@@ -1,31 +1,27 @@
 /* ~~~ COLORS ~~~ */
-$lightest: hsl(255, 80%, 97%);
+$lightest: hsl(255, 80%, 96%);
 $light: hsl(255, 60%, 90%);
 $medium-light: hsl(255, 30%, 80%);
 $medium: hsl(255, 23%, 60%);
 $medium-dark: hsl(250, 28%, 40%);
 $dark: hsl(250, 35%, 27%);
 $darkest: hsl(250, 50%, 15%);
-$contrast-lightest: hsl(55, 40%, 90%);
-$contrast-light: hsl(55, 40%, 78%);
-$contrast-medium-light: hsl(55, 40%, 65%);
-$contrast-medium: hsl(55, 50%, 50%);
-$contrast-medium-dark: hsl(55, 70%, 40%);
-$contrast-dark: hsl(55, 80%, 30%);
-$contrast-darkest: hsl(55, 80%, 20%);
-$warning-dark: hsl(0, 55%, 35%);
-$warning-medium: hsl(0, 55%, 50%);
-$warning-light: hsl(0, 75%, 62%);
-$warning-lightest: hsl(0, 70%, 74%);
 
-$pending-light: hsl(20, 90%, 70%);
-$pending-dark: hsl(20, 83%, 58%);
+$warning-dark: hsl(4, 85%, 31%);
+$warning-medium: hsl(4, 65%, 52%);
+$warning-light: hsl(4, 75%, 65%);
+$warning-lightest: hsl(4, 70%, 79%);
 
-$ongoing-light: hsl(60, 90%, 70%);
-$ongoing-dark: hsl(60, 60%, 60%);
+$pending-light: hsl(326, 84%, 84%);
+$pending-dark: hsl(255, 15%, 45%);
 
-$done-light: hsl(120, 80%, 70%);
-$done-dark: hsl(120, 38%, 55%);
+$ongoing-light: hsl(60, 95%, 75%);
+$ongoing-dark: hsl(215, 45%, 72%);
+
+$done-light: hsl(120, 85%, 78%);
+$done-dark: hsl(180, 42%, 65%);
+
+$link-color: hsl(237, 100%, 70%);
 
 $grey-lightest: hsl(255, 11%, 90%);
 $grey-light: hsl(255, 11%, 78%);

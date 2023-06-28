@@ -357,11 +357,15 @@ export default function (app: Express) {
         }
         let noFields = true;
         for (let prop in req.body) {
-          if (prop != "_id" && req.body[prop]) {
+          if (
+            (prop != "_id" && req.body[prop]) ||
+            (prop == "task_text" && req.body[prop] === "")
+          ) {
             noFields = false;
           }
         }
         if (noFields) {
+          console.log(req.body.task_text);
           missingFieldError("fields", res);
         } else {
           const validKeys = [
@@ -380,7 +384,7 @@ export default function (app: Express) {
                   .join(", ")}`,
               });
               return;
-            } else if (req.body[prop]) {
+            } else if (req.body[prop] || req.body[prop] === "") {
               user.tasks[task_index][prop] = req.body[prop];
             }
           }

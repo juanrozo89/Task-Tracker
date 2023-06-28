@@ -3,7 +3,11 @@ const ContactInfo = () => {
     <div id="contact-info">
       <p>
         By{" "}
-        <a href="https://github.com/juanrozo89" target="_blank">
+        <a
+          className="link"
+          href="https://github.com/juanrozo89"
+          target="_blank"
+        >
           Juan Rozo
         </a>
       </p>

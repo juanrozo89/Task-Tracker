@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { UserContext, PopupContext } from "../Contexts";
 import { CONFIRM, PENDING, ONGOING, DONE } from "../constants";
 
@@ -16,6 +16,8 @@ const Task: React.FC<TaskProps> = ({
   due_date,
 }) => {
   const [showFull, setShowAll] = useState<boolean>(false);
+  const [editingText, setEditingText] = useState<boolean>(false);
+  const editTextRef = useRef<HTMLTextAreaElement | null>(null);
   const { setPopup, setOnConfirm } = useContext(PopupContext)!;
   const { setUser } = useContext(UserContext)!;
 
@@ -51,12 +53,28 @@ const Task: React.FC<TaskProps> = ({
       });
   };
 
+  const editText = () => {
+    const newText = editTextRef.current?.value ? editTextRef.current.value : "";
+    axios
+      .put("/api/update-task", { _id: _id, task_text: newText })
+      .then((res) => {
+        setUser((prevUser) => ({
+          ...prevUser!,
+          tasks: res.data.tasks,
+        }));
+      })
+      .catch((error) => {
+        handleErrorAlert(error, setPopup);
+      });
+    setEditingText(false);
+  };
+
   const deleteTask = () => {
     const request = () => {
       axios
         .delete("/api/delete-task", { data: { _id: _id } })
         .then((res) => {
-          handleSuccessAlert(res, setPopup);
+          // handleSuccessAlert(res, setPopup);
           setUser((prevUser) => ({
             ...prevUser!,
             tasks: res.data.tasks,
@@ -92,7 +110,45 @@ const Task: React.FC<TaskProps> = ({
             <span className="task-info-subtitle">Category: </span>
             {category}
           </div>
-          <div className="task-text">{task_text}</div>
+          {editingText ? (
+            <div className="edit-task-text-container">
+              <textarea
+                className="edit-task-text-area"
+                defaultValue={task_text}
+                ref={editTextRef}
+              ></textarea>
+              <div className="edit-text-buttons">
+                <button
+                  className="edit-text-btn confirm-edit-text-btn"
+                  onClick={editText}
+                >
+                  Edit
+                </button>
+                <button
+                  className="edit-text-btn cancel-button cancel-edit-text-btn"
+                  onClick={() => setEditingText(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : task_text ? (
+            <div className="task-text">
+              {task_text}&nbsp;&nbsp;&nbsp;
+              <span
+                className="edit-task-text-btn"
+                onClick={() => setEditingText(true)}
+              >
+                ｢🖉｣
+              </span>
+            </div>
+          ) : (
+            <div className="add-task-text link">
+              <span onClick={() => setEditingText(true)}>
+                <i>[Add description]</i>
+              </span>
+            </div>
+          )}
           <div className="task-status-container">
             <div
               className={
@@ -143,7 +199,7 @@ const Task: React.FC<TaskProps> = ({
             </div>
           )}
           <div className="delete-task-btn" onClick={confirmDeleteTask}>
-            delete
+            Delete
           </div>
         </div>
       )}

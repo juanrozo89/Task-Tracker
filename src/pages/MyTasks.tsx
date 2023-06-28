@@ -1,24 +1,18 @@
+import { useContext } from "react";
 import Task from "../components/Task";
 import RedirectToLogin from "../components/RedirectToLogin";
-import { UserContext, PopupContext } from "../Contexts";
-import { useContext } from "react";
-import { NEW_TASK } from "../constants";
+import { UserContext } from "../Contexts";
+import useNewTaskPopup from "../hooks/useNewTaskPopup";
 
 const MyTasks = () => {
   const { user } = useContext(UserContext)!;
-  const { setPopup } = useContext(PopupContext)!;
 
-  const showNewTaskPopup = () => {
-    setPopup({
-      type: NEW_TASK,
-      title: "Add a new task",
-    });
-  };
+  const setNewTaskPopup = useNewTaskPopup()!;
 
   const tasks = user?.tasks;
   return (
     <section id="my-tasks" className="content">
-      <button id="add-task-button" onClick={showNewTaskPopup}>
+      <button id="add-task-button" onClick={setNewTaskPopup}>
         Add task
       </button>
       {tasks ? (

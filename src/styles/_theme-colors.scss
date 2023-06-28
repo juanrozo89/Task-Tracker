@@ -14,6 +14,13 @@
     background-color: white;
   }
 
+  .link {
+    color: darken($link-color, 3%);
+    &:hover {
+      color: $link-color;
+    }
+  }
+
   #main-menu-button {
     background-color: $lightest;
     box-shadow: 0 0 10px $medium-light;
@@ -71,6 +78,13 @@
     }
   }
 
+  .cancel-button {
+    background-color: $grey-light;
+    &:hover {
+      background-color: darken($grey-light, 5%);
+    }
+  }
+
   #delete-account-button {
     background-color: $warning-lightest;
     &:hover {
@@ -85,12 +99,6 @@
     }
     .popup-title {
       background-color: $medium-light;
-    }
-    .cancel-button {
-      background-color: $grey-light;
-      &:hover {
-        background-color: darken($grey-light, 5%);
-      }
     }
   }
 
@@ -159,10 +167,10 @@
       .due-date {
       }
       .delete-task-btn {
-        background-color: $light;
-        color: $warning-dark;
+        background-color: $warning-lightest;
+        color: $darkest;
         &:hover {
-          background-color: darken($light, 3%);
+          background-color: darken($warning-lightest, 3%);
         }
       }
     }
@@ -185,6 +193,13 @@
   footer {
     background-color: $darkest;
     color: $light;
+  }
+
+  .link {
+    color: lighten($link-color, 3%);
+    &:hover {
+      color: lighten($link-color, 6%);
+    }
   }
 
   #main-menu-button {
@@ -242,6 +257,13 @@
     }
   }
 
+  .cancel-button {
+    background-color: $pending-dark;
+    &:hover {
+      background-color: lighten($pending-dark, 8%);
+    }
+  }
+
   #delete-account-button {
     background-color: $warning-medium;
     &:hover {
@@ -256,12 +278,6 @@
     }
     .popup-title {
       background-color: $medium-dark;
-    }
-    .cancel-button {
-      background-color: $grey-medium;
-      &:hover {
-        background-color: lighten($grey-medium, 8%);
-      }
     }
   }
 
@@ -280,24 +296,31 @@
       }
       .task-text {
       }
+      .edit-task-text-area {
+        background-color: lighten($dark, 8%);
+      }
       .task-category {
       }
       .task-status-container {
-        color: $grey-darkest;
+        color: $medium-light;
         .task-status {
           &:hover {
             cursor: pointer;
           }
+        }
+        .current-status {
+          color: $lightest;
         }
         .pending-status {
           background-color: rgba(
             red($pending-dark),
             green($pending-dark),
             blue($pending-dark),
-            0.6
+            0.2
           );
           &.current-status {
             background-color: $pending-dark;
+            color: white;
           }
         }
         .ongoing-status {
@@ -305,10 +328,11 @@
             red($ongoing-dark),
             green($ongoing-dark),
             blue($ongoing-dark),
-            0.6
+            0.2
           );
           &.current-status {
             background-color: $ongoing-dark;
+            color: $grey-darkest;
           }
         }
         .done-status {
@@ -316,10 +340,11 @@
             red($done-dark),
             green($done-dark),
             blue($done-dark),
-            0.6
+            0.2
           );
           &.current-status {
             background-color: $done-dark;
+            color: $grey-dark;
           }
         }
       }
@@ -331,9 +356,9 @@
       }
       .delete-task-btn {
         background-color: $warning-medium;
-        color: $lightest;
+        color: white;
         &:hover {
-          background-color: darken($light, 3%);
+          background-color: darken($warning-medium, 3%);
         }
       }
     }
