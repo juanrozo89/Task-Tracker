@@ -5,9 +5,16 @@ import { handleErrorAlert } from "../utils/alertFunctions";
 
 import axios from "axios";
 
-const NewTask = () => {
+const NewTaskPopup = () => {
   const { setPopup } = useContext(PopupContext)!;
-  const { setUser } = useContext(UserContext)!;
+  const { user, setUser } = useContext(UserContext)!;
+
+  let categories: Array<any> = [];
+  for (let cat of user!.tasks) {
+    if (!categories.includes(cat)) {
+      categories.push(cat);
+    }
+  }
 
   const titleRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState<string>("");
@@ -79,6 +86,13 @@ const NewTask = () => {
             />
             <br />
             <label htmlFor="category">Category*</label>
+            <select>
+              {categories.map((cat, index) => (
+                <option key={index} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
             <input
               id="catgeory"
               type="text"
@@ -101,7 +115,7 @@ const NewTask = () => {
             <br />
           </form>
         </div>
-        <div className="popup-buttons">
+        <div className="large-btn-pair">
           <button className="confirm-button" type="submit" onClick={addNewTask}>
             Ok
           </button>
@@ -114,4 +128,4 @@ const NewTask = () => {
   );
 };
 
-export default NewTask;
+export default NewTaskPopup;

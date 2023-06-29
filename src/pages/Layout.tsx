@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import ConfirmationDialog from "../components/ConfimationDialog";
 import AlertBox from "../components/AlertBox";
-import NewTask from "../components/NewTask";
+import NewTaskPopup from "../components/NewTaskPopup";
 import { ThemeContext, PopupContext } from "../Contexts";
 import { NONE, CONFIRM, ALERT, NEW_TASK } from "../constants";
 
@@ -23,7 +23,7 @@ const Layout: React.FC<HeaderProps> = ({ username, pageTitle }) => {
         <hr />
         <Outlet />
         {popup.type == CONFIRM && <ConfirmationDialog></ConfirmationDialog>}
-        {popup.type == NEW_TASK && <NewTask></NewTask>}
+        {popup.type == NEW_TASK && <NewTaskPopup></NewTaskPopup>}
         {popup.type == ALERT && <AlertBox></AlertBox>}
       </div>
     </PopupContext.Provider>

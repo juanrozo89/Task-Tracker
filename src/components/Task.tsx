@@ -16,8 +16,17 @@ const Task: React.FC<TaskProps> = ({
   due_date,
 }) => {
   const [showFull, setShowAll] = useState<boolean>(false);
+
+  const [editingTitle, setEditingTitle] = useState<boolean>(false);
+  const [editingCategory, setEditingCategory] = useState<boolean>(false);
   const [editingText, setEditingText] = useState<boolean>(false);
+  const [editingDueDate, setEditingDueDate] = useState<boolean>(false);
+
+  const editTitleRef = useRef<HTMLInputElement | null>(null);
+  const editCategoryRef = useRef<HTMLInputElement | null>(null);
   const editTextRef = useRef<HTMLTextAreaElement | null>(null);
+  const editDueDateRef = useRef<HTMLInputElement | null>(null);
+
   const { setPopup, setOnConfirm } = useContext(PopupContext)!;
   const { setUser } = useContext(UserContext)!;
 
@@ -53,6 +62,42 @@ const Task: React.FC<TaskProps> = ({
       });
   };
 
+  const editTitle = () => {
+    const newTitle = editTitleRef.current?.value
+      ? editTitleRef.current.value
+      : null;
+    axios
+      .put("/api/update-task", { _id: _id, task_title: newTitle })
+      .then((res) => {
+        setUser((prevUser) => ({
+          ...prevUser!,
+          tasks: res.data.tasks,
+        }));
+      })
+      .catch((error) => {
+        handleErrorAlert(error, setPopup);
+      });
+    setEditingTitle(false);
+  };
+
+  const editCategory = () => {
+    const newCategory = editCategoryRef.current?.value
+      ? editCategoryRef.current.value
+      : null;
+    axios
+      .put("/api/update-task", { _id: _id, category: newCategory })
+      .then((res) => {
+        setUser((prevUser) => ({
+          ...prevUser!,
+          tasks: res.data.tasks,
+        }));
+      })
+      .catch((error) => {
+        handleErrorAlert(error, setPopup);
+      });
+    setEditingCategory(false);
+  };
+
   const editText = () => {
     const newText = editTextRef.current?.value ? editTextRef.current.value : "";
     axios
@@ -67,6 +112,24 @@ const Task: React.FC<TaskProps> = ({
         handleErrorAlert(error, setPopup);
       });
     setEditingText(false);
+  };
+
+  const editDueDate = () => {
+    const newDueDate = editDueDateRef.current?.value
+      ? editDueDateRef.current.value
+      : null;
+    axios
+      .put("/api/update-task", { _id: _id, due_date: newDueDate })
+      .then((res) => {
+        setUser((prevUser) => ({
+          ...prevUser!,
+          tasks: res.data.tasks,
+        }));
+      })
+      .catch((error) => {
+        handleErrorAlert(error, setPopup);
+      });
+    setEditingDueDate(false);
   };
 
   const deleteTask = () => {
@@ -99,7 +162,42 @@ const Task: React.FC<TaskProps> = ({
   return (
     <div className={`${status} task-cell`} id={_id}>
       <div className="task-header">
-        <h3 className="task-title">{task_title}</h3>
+        {editingTitle ? (
+          <div className="edit-task-title-container">
+            <input
+              className="edit-task-title-input"
+              defaultValue={task_title}
+              ref={editTitleRef}
+            ></input>
+            <div className="edit-text-buttons small-btn-pair">
+              <button
+                className="edit-text-btn confirm-edit-text-btn"
+                onClick={editTitle}
+              >
+                Edit
+              </button>
+              <button
+                className="edit-text-btn cancel-button cancel-edit-text-btn"
+                onClick={() => setEditingTitle(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            {" "}
+            <h3 className="task-title">
+              {task_title}{" "}
+              <span
+                className="edit-task-text-btn link"
+                onClick={() => setEditingTitle(true)}
+              >
+                ｢🖉｣
+              </span>
+            </h3>
+          </>
+        )}
         <button className="expand-collapse" onClick={toggleShowFull}>
           {showFull ? "⏶" : "⏷"}
         </button>
@@ -117,7 +215,7 @@ const Task: React.FC<TaskProps> = ({
                 defaultValue={task_text}
                 ref={editTextRef}
               ></textarea>
-              <div className="edit-text-buttons">
+              <div className="edit-text-buttons small-btn-pair">
                 <button
                   className="edit-text-btn confirm-edit-text-btn"
                   onClick={editText}
@@ -136,17 +234,18 @@ const Task: React.FC<TaskProps> = ({
             <div className="task-text">
               {task_text}&nbsp;&nbsp;&nbsp;
               <span
-                className="edit-task-text-btn"
+                className="edit-task-text-btn link"
                 onClick={() => setEditingText(true)}
               >
                 ｢🖉｣
               </span>
             </div>
           ) : (
-            <div className="add-task-text link">
-              <span onClick={() => setEditingText(true)}>
-                <i>[Add description]</i>
-              </span>
+            <div
+              className="add-task-text link"
+              onClick={() => setEditingText(true)}
+            >
+              <i>[Add description]</i>
             </div>
           )}
           <div className="task-status-container">
@@ -181,11 +280,13 @@ const Task: React.FC<TaskProps> = ({
               {DONE}
             </div>
           </div>
-          {due_date && (
+          {due_date ? (
             <div className="due-date">
               <span className="task-info-subtitle">Due by:</span>
               <br /> {`${formattedDate(due_date)}`}
             </div>
+          ) : (
+            <div></div>
           )}
           <div className="created-on">
             <span className="task-info-subtitle">Created on:</span>
