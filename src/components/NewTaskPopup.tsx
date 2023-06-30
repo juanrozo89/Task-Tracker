@@ -2,19 +2,14 @@ import { useContext, useRef, useState } from "react";
 import { NONE } from "../constants";
 import { PopupContext, UserContext } from "../Contexts";
 import { handleErrorAlert } from "../utils/alertFunctions";
+import useExistingCategories from "../hooks/useExistingCategories";
 
 import axios from "axios";
 
 const NewTaskPopup = () => {
   const { setPopup } = useContext(PopupContext)!;
-  const { user, setUser } = useContext(UserContext)!;
-
-  let categories: Array<string> = [];
-  for (let task of user!.tasks) {
-    if (!categories.includes(task.category)) {
-      categories.push(task.category);
-    }
-  }
+  const { setUser } = useContext(UserContext)!;
+  const categories = useExistingCategories();
 
   const titleRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState<string>("");

@@ -4,6 +4,7 @@ import { CONFIRM, PENDING, ONGOING, DONE } from "../constants";
 
 import axios from "axios";
 import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
+import useExistingCategories from "../hooks/useExistingCategories";
 
 const Task: React.FC<TaskProps> = ({
   _id,
@@ -23,12 +24,16 @@ const Task: React.FC<TaskProps> = ({
   const [editingDueDate, setEditingDueDate] = useState<boolean>(false);
 
   const editTitleRef = useRef<HTMLInputElement | null>(null);
-  const editCategoryRef = useRef<HTMLInputElement | null>(null);
+  const editCategoryRef = useRef<any>(null);
   const editTextRef = useRef<HTMLTextAreaElement | null>(null);
   const editDueDateRef = useRef<HTMLInputElement | null>(null);
 
   const { setPopup, setOnConfirm } = useContext(PopupContext)!;
   const { setUser } = useContext(UserContext)!;
+
+  const categories = useExistingCategories();
+  const [newCategory, setNewCategory] = useState<boolean>(true);
+  const NEW_CATEGORY = "new-category";
 
   const toggleShowFull = () => {
     setShowAll(!showFull);
@@ -63,11 +68,11 @@ const Task: React.FC<TaskProps> = ({
   };
 
   const editTitle = () => {
-    const newTitle = editTitleRef.current?.value
+    const updatedTitle = editTitleRef.current?.value
       ? editTitleRef.current.value
       : null;
     axios
-      .put("/api/update-task", { _id: _id, task_title: newTitle })
+      .put("/api/update-task", { _id: _id, task_title: updatedTitle })
       .then((res) => {
         setUser((prevUser) => ({
           ...prevUser!,
@@ -81,11 +86,11 @@ const Task: React.FC<TaskProps> = ({
   };
 
   const editCategory = () => {
-    const newCategory = editCategoryRef.current?.value
+    const updatedCategory = editCategoryRef.current?.value
       ? editCategoryRef.current.value
       : null;
     axios
-      .put("/api/update-task", { _id: _id, category: newCategory })
+      .put("/api/update-task", { _id: _id, category: updatedCategory })
       .then((res) => {
         setUser((prevUser) => ({
           ...prevUser!,
@@ -96,12 +101,15 @@ const Task: React.FC<TaskProps> = ({
         handleErrorAlert(error, setPopup);
       });
     setEditingCategory(false);
+    setNewCategory(true);
   };
 
   const editText = () => {
-    const newText = editTextRef.current?.value ? editTextRef.current.value : "";
+    const updatedText = editTextRef.current?.value
+      ? editTextRef.current.value
+      : "";
     axios
-      .put("/api/update-task", { _id: _id, task_text: newText })
+      .put("/api/update-task", { _id: _id, task_text: updatedText })
       .then((res) => {
         setUser((prevUser) => ({
           ...prevUser!,
@@ -115,11 +123,11 @@ const Task: React.FC<TaskProps> = ({
   };
 
   const editDueDate = () => {
-    const newDueDate = editDueDateRef.current?.value
+    const updatedDueDate = editDueDateRef.current?.value
       ? editDueDateRef.current.value
       : null;
     axios
-      .put("/api/update-task", { _id: _id, due_date: newDueDate })
+      .put("/api/update-task", { _id: _id, due_date: updatedDueDate })
       .then((res) => {
         setUser((prevUser) => ({
           ...prevUser!,
@@ -159,12 +167,23 @@ const Task: React.FC<TaskProps> = ({
     setOnConfirm(deleteTask);
   };
 
+  const selectCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCat = event.target.value;
+    if (selectedCat == NEW_CATEGORY) {
+      setNewCategory(true);
+    } else {
+      setNewCategory(false);
+    }
+  };
+
   return (
     <div className={`${status} task-cell`} id={_id}>
       <div className="task-header">
         {editingTitle ? (
           <div className="edit-task-title-container">
+            <label htmlFor={`edit-title-${_id}`}>New title:</label>
             <input
+              id={`edit-title-${_id}`}
               className="edit-task-title-input"
               defaultValue={task_title}
               ref={editTitleRef}
@@ -188,7 +207,7 @@ const Task: React.FC<TaskProps> = ({
           <>
             {" "}
             <h3 className="task-title">
-              {task_title}{" "}
+              {task_title}&nbsp;&nbsp;&nbsp;
               <span
                 className="edit-task-text-btn link"
                 onClick={() => setEditingTitle(true)}
@@ -204,13 +223,68 @@ const Task: React.FC<TaskProps> = ({
       </div>
       {showFull && (
         <div className="task-content">
-          <div className="task-category">
-            <span className="task-info-subtitle">Category: </span>
-            {category}
-          </div>
+          {editingCategory ? (
+            <div className="edit-task-category-container">
+              <label htmlFor={`edit-category-${_id}`}>New category:</label>
+              <br />
+              <select
+                id={`edit-category-${_id}`}
+                onChange={selectCategory}
+                className={newCategory ? "inactive-input" : ""}
+                ref={!newCategory ? editCategoryRef : undefined}
+              >
+                <option value={NEW_CATEGORY} className="italic">
+                  {" "}
+                  - New category -{" "}
+                </option>
+                {categories.map((cat, index) => (
+                  <option key={index} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+              {newCategory && (
+                <input
+                  id="catgeory"
+                  type="text"
+                  name="category"
+                  ref={editCategoryRef}
+                  required
+                />
+              )}
+              <div className="edit-category-buttons small-btn-pair">
+                <button
+                  className="edit-category-btn confirm-edit-category-btn"
+                  onClick={editCategory}
+                >
+                  Edit
+                </button>
+                <button
+                  className="edit-category-btn cancel-button cancel-edit-category-btn"
+                  onClick={() => setEditingCategory(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="task-category">
+              <span className="task-info-subtitle">Category: </span>
+              {category}&nbsp;&nbsp;&nbsp;
+              <span
+                className="edit-task-category-btn link"
+                onClick={() => setEditingCategory(true)}
+              >
+                ｢🖉｣
+              </span>
+            </div>
+          )}
+
           {editingText ? (
             <div className="edit-task-text-container">
+              <label htmlFor={`edit-text-${_id}`}>New description:</label>
               <textarea
+                id={`edit-text-${_id}`}
                 className="edit-task-text-area"
                 defaultValue={task_text}
                 ref={editTextRef}

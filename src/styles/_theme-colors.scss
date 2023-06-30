@@ -108,6 +108,9 @@
 
   .task-cell {
     background-color: white;
+    label {
+      color: $medium-dark;
+    }
     .task-header {
       .task-title {
         color: $dark;

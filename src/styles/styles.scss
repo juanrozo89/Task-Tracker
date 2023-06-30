@@ -91,7 +91,6 @@ button {
 }
 
 .large-btn-pair {
-  align-self: center;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -101,7 +100,6 @@ button {
 }
 
 .small-btn-pair {
-  align-self: center;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -298,6 +296,10 @@ hr {
   border-radius: 5px;
   width: 350px;
   margin-bottom: 7px;
+  label {
+    font-weight: bold;
+    text-align: left;
+  }
   .task-header {
     display: flex;
     flex-direction: row;
@@ -313,10 +315,13 @@ hr {
     .edit-task-title-container {
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
+      margin-left: 5px;
       .edit-task-title-input {
-        font-size: 1.1rem !important;
-        width: 180px;
+        font-size: 1rem;
+        width: 250px;
         height: 30px;
+        margin-top: 3px;
         padding: 2px 5px;
       }
     }
@@ -354,8 +359,6 @@ hr {
         height: 80px;
         padding: 2px 5px;
       }
-    }
-    .task-category {
     }
     .task-status-container {
       display: flex;
