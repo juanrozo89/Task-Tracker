@@ -31,7 +31,7 @@ const ConfirmationDialog = () => {
           className="popup-content"
           dangerouslySetInnerHTML={{ __html: content! }}
         ></p>
-        <div className="popup-buttons">
+        <div className="large-btn-pair">
           <button className="confirm-button" onClick={handleConfirm}>
             Ok
           </button>

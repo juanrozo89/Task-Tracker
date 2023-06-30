@@ -24,11 +24,9 @@ const AlertBox = () => {
           className="popup-content"
           dangerouslySetInnerHTML={{ __html: content! }}
         ></p>
-        <div className="popup-buttons">
-          <button className="confirm-button" onClick={closeAlert}>
-            Ok
-          </button>
-        </div>
+        <button className="confirm-btn" onClick={closeAlert}>
+          Ok
+        </button>
       </div>
     </section>
   );
