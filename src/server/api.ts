@@ -359,7 +359,8 @@ export default function (app: Express) {
         for (let prop in req.body) {
           if (
             (prop != "_id" && req.body[prop]) ||
-            (prop == "task_text" && req.body[prop] === "")
+            (prop == "task_text" && req.body[prop] === "") ||
+            (prop == "due_date" && req.body[prop] === "")
           ) {
             noFields = false;
           }

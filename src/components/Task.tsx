@@ -35,11 +35,17 @@ const Task: React.FC<TaskProps> = ({
   const [newCategory, setNewCategory] = useState<boolean>(true);
   const NEW_CATEGORY = "new-category";
 
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  const formattedCurrentDate = `${year}-${month}-${day}`;
+
   const toggleShowFull = () => {
     setShowAll(!showFull);
   };
 
-  const formattedDate = (date: Date) => {
+  const formatDate = (date: Date) => {
     const dateF = new Date(date);
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric" as const,
@@ -49,8 +55,8 @@ const Task: React.FC<TaskProps> = ({
       minute: "numeric" as const,
     };
 
-    const formattedDate = dateF.toLocaleDateString("en-US", options);
-    return formattedDate;
+    const fDate = dateF.toLocaleDateString("en-US", options);
+    return fDate;
   };
 
   const changeStatus = (status: StatusType) => {
@@ -125,7 +131,7 @@ const Task: React.FC<TaskProps> = ({
   const editDueDate = () => {
     const updatedDueDate = editDueDateRef.current?.value
       ? editDueDateRef.current.value
-      : null;
+      : "";
     axios
       .put("/api/update-task", { _id: _id, due_date: updatedDueDate })
       .then((res) => {
@@ -354,23 +360,61 @@ const Task: React.FC<TaskProps> = ({
               {DONE}
             </div>
           </div>
-          {due_date ? (
+          {editingDueDate ? (
+            <div className="edit-task-due-date-container">
+              <label htmlFor={`edit-due-date-${_id}`}>New due date:</label>
+              <br />
+              <input
+                id={`edit-due-date-${_id}`}
+                type="date"
+                className="edit-task-due-date-input"
+                defaultValue={due_date?.toString()}
+                min={formattedCurrentDate}
+                ref={editDueDateRef}
+              ></input>
+              <div className="edit-due-date-buttons small-btn-pair">
+                <button
+                  className="edit-due-date-btn confirm-edit-due-date-btn"
+                  onClick={editDueDate}
+                >
+                  Edit
+                </button>
+                <button
+                  className="edit-due-date-btn cancel-button cancel-edit-due-date-btn"
+                  onClick={() => setEditingDueDate(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : due_date ? (
             <div className="due-date">
               <span className="task-info-subtitle">Due by:</span>
-              <br /> {`${formattedDate(due_date)}`}
+              <br /> {`${formatDate(due_date)}`}&nbsp;&nbsp;&nbsp;
+              <span
+                className="edit-task-due-date-btn link"
+                onClick={() => setEditingDueDate(true)}
+              >
+                ｢🖉｣
+              </span>
             </div>
           ) : (
-            <div></div>
+            <div
+              className="add-task-due_date link"
+              onClick={() => setEditingDueDate(true)}
+            >
+              <i>[Add due date]</i>
+            </div>
           )}
           <div className="created-on">
             <span className="task-info-subtitle">Created on:</span>
-            <br /> {`${formattedDate(created_on)}`}
+            <br /> {`${formatDate(created_on)}`}
           </div>
           {updated_on && (
             <div className="updated-on">
               <span className="task-info-subtitle">Last updated:</span>
               <br />
-              {`${formattedDate(updated_on)}`}
+              {`${formatDate(updated_on)}`}
             </div>
           )}
           <div className="delete-task-btn" onClick={confirmDeleteTask}>
