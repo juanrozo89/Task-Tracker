@@ -27,11 +27,21 @@ declare global {
   type ThemeType = "light" | "dark";
   type StatusType = "Ongoing" | "Pending" | "Done";
 
+  type Task = {
+    category: string;
+    status: string;
+    task_title: string;
+    task_text: string;
+    created_on: Date;
+    updated_on: Date;
+    due_date: Date;
+  };
+
   type User = {
     username: string;
     password: string;
     logged_in: boolean;
-    tasks: Array<any>;
+    tasks: Array<Task>;
   };
 
   type Popup = {

@@ -41,17 +41,28 @@ form {
   }
 }
 
-input {
+input,
+select {
+  border: 1px solid;
   border-radius: 2px;
   height: 22px;
   width: 160px;
   font-family: $font-family;
 }
 
+.italic {
+  font-style: italic;
+}
+
 textarea {
+  border: 1px solid;
   border-radius: 4px;
   resize: vertical;
   font-family: $font-family;
+}
+
+select {
+  margin: 2px 0 5px;
 }
 
 h2 {
@@ -448,7 +459,8 @@ hr {
 
 #new-task-form {
   input,
-  textarea {
+  textarea,
+  select {
     width: calc($popup-width - 60px);
   }
 }

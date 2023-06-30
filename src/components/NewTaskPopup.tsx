@@ -9,10 +9,10 @@ const NewTaskPopup = () => {
   const { setPopup } = useContext(PopupContext)!;
   const { user, setUser } = useContext(UserContext)!;
 
-  let categories: Array<any> = [];
-  for (let cat of user!.tasks) {
-    if (!categories.includes(cat)) {
-      categories.push(cat);
+  let categories: Array<string> = [];
+  for (let task of user!.tasks) {
+    if (!categories.includes(task.category)) {
+      categories.push(task.category);
     }
   }
 
@@ -22,6 +22,8 @@ const NewTaskPopup = () => {
   const [text, setText] = useState<string>("");
   const categoryRef = useRef<HTMLInputElement>(null);
   const [category, setCategory] = useState<string>("");
+  const [newCategory, setNewCategory] = useState<boolean>(true);
+  const NEW_CATEGORY = "new-category";
   const dueDateRef = useRef<HTMLInputElement>(null);
   const [dueDate, setDueDate] = useState<string>("");
 
@@ -60,6 +62,16 @@ const NewTaskPopup = () => {
     clearPopup();
   };
 
+  const selectCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCat = event.target.value;
+    if (selectedCat == NEW_CATEGORY) {
+      setNewCategory(true);
+    } else {
+      setNewCategory(false);
+      setCategory(selectedCat);
+    }
+  };
+
   return (
     <section id="alert-box" className="popup">
       <div className="overlay"></div>
@@ -86,21 +98,30 @@ const NewTaskPopup = () => {
             />
             <br />
             <label htmlFor="category">Category*</label>
-            <select>
+            <select
+              onChange={selectCategory}
+              className={newCategory ? "inactive-input" : ""}
+            >
+              <option value={NEW_CATEGORY} className="italic">
+                {" "}
+                - New category -{" "}
+              </option>
               {categories.map((cat, index) => (
                 <option key={index} value={cat}>
                   {cat}
                 </option>
               ))}
             </select>
-            <input
-              id="catgeory"
-              type="text"
-              name="category"
-              ref={categoryRef}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            />
+            {newCategory && (
+              <input
+                id="catgeory"
+                type="text"
+                name="category"
+                ref={categoryRef}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              />
+            )}
             <br />
             <label htmlFor="due-date">Due date</label>
             <input

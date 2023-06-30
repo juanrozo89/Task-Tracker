@@ -58,13 +58,17 @@
   }
 
   input,
-  textarea {
+  textarea,
+  select {
     background-color: white;
     color: $darkest;
-    border: 1px solid $medium-light;
+    border-color: $medium-light;
     &:active,
     &:focus {
       outline: 2px solid $medium-light;
+    }
+    &.inactive-input {
+      background-color: $lightest;
     }
   }
 
