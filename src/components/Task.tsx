@@ -22,6 +22,7 @@ const Task: React.FC<TaskProps> = ({
   const [editingCategory, setEditingCategory] = useState<boolean>(false);
   const [editingText, setEditingText] = useState<boolean>(false);
   const [editingDueDate, setEditingDueDate] = useState<boolean>(false);
+  const [editingTask, setEditingTask] = useState<boolean>(false);
 
   const editTitleRef = useRef<HTMLInputElement | null>(null);
   const editCategoryRef = useRef<any>(null);
@@ -213,13 +214,18 @@ const Task: React.FC<TaskProps> = ({
           <>
             {" "}
             <h3 className="task-title">
-              {task_title}&nbsp;&nbsp;&nbsp;
-              <span
-                className="edit-task-text-btn link"
-                onClick={() => setEditingTitle(true)}
-              >
-                ｢🖉｣
-              </span>
+              {task_title}
+              {editingTask && (
+                <>
+                  &nbsp;&nbsp;&nbsp;
+                  <span
+                    className="edit-task-text-btn link"
+                    onClick={() => setEditingTitle(true)}
+                  >
+                    ｢🖉｣
+                  </span>
+                </>
+              )}
             </h3>
           </>
         )}
@@ -276,13 +282,18 @@ const Task: React.FC<TaskProps> = ({
           ) : (
             <div className="task-category">
               <span className="task-info-subtitle">Category: </span>
-              {category}&nbsp;&nbsp;&nbsp;
-              <span
-                className="edit-task-category-btn link"
-                onClick={() => setEditingCategory(true)}
-              >
-                ｢🖉｣
-              </span>
+              {category}
+              {editingTask && (
+                <>
+                  &nbsp;&nbsp;&nbsp;
+                  <span
+                    className="edit-task-category-btn link"
+                    onClick={() => setEditingCategory(true)}
+                  >
+                    ｢🖉｣
+                  </span>
+                </>
+              )}
             </div>
           )}
 
@@ -312,21 +323,28 @@ const Task: React.FC<TaskProps> = ({
             </div>
           ) : task_text ? (
             <div className="task-text">
-              {task_text}&nbsp;&nbsp;&nbsp;
-              <span
-                className="edit-task-text-btn link"
-                onClick={() => setEditingText(true)}
-              >
-                ｢🖉｣
-              </span>
+              {task_text}
+              {editingTask && (
+                <>
+                  &nbsp;&nbsp;&nbsp;
+                  <span
+                    className="edit-task-text-btn link"
+                    onClick={() => setEditingText(true)}
+                  >
+                    ｢🖉｣
+                  </span>
+                </>
+              )}
             </div>
           ) : (
-            <div
-              className="add-task-text link"
-              onClick={() => setEditingText(true)}
-            >
-              <i>[Add description]</i>
-            </div>
+            editingTask && (
+              <div
+                className="add-task-text link"
+                onClick={() => setEditingText(true)}
+              >
+                <i>[Add description]</i>
+              </div>
+            )
           )}
           <div className="task-status-container">
             <div
@@ -390,21 +408,28 @@ const Task: React.FC<TaskProps> = ({
           ) : due_date ? (
             <div className="due-date">
               <span className="task-info-subtitle">Due by:</span>
-              <br /> {`${formatDate(due_date)}`}&nbsp;&nbsp;&nbsp;
-              <span
-                className="edit-task-due-date-btn link"
-                onClick={() => setEditingDueDate(true)}
-              >
-                ｢🖉｣
-              </span>
+              <br /> {`${formatDate(due_date)}`}
+              {editingTask && (
+                <>
+                  &nbsp;&nbsp;&nbsp;
+                  <span
+                    className="edit-task-due-date-btn link"
+                    onClick={() => setEditingDueDate(true)}
+                  >
+                    ｢🖉｣
+                  </span>
+                </>
+              )}
             </div>
           ) : (
-            <div
-              className="add-task-due_date link"
-              onClick={() => setEditingDueDate(true)}
-            >
-              <i>[Add due date]</i>
-            </div>
+            editingTask && (
+              <div
+                className="add-task-due_date link"
+                onClick={() => setEditingDueDate(true)}
+              >
+                <i>[Add due date]</i>
+              </div>
+            )
           )}
           <div className="created-on">
             <span className="task-info-subtitle">Created on:</span>
@@ -417,8 +442,25 @@ const Task: React.FC<TaskProps> = ({
               {`${formatDate(updated_on)}`}
             </div>
           )}
-          <div className="delete-task-btn" onClick={confirmDeleteTask}>
-            Delete
+          <div className="small-btn-pair">
+            {editingTask ? (
+              <button
+                className="edit-task-btn"
+                onClick={() => setEditingTask(false)}
+              >
+                Done
+              </button>
+            ) : (
+              <button
+                className="edit-task-btn"
+                onClick={() => setEditingTask(true)}
+              >
+                Edit
+              </button>
+            )}
+            <button className="delete-task-btn" onClick={confirmDeleteTask}>
+              Delete
+            </button>
           </div>
         </div>
       )}
