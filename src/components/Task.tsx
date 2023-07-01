@@ -186,7 +186,7 @@ const Task: React.FC<TaskProps> = ({
   return (
     <div className={`${status} task-cell`} id={_id}>
       <div className="task-header">
-        {editingTitle ? (
+        {editingTitle && editingTask ? (
           <div className="edit-task-title-container">
             <label htmlFor={`edit-title-${_id}`}>New title:</label>
             <input
@@ -200,7 +200,7 @@ const Task: React.FC<TaskProps> = ({
                 className="edit-text-btn confirm-edit-text-btn"
                 onClick={editTitle}
               >
-                Edit
+                Apply
               </button>
               <button
                 className="edit-text-btn cancel-button cancel-edit-text-btn"
@@ -235,7 +235,7 @@ const Task: React.FC<TaskProps> = ({
       </div>
       {showFull && (
         <div className="task-content">
-          {editingCategory ? (
+          {editingCategory && editingTask ? (
             <div className="edit-task-category-container">
               <label htmlFor={`edit-category-${_id}`}>New category:</label>
               <br />
@@ -269,7 +269,7 @@ const Task: React.FC<TaskProps> = ({
                   className="edit-category-btn confirm-edit-category-btn"
                   onClick={editCategory}
                 >
-                  Edit
+                  Apply
                 </button>
                 <button
                   className="edit-category-btn cancel-button cancel-edit-category-btn"
@@ -297,7 +297,7 @@ const Task: React.FC<TaskProps> = ({
             </div>
           )}
 
-          {editingText ? (
+          {editingText && editingTask ? (
             <div className="edit-task-text-container">
               <label htmlFor={`edit-text-${_id}`}>New description:</label>
               <textarea
@@ -311,7 +311,7 @@ const Task: React.FC<TaskProps> = ({
                   className="edit-text-btn confirm-edit-text-btn"
                   onClick={editText}
                 >
-                  Edit
+                  Apply
                 </button>
                 <button
                   className="edit-text-btn cancel-button cancel-edit-text-btn"
@@ -378,7 +378,7 @@ const Task: React.FC<TaskProps> = ({
               {DONE}
             </div>
           </div>
-          {editingDueDate ? (
+          {editingDueDate && editingTask ? (
             <div className="edit-task-due-date-container">
               <label htmlFor={`edit-due-date-${_id}`}>New due date:</label>
               <br />
@@ -395,7 +395,7 @@ const Task: React.FC<TaskProps> = ({
                   className="edit-due-date-btn confirm-edit-due-date-btn"
                   onClick={editDueDate}
                 >
-                  Edit
+                  Apply
                 </button>
                 <button
                   className="edit-due-date-btn cancel-button cancel-edit-due-date-btn"

@@ -244,13 +244,17 @@
   }
 
   input,
-  textarea {
+  textarea,
+  select {
     background-color: $dark;
     color: $lightest;
     border: none;
     &:active,
     &:focus {
       outline: 2px solid lighten($medium, 10%);
+    }
+    &.inactive-input {
+      background-color: $pending-dark;
     }
   }
 
@@ -290,6 +294,14 @@
 
   .task-cell {
     background-color: $dark;
+    input,
+    textarea,
+    select {
+      background-color: $medium-dark;
+      &.inactive-input {
+        background-color: $pending-dark;
+      }
+    }
     .task-header {
       .task-title {
         color: $lightest;
@@ -302,9 +314,6 @@
         color: $lightest;
       }
       .task-text {
-      }
-      .edit-task-text-area {
-        background-color: lighten($dark, 8%);
       }
       .task-category {
       }

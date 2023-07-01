@@ -360,6 +360,15 @@ hr {
         padding: 2px 5px;
       }
     }
+    .edit-task-category-container {
+      select,
+      input {
+        width: 200px;
+      }
+      .small-btn-pair {
+        margin: 2px 0;
+      }
+    }
     .task-status-container {
       display: flex;
       flex-direction: row;
