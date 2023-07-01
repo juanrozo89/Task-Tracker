@@ -28,8 +28,9 @@ declare global {
   type StatusType = "Ongoing" | "Pending" | "Done";
 
   type Task = {
+    _id: string;
     category: string;
-    status: string;
+    status: StatusType;
     task_title: string;
     task_text: string;
     created_on: Date;

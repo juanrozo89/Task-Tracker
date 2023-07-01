@@ -228,9 +228,11 @@ const Task: React.FC<TaskProps> = ({
             </h3>
           </>
         )}
-        <button className="expand-collapse" onClick={toggleShowFull}>
-          {showFull ? "⏶" : "⏷"}
-        </button>
+        {!editingTask && (
+          <button className="expand-collapse" onClick={toggleShowFull}>
+            {showFull ? "⏶" : "⏷"}
+          </button>
+        )}
       </div>
       {showFull && (
         <div className="task-content">
