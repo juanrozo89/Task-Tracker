@@ -4,6 +4,8 @@ import { Express, Request, Response, NextFunction } from "express";
 import { Session } from "express-session";
 import { PENDING } from "../constants";
 
+import { formatDateForDisplay } from "../utils/formatFunctions";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -338,6 +340,60 @@ export default function (app: Express) {
             "An internal error occurred while creating the task",
             res
           );
+        }
+      }
+    });
+
+  // get filtered tasks
+  app
+    .route("/api/get-tasks/")
+    .get(authenticateSession, getUser, (req: Request, res: Response) => {
+      const user = req.user;
+      if (JSON.stringify(req.query) == "{}") {
+        // if no query, return all tasks
+        res.json(user.tasks);
+      } else {
+        // return tasks matching the query
+        const keys = [
+          "task_title",
+          "category",
+          "task_text",
+          "status",
+          "created_on",
+          "updated_on",
+          "due_date",
+        ];
+        let validKey = true;
+        let errorKey;
+        // check if key is valid
+        for (let prop in req.query) {
+          if (!keys.includes(prop)) {
+            validKey = false;
+            errorKey = prop;
+          }
+        }
+        if (!validKey) {
+          // error: queried with an invalid key
+          res.status(400).json({ error: `"${errorKey}" is an invalid key` });
+        } else {
+          // if key exists
+          let filteredTasks: Array<any> = [];
+          user.tasks.map((task: any) => {
+            let passesTest = false;
+            for (let prop of Object.keys(req.query)) {
+              let keyRegex = new RegExp(req.body[prop], "i");
+              if (keys.includes(prop) && task[prop].match(keyRegex)) {
+                // queried value is present in task
+                passesTest = true;
+              }
+            }
+            if (passesTest) filteredTasks.push(task);
+          });
+          if (filteredTasks.length === 0) {
+            notFoundError("Task", res);
+          } else {
+            res.json({ result: filteredTasks });
+          }
         }
       }
     });

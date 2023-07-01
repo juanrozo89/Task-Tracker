@@ -3,7 +3,7 @@ import { NONE } from "../constants";
 import { PopupContext, UserContext } from "../Contexts";
 import { handleErrorAlert } from "../utils/alertFunctions";
 import useExistingCategories from "../hooks/useExistingCategories";
-import useFormattedCurrentDate from "../hooks/useFormattedCurrentDate";
+import { getFormattedCurrentDate } from "../utils/formatFunctions";
 
 import axios from "axios";
 
@@ -22,7 +22,7 @@ const NewTaskPopup = () => {
   const [newCategory, setNewCategory] = useState<boolean>(true);
   const [dueDate, setDueDate] = useState<string>("");
   const NEW_CATEGORY = "new-category";
-  const formattedCurrentDate = useFormattedCurrentDate();
+  const formattedCurrentDate = getFormattedCurrentDate();
 
   const clearPopup = () => {
     setPopup({

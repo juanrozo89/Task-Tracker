@@ -5,7 +5,10 @@ import { CONFIRM, PENDING, ONGOING, DONE } from "../constants";
 import axios from "axios";
 import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
 import useExistingCategories from "../hooks/useExistingCategories";
-import useFormattedCurrentDate from "../hooks/useFormattedCurrentDate";
+import {
+  getFormattedCurrentDate,
+  formatDateForDisplay,
+} from "../utils/formatFunctions";
 
 const Task: React.FC<TaskProps> = ({
   _id,
@@ -37,24 +40,10 @@ const Task: React.FC<TaskProps> = ({
   const [newCategory, setNewCategory] = useState<boolean>(true);
   const NEW_CATEGORY = "new-category";
 
-  const formattedCurrentDate = useFormattedCurrentDate();
+  const formattedCurrentDate = getFormattedCurrentDate();
 
   const toggleShowFull = () => {
     setShowAll(!showFull);
-  };
-
-  const formatDate = (date: Date) => {
-    const dateF = new Date(date);
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric" as const,
-      month: "long" as const,
-      day: "numeric" as const,
-      hour: "numeric" as const,
-      minute: "numeric" as const,
-    };
-
-    const fDate = dateF.toLocaleDateString("en-US", options);
-    return fDate;
   };
 
   const changeStatus = (status: StatusType) => {
@@ -409,7 +398,7 @@ const Task: React.FC<TaskProps> = ({
           ) : due_date ? (
             <div className="due-date">
               <span className="task-info-subtitle">Due by:</span>
-              <br /> {`${formatDate(due_date)}`}
+              <br /> {`${formatDateForDisplay(due_date)}`}
               {editingTask && (
                 <>
                   &nbsp;&nbsp;&nbsp;
@@ -434,13 +423,13 @@ const Task: React.FC<TaskProps> = ({
           )}
           <div className="created-on">
             <span className="task-info-subtitle">Created on:</span>
-            <br /> {`${formatDate(created_on)}`}
+            <br /> {`${formatDateForDisplay(created_on)}`}
           </div>
           {updated_on && (
             <div className="updated-on">
               <span className="task-info-subtitle">Last updated:</span>
               <br />
-              {`${formatDate(updated_on)}`}
+              {`${formatDateForDisplay(updated_on)}`}
             </div>
           )}
           <div className="small-btn-pair">
