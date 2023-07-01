@@ -93,7 +93,10 @@ const NewTaskPopup = () => {
               onChange={selectCategory}
               className={newCategory ? "inactive-input" : ""}
             >
-              <option value={NEW_CATEGORY} className="italic">
+              <option
+                className="italic new-category-option"
+                value={NEW_CATEGORY}
+              >
                 {" "}
                 - New category -{" "}
               </option>

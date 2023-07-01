@@ -289,6 +289,19 @@ hr {
   margin: 20px;
 }
 
+#filter-tasks-form {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  margin: 0 auto 15px;
+  #filter-tasks-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    margin: 0 0 0 5px;
+  }
+}
+
 .task-cell {
   /*border: 2px solid grey;*/
   box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);

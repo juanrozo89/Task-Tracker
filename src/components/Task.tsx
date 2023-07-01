@@ -235,7 +235,10 @@ const Task: React.FC<TaskProps> = ({
                 className={newCategory ? "inactive-input" : ""}
                 ref={!newCategory ? editCategoryRef : undefined}
               >
-                <option value={NEW_CATEGORY} className="italic">
+                <option
+                  value={NEW_CATEGORY}
+                  className="italic new-category-option"
+                >
                   {" "}
                   - New category -{" "}
                 </option>

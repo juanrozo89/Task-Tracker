@@ -67,8 +67,16 @@
     &:focus {
       outline: 2px solid $medium-light;
     }
+  }
+  select {
     &.inactive-input {
       background-color: $lightest;
+    }
+    option {
+      background-color: white;
+      &.new-category-option {
+        background-color: $lightest;
+      }
     }
   }
 
@@ -244,8 +252,17 @@
     &:focus {
       outline: 2px solid lighten($medium, 10%);
     }
+  }
+
+  select {
     &.inactive-input {
-      background-color: $pending-dark;
+      background-color: lighten($dark, 10%);
+    }
+    option {
+      background-color: $dark;
+      &.new-category-option {
+        background-color: lighten($dark, 10%);
+      }
     }
   }
 
