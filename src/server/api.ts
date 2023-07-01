@@ -381,8 +381,19 @@ export default function (app: Express) {
           user.tasks.map((task: any) => {
             let passesTest = false;
             for (let prop of Object.keys(req.query)) {
+              const stringProps = [
+                "task_title",
+                "category",
+                "task_text",
+                "status",
+              ];
+              const dateProps = ["created_on", "updated_on", "due_date"];
               let keyRegex = new RegExp(req.body[prop], "i");
-              if (keys.includes(prop) && task[prop].match(keyRegex)) {
+              if (
+                (stringProps.includes(prop) && task[prop].match(keyRegex)) ||
+                (dateProps.includes(prop) &&
+                  formatDateForDisplay(task.prop).match(keyRegex))
+              ) {
                 // queried value is present in task
                 passesTest = true;
               }
