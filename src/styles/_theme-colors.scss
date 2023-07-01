@@ -114,17 +114,14 @@
     .task-header {
       .task-title {
         color: $dark;
-      }
-      .expand-collapse {
+        .check-mark {
+          color: darken($done-light, 20%);
+        }
       }
     }
     .task-content {
       .task-info-subtitle {
         color: $medium-dark;
-      }
-      .task-text {
-      }
-      .task-category {
       }
       .task-status-container {
         color: $grey-darkest;
@@ -166,12 +163,6 @@
             background-color: $done-light;
           }
         }
-      }
-      .created-on {
-      }
-      .updated-on {
-      }
-      .due-date {
       }
       .delete-task-btn {
         background-color: $warning-lightest;
@@ -305,6 +296,9 @@
     .task-header {
       .task-title {
         color: $lightest;
+        .check-mark {
+          color: $done-dark;
+        }
       }
     }
     .task-content {

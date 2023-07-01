@@ -209,8 +209,10 @@ const Task: React.FC<TaskProps> = ({
           </div>
         ) : (
           <>
-            {" "}
             <h3 className="task-title">
+              {status == DONE && (
+                <span className="check-mark">🗹&nbsp;&nbsp;</span>
+              )}
               {task_title}
               {editingTask && (
                 <>
