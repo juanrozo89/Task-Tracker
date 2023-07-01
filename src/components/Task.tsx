@@ -199,9 +199,11 @@ const Task: React.FC<TaskProps> = ({
         ) : (
           <>
             <h3 className="task-title">
-              {status == DONE && (
+              {status == DONE ? (
                 <span className="check-mark">🗹&nbsp;&nbsp;</span>
-              )}
+              ) : status == ONGOING ? (
+                <span className="ongoing-mark">🞔&nbsp;&nbsp;</span>
+              ) : undefined}
               {task_title}
               {editingTask && (
                 <>

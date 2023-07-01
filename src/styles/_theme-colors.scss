@@ -123,6 +123,9 @@
         .check-mark {
           color: darken($done-light, 20%);
         }
+        .ongoing-mark {
+          color: darken($ongoing-light, 30%);
+        }
       }
     }
     .task-content {
@@ -302,26 +305,31 @@
     select {
       background-color: $medium-dark;
     }
-    select {
-      &.inactive-input,
-      .new-category-option {
-        background-color: darken($medium-dark, 5%);
-      }
-      option {
-        background-color: $medium-dark;
-      }
-    }
     .task-header {
       .task-title {
         color: $lightest;
         .check-mark {
           color: $done-dark;
         }
+        .ongoing-mark {
+          color: darken($ongoing-dark, 20%);
+        }
       }
     }
     .task-content {
       .task-info-subtitle {
         color: $lightest;
+      }
+      .edit-task-category-container {
+        select {
+          &.inactive-input,
+          .new-category-option {
+            background-color: darken($medium-dark, 5%);
+          }
+          option {
+            background-color: $medium-dark;
+          }
+        }
       }
       .task-status-container {
         color: $medium-light;
