@@ -69,14 +69,12 @@
     }
   }
   select {
-    &.inactive-input {
+    &.inactive-input,
+    .new-category-option {
       background-color: $lightest;
     }
     option {
       background-color: white;
-      &.new-category-option {
-        background-color: $lightest;
-      }
     }
   }
 
@@ -254,18 +252,6 @@
     }
   }
 
-  select {
-    &.inactive-input {
-      background-color: lighten($dark, 10%);
-    }
-    option {
-      background-color: $dark;
-      &.new-category-option {
-        background-color: lighten($dark, 10%);
-      }
-    }
-  }
-
   button {
     background-color: $medium-dark;
     color: $lightest;
@@ -298,6 +284,15 @@
     .popup-title {
       background-color: $medium-dark;
     }
+    select {
+      &.inactive-input,
+      .new-category-option {
+        background-color: lighten($dark, 10%);
+      }
+      option {
+        background-color: $dark;
+      }
+    }
   }
 
   .task-cell {
@@ -306,8 +301,14 @@
     textarea,
     select {
       background-color: $medium-dark;
-      &.inactive-input {
-        background-color: $pending-dark;
+    }
+    select {
+      &.inactive-input,
+      .new-category-option {
+        background-color: darken($medium-dark, 5%);
+      }
+      option {
+        background-color: $medium-dark;
       }
     }
     .task-header {
