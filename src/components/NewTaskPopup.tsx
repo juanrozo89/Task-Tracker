@@ -3,6 +3,7 @@ import { NONE } from "../constants";
 import { PopupContext, UserContext } from "../Contexts";
 import { handleErrorAlert } from "../utils/alertFunctions";
 import useExistingCategories from "../hooks/useExistingCategories";
+import useFormattedCurrentDate from "../hooks/useFormattedCurrentDate";
 
 import axios from "axios";
 
@@ -12,21 +13,16 @@ const NewTaskPopup = () => {
   const categories = useExistingCategories();
 
   const titleRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState<string>("");
   const textRef = useRef<HTMLTextAreaElement>(null);
-  const [text, setText] = useState<string>("");
   const categoryRef = useRef<HTMLInputElement>(null);
+  const dueDateRef = useRef<HTMLInputElement>(null);
+  const [title, setTitle] = useState<string>("");
+  const [text, setText] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [newCategory, setNewCategory] = useState<boolean>(true);
-  const NEW_CATEGORY = "new-category";
-  const dueDateRef = useRef<HTMLInputElement>(null);
   const [dueDate, setDueDate] = useState<string>("");
-
-  const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  const day = String(currentDate.getDate()).padStart(2, "0");
-  const formattedCurrentDate = `${year}-${month}-${day}`;
+  const NEW_CATEGORY = "new-category";
+  const formattedCurrentDate = useFormattedCurrentDate();
 
   const clearPopup = () => {
     setPopup({

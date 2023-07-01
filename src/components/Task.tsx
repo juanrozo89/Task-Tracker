@@ -5,6 +5,7 @@ import { CONFIRM, PENDING, ONGOING, DONE } from "../constants";
 import axios from "axios";
 import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
 import useExistingCategories from "../hooks/useExistingCategories";
+import useFormattedCurrentDate from "../hooks/useFormattedCurrentDate";
 
 const Task: React.FC<TaskProps> = ({
   _id,
@@ -36,11 +37,7 @@ const Task: React.FC<TaskProps> = ({
   const [newCategory, setNewCategory] = useState<boolean>(true);
   const NEW_CATEGORY = "new-category";
 
-  const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-  const day = String(currentDate.getDate()).padStart(2, "0");
-  const formattedCurrentDate = `${year}-${month}-${day}`;
+  const formattedCurrentDate = useFormattedCurrentDate();
 
   const toggleShowFull = () => {
     setShowAll(!showFull);
