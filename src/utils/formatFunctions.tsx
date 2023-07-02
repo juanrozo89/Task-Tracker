@@ -16,6 +16,6 @@ export const formatDateForDisplay = (date: string) => {
     hour: "numeric" as const,
     minute: "numeric" as const,
   };
-  const formattedDate = dateStringAsDate.toLocaleDateString("en-US", options);
+  const formattedDate = dateStringAsDate.toLocaleDateString("local", options);
   return formattedDate;
 };

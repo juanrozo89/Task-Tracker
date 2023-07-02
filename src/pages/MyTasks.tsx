@@ -43,7 +43,6 @@ const MyTasks = () => {
         }
       }
     }
-    console.log(filteredTasks);
     setTaskstoShow(filteredTasks);
   };
 
