@@ -18,9 +18,9 @@ declare global {
     task_text: string;
     category: string;
     status: StatusType;
-    created_on: Date;
-    updated_on: Date | null;
-    due_date: Date | null;
+    created_on: Date | string;
+    updated_on: Date | string | null;
+    due_date: Date | string | null;
   }
 
   type PopupType = "confirm" | "alert" | "new task" | "";

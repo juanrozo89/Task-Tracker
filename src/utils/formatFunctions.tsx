@@ -7,7 +7,7 @@ export const getFormattedCurrentDate = () => {
   return formattedCurrentDate;
 };
 
-export const formatDateForDisplay = (date: Date) => {
+export const formatDateForDisplay = (date: string) => {
   const dateStringAsDate = new Date(date);
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric" as const,

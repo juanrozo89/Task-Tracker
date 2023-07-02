@@ -5,10 +5,7 @@ import { CONFIRM, PENDING, ONGOING, DONE } from "../constants";
 import axios from "axios";
 import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
 import useExistingCategories from "../hooks/useExistingCategories";
-import {
-  getFormattedCurrentDate,
-  formatDateForDisplay,
-} from "../utils/formatFunctions";
+import { getFormattedCurrentDate } from "../utils/formatFunctions";
 
 const Task: React.FC<TaskProps> = ({
   _id,
@@ -403,7 +400,7 @@ const Task: React.FC<TaskProps> = ({
           ) : due_date ? (
             <div className="due-date">
               <span className="task-info-subtitle">Due by:</span>
-              <br /> {`${formatDateForDisplay(due_date)}`}
+              <br /> {due_date as string}
               {editingTask && (
                 <>
                   &nbsp;&nbsp;&nbsp;
@@ -428,13 +425,13 @@ const Task: React.FC<TaskProps> = ({
           )}
           <div className="created-on">
             <span className="task-info-subtitle">Created on:</span>
-            <br /> {`${formatDateForDisplay(created_on)}`}
+            <br /> {created_on as string}
           </div>
           {updated_on && (
             <div className="updated-on">
               <span className="task-info-subtitle">Last updated:</span>
               <br />
-              {`${formatDateForDisplay(updated_on)}`}
+              {updated_on as string}
             </div>
           )}
           <div className="small-btn-pair">

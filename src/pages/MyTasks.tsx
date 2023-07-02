@@ -3,6 +3,7 @@ import Task from "../components/Task";
 import RedirectToLogin from "../components/RedirectToLogin";
 import { UserContext } from "../Contexts";
 import useNewTaskPopup from "../hooks/useNewTaskPopup";
+import { formatDateForDisplay } from "../utils/formatFunctions";
 
 const MyTasks = () => {
   const { user } = useContext(UserContext)!;
@@ -15,6 +16,7 @@ const MyTasks = () => {
   const filterTasksByKeyword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let filteredTasks: Array<Task> = [];
+    const dateKeys = ["created_on", "updated_on", "due_date"];
     const filterKeyword = filterKeywordRef.current?.value
       ? filterKeywordRef.current.value
       : null;
@@ -26,11 +28,23 @@ const MyTasks = () => {
       for (let task of tasksToShow) {
         for (let prop in task) {
           if (
+            (dateKeys as any).indexOf[prop] == -1 &&
             (task as any)[prop] &&
             (task as any)[prop].match(keyRegex) &&
             filteredTasks.indexOf(task) == -1
           ) {
             filteredTasks.unshift(task);
+          } else if ((dateKeys as any).indexOf[prop] == -1) {
+          }
+          if (filteredTasks.indexOf(task) == -1 && (task as any)[prop]) {
+            if (
+              ((dateKeys as any).indexOf[prop] == -1 &&
+                (task as any)[prop].match(keyRegex)) ||
+              ((dateKeys as any).indexOf[prop] != -1 &&
+                formatDateForDisplay((task as any)[prop]).match(keyRegex))
+            ) {
+              filteredTasks.unshift(task);
+            }
           }
         }
       }
@@ -69,9 +83,19 @@ const MyTasks = () => {
                     status={task.status}
                     task_title={task.task_title}
                     task_text={task.task_text}
-                    created_on={task.created_on}
-                    updated_on={task.updated_on ? task.updated_on : null}
-                    due_date={task.due_date ? task.due_date : null}
+                    created_on={formatDateForDisplay(
+                      task.created_on.toString()
+                    )}
+                    updated_on={
+                      task.updated_on
+                        ? formatDateForDisplay(task.updated_on.toString())
+                        : null
+                    }
+                    due_date={
+                      task.due_date
+                        ? formatDateForDisplay(task.due_date.toString())
+                        : null
+                    }
                   />
                 );
               })
