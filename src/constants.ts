@@ -22,3 +22,6 @@ export const DARK: ThemeType = "dark";
 export const ONGOING: StatusType = "Ongoing";
 export const PENDING: StatusType = "Pending";
 export const DONE: StatusType = "Done";
+
+// Others:
+export const NEW_CATEGORY = "new-category";

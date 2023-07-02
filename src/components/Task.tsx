@@ -1,6 +1,6 @@
 import { useState, useContext, useRef } from "react";
 import { UserContext, PopupContext } from "../Contexts";
-import { CONFIRM, PENDING, ONGOING, DONE } from "../constants";
+import { CONFIRM, PENDING, ONGOING, DONE, NEW_CATEGORY } from "../constants";
 
 import axios from "axios";
 import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
@@ -35,7 +35,6 @@ const Task: React.FC<TaskProps> = ({
 
   const categories = useExistingCategories();
   const [newCategory, setNewCategory] = useState<boolean>(true);
-  const NEW_CATEGORY = "new-category";
 
   const formattedCurrentDate = getFormattedCurrentDate();
 
@@ -235,8 +234,8 @@ const Task: React.FC<TaskProps> = ({
                 ref={!newCategory ? editCategoryRef : undefined}
               >
                 <option
-                  value={NEW_CATEGORY}
                   className="italic new-category-option"
+                  value={NEW_CATEGORY}
                 >
                   {" "}
                   - New category -{" "}

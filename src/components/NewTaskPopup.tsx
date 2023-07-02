@@ -2,23 +2,25 @@ import { useContext, useRef, useState } from "react";
 import { NONE } from "../constants";
 import { PopupContext, UserContext } from "../Contexts";
 import { handleErrorAlert } from "../utils/alertFunctions";
-import useExistingCategories from "../hooks/useExistingCategories";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
+import SelectCategory from "./SelectCategory";
 
 import axios from "axios";
 
 const NewTaskPopup = () => {
   const { setPopup } = useContext(PopupContext)!;
   const { setUser } = useContext(UserContext)!;
-  const categories = useExistingCategories();
 
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const dueDateRef = useRef<HTMLInputElement>(null);
-  const categoryRef = useRef<any>(null);
-  const [newCategory, setNewCategory] = useState<boolean>(true);
-  const NEW_CATEGORY = "new-category";
   const formattedCurrentDate = getFormattedCurrentDate();
+
+  const [category, setCategory] = useState<string>("");
+
+  const handleCategoryChange = (newCat: string) => {
+    setCategory(newCat);
+  };
 
   const clearPopup = () => {
     setPopup({
@@ -32,9 +34,6 @@ const NewTaskPopup = () => {
     const title = titleRef.current?.value ? titleRef.current.value : "";
     const text = textRef.current?.value ? textRef.current.value : "";
     const dueDate = dueDateRef.current?.value ? dueDateRef.current.value : "";
-    const category = categoryRef.current?.value
-      ? categoryRef.current.value
-      : null;
     axios
       .post("/api/new-task", {
         task_title: title,
@@ -53,15 +52,6 @@ const NewTaskPopup = () => {
         handleErrorAlert(error, setPopup);
       });
     clearPopup();
-  };
-
-  const selectCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCat = event.target.value;
-    if (selectedCat == NEW_CATEGORY) {
-      setNewCategory(true);
-    } else {
-      setNewCategory(false);
-    }
   };
 
   return (
@@ -87,34 +77,11 @@ const NewTaskPopup = () => {
               ref={textRef}
             />
             <br />
-            <label htmlFor="category">Category*</label>
-            <select
-              onChange={selectCategory}
-              className={newCategory ? "inactive-input" : ""}
-              ref={!newCategory ? categoryRef : undefined}
-            >
-              <option
-                className="italic new-category-option"
-                value={NEW_CATEGORY}
-              >
-                {" "}
-                - New category -{" "}
-              </option>
-              {categories.map((cat, index) => (
-                <option key={index} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-            {newCategory && (
-              <input
-                id="catgeory"
-                type="text"
-                name="category"
-                ref={categoryRef}
-                required
-              />
-            )}
+            <label>Category*</label>
+            <SelectCategory
+              _id={"select-category"}
+              changeCategory={handleCategoryChange}
+            ></SelectCategory>
             <br />
             <label htmlFor="due-date">Due date</label>
             <input
