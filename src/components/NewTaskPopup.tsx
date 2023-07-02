@@ -15,7 +15,7 @@ const NewTaskPopup = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const dueDateRef = useRef<HTMLInputElement>(null);
-  const [category, setCategory] = useState<string>("");
+  const categoryRef = useRef<any>(null);
   const [newCategory, setNewCategory] = useState<boolean>(true);
   const NEW_CATEGORY = "new-category";
   const formattedCurrentDate = getFormattedCurrentDate();
@@ -32,6 +32,9 @@ const NewTaskPopup = () => {
     const title = titleRef.current?.value ? titleRef.current.value : "";
     const text = textRef.current?.value ? textRef.current.value : "";
     const dueDate = dueDateRef.current?.value ? dueDateRef.current.value : "";
+    const category = categoryRef.current?.value
+      ? categoryRef.current.value
+      : null;
     axios
       .post("/api/new-task", {
         task_title: title,
@@ -58,7 +61,6 @@ const NewTaskPopup = () => {
       setNewCategory(true);
     } else {
       setNewCategory(false);
-      setCategory(selectedCat);
     }
   };
 
@@ -89,6 +91,7 @@ const NewTaskPopup = () => {
             <select
               onChange={selectCategory}
               className={newCategory ? "inactive-input" : ""}
+              ref={!newCategory ? categoryRef : undefined}
             >
               <option
                 className="italic new-category-option"
@@ -108,7 +111,7 @@ const NewTaskPopup = () => {
                 id="catgeory"
                 type="text"
                 name="category"
-                onChange={(e) => setCategory(e.target.value)}
+                ref={categoryRef}
                 required
               />
             )}
