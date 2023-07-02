@@ -344,6 +344,7 @@ export default function (app: Express) {
       }
     });
 
+  /*
   // get filtered tasks
   app
     .route("/api/get-tasks/")
@@ -408,6 +409,7 @@ export default function (app: Express) {
         }
       }
     });
+  */
 
   // update a task
   app

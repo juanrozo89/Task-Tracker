@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import Task from "../components/Task";
 import RedirectToLogin from "../components/RedirectToLogin";
 import { UserContext } from "../Contexts";
@@ -6,27 +6,52 @@ import useNewTaskPopup from "../hooks/useNewTaskPopup";
 
 const MyTasks = () => {
   const { user } = useContext(UserContext)!;
-
+  const filterKeywordRef = useRef<HTMLInputElement | null>(null);
   const setNewTaskPopup = useNewTaskPopup()!;
+  const [tasksToShow, setTaskstoShow] = useState<Array<Task> | undefined>(
+    user?.tasks
+  );
 
-  const filterTasks = (event: React.FormEvent<HTMLFormElement>) => {
+  const filterTasksByKeyword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    let filteredTasks: Array<Task> = [];
+    const filterKeyword = filterKeywordRef.current?.value
+      ? filterKeywordRef.current.value
+      : null;
+    if (!filterKeyword) {
+      setTaskstoShow(user?.tasks);
+      return;
+    } else if (tasksToShow && tasksToShow.length > 0) {
+      let keyRegex = new RegExp(filterKeyword, "i");
+      for (let task of tasksToShow) {
+        for (let prop in task) {
+          if (
+            (task as any)[prop] &&
+            (task as any)[prop].match(keyRegex) &&
+            filteredTasks.indexOf(task) == -1
+          ) {
+            filteredTasks.unshift(task);
+          }
+        }
+      }
+    }
+    setTaskstoShow(filteredTasks);
   };
 
-  const tasks = user?.tasks;
   return (
     <section id="my-tasks" className="content">
       <button id="add-task-button" onClick={setNewTaskPopup}>
         Add task
       </button>
-      {tasks ? (
+      {tasksToShow ? (
         <>
           <div id="filter-tasks-container">
-            <form id="filter-tasks-form" onSubmit={filterTasks}>
+            <form id="filter-tasks-form" onSubmit={filterTasksByKeyword}>
               <input
                 id="filter-tasks-input"
                 type="text"
                 placeholder="Filter by keyword(s)"
+                ref={filterKeywordRef}
               ></input>
               <button id="filter-tasks-btn" type="submit">
                 🔍
@@ -34,13 +59,13 @@ const MyTasks = () => {
             </form>
           </div>
           <div id="tasks-container">
-            {tasks.length >= 1 ? (
-              tasks.map((task) => {
+            {tasksToShow.length > 0 ? (
+              tasksToShow.map((task) => {
                 return (
                   <Task
                     key={task._id}
                     _id={task._id}
-                    category={task.category ? task.category : ""}
+                    category={task.category ? task!.category : ""}
                     status={task.status}
                     task_title={task.task_title}
                     task_text={task.task_text}
@@ -51,7 +76,7 @@ const MyTasks = () => {
                 );
               })
             ) : (
-              <p>No tasks yet</p>
+              <p>No tasks to show</p>
             )}
           </div>
         </>
