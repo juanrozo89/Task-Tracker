@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import Task from "../components/Task";
 import RedirectToLogin from "../components/RedirectToLogin";
 import { UserContext } from "../Contexts";
@@ -12,6 +12,9 @@ const MyTasks = () => {
   const [tasksToShow, setTaskstoShow] = useState<Array<Task> | undefined>(
     user?.tasks
   );
+  useEffect(() => {
+    setTaskstoShow(user?.tasks);
+  }, [user?.tasks]);
 
   const filterTasksByKeyword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
