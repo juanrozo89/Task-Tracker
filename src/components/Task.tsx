@@ -1,10 +1,10 @@
 import { useState, useContext, useRef } from "react";
 import { UserContext, PopupContext } from "../Contexts";
-import { CONFIRM, PENDING, ONGOING, DONE, NEW_CATEGORY } from "../constants";
+import { CONFIRM, PENDING, ONGOING, DONE } from "../constants";
+import SelectCategory from "./SelectCategory";
 
 import axios from "axios";
 import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
-import useExistingCategories from "../hooks/useExistingCategories";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
 
 const Task: React.FC<TaskProps> = ({
@@ -26,15 +26,16 @@ const Task: React.FC<TaskProps> = ({
   const [editingTask, setEditingTask] = useState<boolean>(false);
 
   const editTitleRef = useRef<HTMLInputElement | null>(null);
-  const editCategoryRef = useRef<any>(null);
   const editTextRef = useRef<HTMLTextAreaElement | null>(null);
   const editDueDateRef = useRef<HTMLInputElement | null>(null);
 
+  const [updatedCategory, setUpdatedCategory] = useState<string>("");
+  const handleCategoryChange = (updatedCat: string) => {
+    setUpdatedCategory(updatedCat);
+  };
+
   const { setPopup, setOnConfirm } = useContext(PopupContext)!;
   const { setUser } = useContext(UserContext)!;
-
-  const categories = useExistingCategories();
-  const [newCategory, setNewCategory] = useState<boolean>(true);
 
   const formattedCurrentDate = getFormattedCurrentDate();
 
@@ -75,9 +76,6 @@ const Task: React.FC<TaskProps> = ({
   };
 
   const editCategory = () => {
-    const updatedCategory = editCategoryRef.current?.value
-      ? editCategoryRef.current.value
-      : null;
     axios
       .put("/api/update-task", { _id: _id, category: updatedCategory })
       .then((res) => {
@@ -90,7 +88,6 @@ const Task: React.FC<TaskProps> = ({
         handleErrorAlert(error, setPopup);
       });
     setEditingCategory(false);
-    setNewCategory(true);
   };
 
   const editText = () => {
@@ -156,15 +153,6 @@ const Task: React.FC<TaskProps> = ({
     setOnConfirm(deleteTask);
   };
 
-  const selectCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCat = event.target.value;
-    if (selectedCat == NEW_CATEGORY) {
-      setNewCategory(true);
-    } else {
-      setNewCategory(false);
-    }
-  };
-
   return (
     <div className={`${status} task-cell`} id={_id}>
       <div className="task-header">
@@ -227,34 +215,10 @@ const Task: React.FC<TaskProps> = ({
             <div className="edit-task-category-container">
               <label htmlFor={`edit-category-${_id}`}>New category:</label>
               <br />
-              <select
-                id={`edit-category-${_id}`}
-                onChange={selectCategory}
-                className={newCategory ? "inactive-input" : ""}
-                ref={!newCategory ? editCategoryRef : undefined}
-              >
-                <option
-                  className="italic new-category-option"
-                  value={NEW_CATEGORY}
-                >
-                  {" "}
-                  - New category -{" "}
-                </option>
-                {categories.map((cat, index) => (
-                  <option key={index} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-              {newCategory && (
-                <input
-                  id="catgeory"
-                  type="text"
-                  name="category"
-                  ref={editCategoryRef}
-                  required
-                />
-              )}
+              <SelectCategory
+                _id={`edit-category-${_id}`}
+                changeCategory={handleCategoryChange}
+              ></SelectCategory>
               <div className="edit-category-buttons small-btn-pair">
                 <button
                   className="edit-category-btn confirm-edit-category-btn"

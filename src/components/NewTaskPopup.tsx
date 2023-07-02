@@ -18,8 +18,8 @@ const NewTaskPopup = () => {
 
   const [category, setCategory] = useState<string>("");
 
-  const handleCategoryChange = (newCat: string) => {
-    setCategory(newCat);
+  const handleCategoryChange = (updatedCat: string) => {
+    setCategory(updatedCat);
   };
 
   const clearPopup = () => {

@@ -7,14 +7,15 @@ const SelectCategory: React.FC<{
   changeCategory: AnyFunction;
 }> = ({ _id, changeCategory }) => {
   const categories = useExistingCategories();
-  const [newCategory, setNewCategory] = useState<boolean>(true);
+  const [showNewCategoryInput, setShowNewCategoryInput] =
+    useState<boolean>(true);
 
   const selectCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCat = event.target.value;
     if (selectedCat == NEW_CATEGORY) {
-      setNewCategory(true);
+      setShowNewCategoryInput(true);
     } else {
-      setNewCategory(false);
+      setShowNewCategoryInput(false);
       changeCategory(selectedCat);
     }
   };
@@ -24,7 +25,7 @@ const SelectCategory: React.FC<{
       <select
         id={_id}
         onChange={selectCategory}
-        className={newCategory ? "inactive-input" : ""}
+        className={showNewCategoryInput ? "inactive-input" : ""}
       >
         <option className="italic new-category-option" value={NEW_CATEGORY}>
           {" "}
@@ -36,7 +37,7 @@ const SelectCategory: React.FC<{
           </option>
         ))}
       </select>
-      {newCategory && (
+      {showNewCategoryInput && (
         <input
           id="catgeory-input"
           type="text"
