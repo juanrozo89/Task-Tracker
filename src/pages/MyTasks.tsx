@@ -23,24 +23,15 @@ const MyTasks = () => {
     if (!filterKeyword) {
       setTaskstoShow(user?.tasks);
       return;
-    } else if (tasksToShow && tasksToShow.length > 0) {
+    } else if (user?.tasks && user.tasks.length > 0) {
       let keyRegex = new RegExp(filterKeyword, "i");
-      for (let task of tasksToShow) {
+      for (let task of user?.tasks) {
         for (let prop in task) {
-          if (
-            (dateKeys as any).indexOf[prop] == -1 &&
-            (task as any)[prop] &&
-            (task as any)[prop].match(keyRegex) &&
-            filteredTasks.indexOf(task) == -1
-          ) {
-            filteredTasks.unshift(task);
-          } else if ((dateKeys as any).indexOf[prop] == -1) {
-          }
           if (filteredTasks.indexOf(task) == -1 && (task as any)[prop]) {
             if (
-              ((dateKeys as any).indexOf[prop] == -1 &&
+              ((dateKeys as any[]).indexOf(prop) == -1 &&
                 (task as any)[prop].match(keyRegex)) ||
-              ((dateKeys as any).indexOf[prop] != -1 &&
+              ((dateKeys as any[]).indexOf(prop) != -1 &&
                 formatDateForDisplay((task as any)[prop]).match(keyRegex))
             ) {
               filteredTasks.unshift(task);
@@ -49,6 +40,7 @@ const MyTasks = () => {
         }
       }
     }
+    console.log(filteredTasks);
     setTaskstoShow(filteredTasks);
   };
 
