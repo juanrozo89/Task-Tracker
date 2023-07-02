@@ -14,13 +14,9 @@ const NewTaskPopup = () => {
 
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
-  const categoryRef = useRef<HTMLInputElement>(null);
   const dueDateRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState<string>("");
-  const [text, setText] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [newCategory, setNewCategory] = useState<boolean>(true);
-  const [dueDate, setDueDate] = useState<string>("");
   const NEW_CATEGORY = "new-category";
   const formattedCurrentDate = getFormattedCurrentDate();
 
@@ -33,6 +29,9 @@ const NewTaskPopup = () => {
   };
 
   const addNewTask = () => {
+    const title = titleRef.current?.value ? titleRef.current.value : "";
+    const text = textRef.current?.value ? textRef.current.value : "";
+    const dueDate = dueDateRef.current?.value ? dueDateRef.current.value : "";
     axios
       .post("/api/new-task", {
         task_title: title,
@@ -76,7 +75,6 @@ const NewTaskPopup = () => {
               type="text"
               name="task_title"
               ref={titleRef}
-              onChange={(e) => setTitle(e.target.value)}
               required
             />
             <br />
@@ -85,7 +83,6 @@ const NewTaskPopup = () => {
               id="task-description"
               name="task_description"
               ref={textRef}
-              onChange={(e) => setText(e.target.value)}
             />
             <br />
             <label htmlFor="category">Category*</label>
@@ -111,7 +108,6 @@ const NewTaskPopup = () => {
                 id="catgeory"
                 type="text"
                 name="category"
-                ref={categoryRef}
                 onChange={(e) => setCategory(e.target.value)}
                 required
               />
@@ -124,7 +120,6 @@ const NewTaskPopup = () => {
               name="due_date"
               ref={dueDateRef}
               min={formattedCurrentDate}
-              onChange={(e) => setDueDate(e.target.value)}
             />
             <br />
           </form>
