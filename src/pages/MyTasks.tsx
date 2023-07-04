@@ -9,9 +9,12 @@ const MyTasks = () => {
   const { user } = useContext(UserContext)!;
   const filterKeywordRef = useRef<HTMLInputElement | null>(null);
   const setNewTaskPopup = useNewTaskPopup()!;
+  const [sortBy, setSortBy] = useState<SortByType>();
+  const [sortDirection, setSortDirection] = useState<SortDirectionType>();
   const [tasksToShow, setTaskstoShow] = useState<Array<Task> | undefined>(
     user?.tasks
   );
+
   useEffect(() => {
     setTaskstoShow(user?.tasks);
   }, [user?.tasks]);

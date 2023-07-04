@@ -1,3 +1,4 @@
+import * as constants from "../constants";
 export {};
 
 declare global {
@@ -23,9 +24,23 @@ declare global {
     due_date: Date | string | null;
   }
 
-  type PopupType = "confirm" | "alert" | "new task" | "";
-  type ThemeType = "light" | "dark";
-  type StatusType = "Ongoing" | "Pending" | "Done";
+  type PopupType =
+    | constants.CONFIRM
+    | constants.ALERT
+    | constants.NEW_TASK
+    | constants.NONE;
+
+  type ThemeType = constants.LIGHT | constants.DARK;
+
+  type StatusType = constants.ONGOING | constants.PENDING | constants.DONE;
+
+  type SortByType =
+    | constants.TITLE
+    | constants.STATUS
+    | constants.CREATED_ON
+    | constants.DUE_BY;
+
+  type SortDirectionType = constants.ASCENDING | constants.DESCENDING;
 
   type Task = {
     _id: string;
