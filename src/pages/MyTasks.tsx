@@ -4,13 +4,21 @@ import RedirectToLogin from "../components/RedirectToLogin";
 import { UserContext } from "../Contexts";
 import useNewTaskPopup from "../hooks/useNewTaskPopup";
 import { formatDateForDisplay } from "../utils/formatFunctions";
+import {
+  TITLE,
+  STATUS,
+  CREATED_ON,
+  DUE_BY,
+  ASCENDING,
+  DESCENDING,
+} from "../constants";
 
 const MyTasks = () => {
   const { user } = useContext(UserContext)!;
   const filterKeywordRef = useRef<HTMLInputElement | null>(null);
   const setNewTaskPopup = useNewTaskPopup()!;
-  const [sortBy, setSortBy] = useState<SortByType>();
-  const [sortDirection, setSortDirection] = useState<SortDirectionType>();
+  const [sortBy, setSortBy] = useState<SortType | null>(null);
+  const [sortOrder, setSortOrder] = useState<SortOrderType | null>(null);
   const [tasksToShow, setTaskstoShow] = useState<Array<Task> | undefined>(
     user?.tasks
   );
@@ -47,6 +55,29 @@ const MyTasks = () => {
       }
     }
     setTaskstoShow(filteredTasks);
+  };
+
+  const sortTasks = () => {
+    const sortedTasks = tasksToShow?.sort((t1: Task, t2: Task) => {
+      let toReturn = 0;
+      const order = sortOrder == ASCENDING ? 1 : -1;
+      switch (sortBy) {
+        case TITLE:
+          toReturn = t1.task_title < t2.task_title ? order : -order;
+          break;
+        case STATUS:
+          toReturn = t1.status < t2.status ? order : -order;
+          break;
+        case CREATED_ON:
+          toReturn = t1.task_title < t2.task_title ? order : -order;
+          break;
+        case DUE_BY:
+          toReturn = t1.task_title < t2.task_title ? order : -order;
+          break;
+      }
+      return toReturn;
+    });
+    setTaskstoShow(sortedTasks);
   };
 
   return (

@@ -34,13 +34,13 @@ declare global {
 
   type StatusType = constants.ONGOING | constants.PENDING | constants.DONE;
 
-  type SortByType =
+  type SortType =
     | constants.TITLE
     | constants.STATUS
     | constants.CREATED_ON
     | constants.DUE_BY;
 
-  type SortDirectionType = constants.ASCENDING | constants.DESCENDING;
+  type SortOrderType = constants.ASCENDING | constants.DESCENDING;
 
   type Task = {
     _id: string;
