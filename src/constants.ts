@@ -23,15 +23,11 @@ export const ONGOING = "Ongoing";
 export const PENDING = "Pending";
 export const DONE = "Done";
 
-// Sort direction:
-export const ASCENDING = "ascending";
-export const DESCENDING = "descending";
-
 // Sort by:
 export const TITLE = "title";
 export const STATUS = "status";
 export const CREATED_ON = "created_on";
-export const DUE_BY = "due_by";
+export const DUE_DATE = "due_date";
 
 // Others:
 export const NEW_CATEGORY = "new-category";

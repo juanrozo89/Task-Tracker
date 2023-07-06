@@ -8,17 +8,18 @@ import {
   TITLE,
   STATUS,
   CREATED_ON,
-  DUE_BY,
-  ASCENDING,
-  DESCENDING,
+  DUE_DATE,
+  DONE,
+  PENDING,
+  ONGOING,
 } from "../constants";
 
 const MyTasks = () => {
   const { user } = useContext(UserContext)!;
   const filterKeywordRef = useRef<HTMLInputElement | null>(null);
   const setNewTaskPopup = useNewTaskPopup()!;
-  const [sortBy, setSortBy] = useState<SortType | null>(null);
-  const [sortOrder, setSortOrder] = useState<SortOrderType | null>(null);
+  const [sortBy, setSortBy] = useState<SortType>(CREATED_ON);
+  const [sortOrderAscending, setSortOrderAscending] = useState<boolean>(true);
   const [tasksToShow, setTaskstoShow] = useState<Array<Task> | undefined>(
     user?.tasks
   );
@@ -26,6 +27,10 @@ const MyTasks = () => {
   useEffect(() => {
     setTaskstoShow(user?.tasks);
   }, [user?.tasks]);
+
+  useEffect(() => {
+    sortTasks();
+  }, [sortBy]);
 
   const filterTasksByKeyword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,26 +63,39 @@ const MyTasks = () => {
   };
 
   const sortTasks = () => {
-    const sortedTasks = tasksToShow?.sort((t1: Task, t2: Task) => {
+    const sortedTasks = [...tasksToShow!].sort((t1: Task, t2: Task) => {
       let toReturn = 0;
-      const order = sortOrder == ASCENDING ? 1 : -1;
+      const order = sortOrderAscending ? 1 : -1;
+      const statusOrder: Record<StatusType, number> = {
+        [DONE]: 3,
+        [ONGOING]: 2,
+        [PENDING]: 1,
+      };
       switch (sortBy) {
         case TITLE:
-          toReturn = t1.task_title < t2.task_title ? order : -order;
+          toReturn =
+            t1.task_title.toLowerCase() < t2.task_title.toLowerCase()
+              ? order
+              : -order;
           break;
         case STATUS:
-          toReturn = t1.status < t2.status ? order : -order;
+          toReturn =
+            statusOrder[t1.status] < statusOrder[t2.status] ? order : -order;
           break;
         case CREATED_ON:
-          toReturn = t1.task_title < t2.task_title ? order : -order;
+          toReturn = t1.created_on < t2.created_on ? order : -order;
           break;
-        case DUE_BY:
-          toReturn = t1.task_title < t2.task_title ? order : -order;
+        case DUE_DATE:
+          toReturn = t1.due_date < t2.due_date ? order : -order;
           break;
       }
       return toReturn;
     });
     setTaskstoShow(sortedTasks);
+  };
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortBy(event.target.value);
   };
 
   return (
@@ -88,6 +106,17 @@ const MyTasks = () => {
       {tasksToShow ? (
         <>
           <div id="filter-tasks-container">
+            <label htmlFor="select-sort-by">Sort By:</label>
+            <select
+              id="select-sort-by"
+              value={sortBy}
+              onChange={handleSelectChange}
+            >
+              <option value={CREATED_ON}>created on</option>
+              <option value={TITLE}>title</option>
+              <option value={STATUS}>status</option>
+              <option value={DUE_DATE}>due date</option>
+            </select>
             <form id="filter-tasks-form" onSubmit={filterTasksByKeyword}>
               <input
                 id="filter-tasks-input"
