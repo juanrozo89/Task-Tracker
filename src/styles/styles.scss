@@ -289,16 +289,23 @@ hr {
   margin: 20px;
 }
 
-#filter-tasks-form {
-  display: flex;
-  flex-direction: row;
-  justify-items: center;
-  margin: 0 auto 15px;
-  #filter-tasks-btn {
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    margin: 0 0 0 5px;
+#filter-sort-tasks-container {
+  #sort-order-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+  }
+  #filter-tasks-form {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    margin: 0 auto 15px;
+    #filter-tasks-btn {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      margin: 0 0 0 5px;
+    }
   }
 }
 
