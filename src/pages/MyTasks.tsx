@@ -104,10 +104,8 @@ const MyTasks = () => {
   const changeSelectSortOrder = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    console.log(event.target.value);
     let val = event.target.value == TRUE ? true : false;
     setSortOrderAscending(val);
-    console.log(sortOrderAscending);
   };
 
   return (
@@ -118,37 +116,39 @@ const MyTasks = () => {
       {tasksToShow ? (
         <>
           <div id="filter-sort-tasks-container">
-            <label htmlFor="select-sort-by">Sort By:</label>
-            <select
-              id="select-sort-by"
-              value={sortBy}
-              onChange={changeSelectSortBy}
-            >
-              <option value={CREATED_ON}>created on</option>
-              <option value={TITLE}>title</option>
-              <option value={STATUS}>status</option>
-              <option value={DUE_DATE}>due date</option>
-            </select>
-            <select id="select-sort-order" onChange={changeSelectSortOrder}>
-              <option value={FALSE}>
-                {sortBy == CREATED_ON || sortBy == DUE_DATE
-                  ? "Earliest first"
-                  : sortBy == TITLE
-                  ? "A to Z"
-                  : sortBy == STATUS
-                  ? "Pending first"
-                  : undefined}
-              </option>
-              <option value={TRUE}>
-                {sortBy == CREATED_ON || sortBy == DUE_DATE
-                  ? "Latest first"
-                  : sortBy == TITLE
-                  ? "Z to A"
-                  : sortBy == STATUS
-                  ? "Done first"
-                  : undefined}
-              </option>
-            </select>
+            <div id="sort-tasks-container">
+              <label htmlFor="select-sort-by">Sort By: </label>
+              <select
+                id="select-sort-by"
+                value={sortBy}
+                onChange={changeSelectSortBy}
+              >
+                <option value={CREATED_ON}>Created on</option>
+                <option value={TITLE}>Title</option>
+                <option value={STATUS}>Status</option>
+                <option value={DUE_DATE}>Due date</option>
+              </select>
+              <select id="select-sort-order" onChange={changeSelectSortOrder}>
+                <option value={FALSE}>
+                  {sortBy == CREATED_ON || sortBy == DUE_DATE
+                    ? "Earliest first"
+                    : sortBy == TITLE
+                    ? "A to Z"
+                    : sortBy == STATUS
+                    ? "Pending first"
+                    : undefined}
+                </option>
+                <option value={TRUE}>
+                  {sortBy == CREATED_ON || sortBy == DUE_DATE
+                    ? "Latest first"
+                    : sortBy == TITLE
+                    ? "Z to A"
+                    : sortBy == STATUS
+                    ? "Done first"
+                    : undefined}
+                </option>
+              </select>
+            </div>
             <form id="filter-tasks-form" onSubmit={filterTasksByKeyword}>
               <input
                 id="filter-tasks-input"

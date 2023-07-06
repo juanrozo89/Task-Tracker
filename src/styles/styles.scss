@@ -290,10 +290,18 @@ hr {
 }
 
 #filter-sort-tasks-container {
-  #sort-order-container {
+  #sort-tasks-container {
     display: flex;
-    flex-direction: column;
-    border: 1px solid red;
+    flex-direction: row;
+    margin-bottom: 10px;
+    #select-sort-by {
+      width: 120px;
+      margin: auto 5px;
+    }
+    #select-sort-order {
+      width: 100px;
+      margin: auto 0;
+    }
   }
   #filter-tasks-form {
     display: flex;
