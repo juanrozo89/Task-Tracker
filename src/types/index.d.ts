@@ -40,7 +40,11 @@ declare global {
     | constants.CREATED_ON
     | constants.DUE_DATE;
 
-  type FilterType = constants.STATUS | constants.DUE_DATE | constants.CATEGORY;
+  type FilterType =
+    | constants.STATUS
+    | constants.CATEGORY
+    | constants.DUE_DATE
+    | constants.CREATED_ON;
 
   type SortOrderType = constants.ASCENDING | constants.DESCENDING;
 

@@ -28,27 +28,105 @@ const MyTasks = () => {
   const [sortBy, setSortBy] = useState<SortType>(CREATED_ON);
   const [sortOrderAscending, setSortOrderAscending] = useState<boolean>(true);
   const [filterByField, setFilterByField] = useState<FilterType>(CREATED_ON);
-  const [filterByFieldValue, setFilterByFieldValue] = useState<string>("");
+  const filterByFieldValueRef = useRef<HTMLSelectElement | null>(null);
+  const initialDateRef = useRef<HTMLInputElement | null>(null);
+  const finalDateRef = useRef<HTMLInputElement | null>(null);
   const [tasksToShow, setTaskstoShow] = useState<Array<Task> | undefined>(
     user?.tasks
   );
 
   useEffect(() => {
     setTaskstoShow(user?.tasks);
+    sortTasks();
+    if (filterByField == CREATED_ON || filterByField == DUE_DATE) {
+      filterTasksByDate();
+    } else {
+      filterTasksByField();
+    }
   }, [user?.tasks]);
 
   useEffect(() => {
     sortTasks();
   }, [sortBy, sortOrderAscending]);
 
-  const filterTasksByField = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    let filteredTasks: Array<Task> = [];
-    const value = event.target.value;
+  useEffect(() => {
+    if (filterByField !== CREATED_ON || filterByField !== DUE_DATE) {
+      filterTasksByField();
+    } else {
+      filterTasksByDate();
+    }
+  }, [filterByField]);
+
+  const filterTasksByField = () => {
+    if (filterByField == SHOW_ALL) {
+      return;
+    } else {
+      let filteredTasks: Array<Task> = [...tasksToShow!];
+      console.log("before filtering by field: " + filteredTasks.length);
+      if (filterByField == STATUS) {
+        filteredTasks = filteredTasks?.filter(
+          (task) => task.status == filterByFieldValueRef.current?.value!
+        );
+      } else if (filterByField == CATEGORY) {
+        filteredTasks = filteredTasks?.filter(
+          (task) => task.category == filterByFieldValueRef.current?.value!
+        );
+      }
+      console.log("after filtering by field: " + filteredTasks.length);
+      setTaskstoShow(filteredTasks);
+    }
+  };
+
+  const filterTasksByDate = () => {
+    /*
+    console.log("filtering tasks by date");
+    console.log("initial date: " + initialDateRef.current?.value);
+    console.log("final date: " + finalDateRef.current?.value);
+    console.log("field to filter by: " + filterByField);
+    console.log("filter by created on?: " + (filterByField == CREATED_ON));
+    console.log("filter by due date?: " + (filterByField == DUE_DATE));
+    */
+    let filteredTasks: Array<Task> = [...tasksToShow!];
+    console.log("before filter by date: " + filteredTasks.length);
+    filteredTasks = filteredTasks?.filter((task) => {
+      let toReturn = true;
+      const createdOn = new Date(task.created_on);
+      const dueDate = task.due_date ? new Date(task.due_date) : null;
+      if (!dueDate) {
+        return false;
+      }
+      const initDate = initialDateRef.current?.value
+        ? new Date(initialDateRef.current?.value)
+        : null;
+      const finalDate = finalDateRef.current?.value
+        ? new Date(finalDateRef.current?.value)
+        : null;
+      /*console.log("init date: " + initDate);
+      console.log("final date: " + finalDate);
+      console.log("task created on: " + createdOn);
+      console.log("task due date: " + dueDate);*/
+      if (
+        (filterByField == CREATED_ON &&
+          ((initDate && createdOn < initDate) ||
+            (finalDate && createdOn > finalDate))) ||
+        (filterByField == DUE_DATE &&
+          ((initDate && dueDate < initDate) ||
+            (finalDate && dueDate > finalDate)))
+      ) {
+        //console.log("indeed task didn't fit");
+        toReturn = false;
+      }
+      //console.log("returns " + toReturn);
+      return toReturn;
+    });
+    console.log("after filter by date: " + filteredTasks.length);
+    setTaskstoShow(filteredTasks);
   };
 
   const filterTasksByKeyword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    let filteredTasks: Array<Task> = [];
+    let filteredTasks: Array<Task> = [...tasksToShow!];
+    console.log("before filter by keyword: " + filteredTasks.length);
     const dateKeys = ["created_on", "updated_on", "due_date"];
     const filterKeyword = filterKeywordRef.current?.value
       ? filterKeywordRef.current.value
@@ -73,6 +151,7 @@ const MyTasks = () => {
         }
       }
     }
+    console.log("after filter by keyword: " + filteredTasks.length);
     setTaskstoShow(filteredTasks);
   };
 
@@ -80,13 +159,8 @@ const MyTasks = () => {
     setFilterByField(event.target.value);
   };
 
-  const changeFilterByFieldValue = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setFilterByFieldValue(event.target.value);
-  };
-
   const sortTasks = () => {
+    console.log("before sorting: " + tasksToShow!.length);
     const sortedTasks = [...tasksToShow!].sort((t1: Task, t2: Task) => {
       let toReturn = 0;
       const order = sortOrderAscending ? 1 : -1;
@@ -115,6 +189,7 @@ const MyTasks = () => {
       }
       return toReturn;
     });
+    console.log("after sorting: " + sortedTasks.length);
     setTaskstoShow(sortedTasks);
   };
 
@@ -125,7 +200,7 @@ const MyTasks = () => {
   const changeSelectSortOrder = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    let val = event.target.value == TRUE ? true : false;
+    const val = event.target.value == TRUE ? true : false;
     setSortOrderAscending(val);
   };
 
@@ -190,16 +265,26 @@ const MyTasks = () => {
               {filterByField == DUE_DATE || filterByField == CREATED_ON ? (
                 <div id="select-filter-value-dates-between">
                   <label htmlFor="initial-date-to-filter-by">From:</label>
-                  <input id="initial-date-to-filter-by" type="date" />
+                  <input
+                    id="initial-date-to-filter-by"
+                    ref={initialDateRef}
+                    onChange={filterTasksByDate}
+                    type="date"
+                  />
                   <label htmlFor="final-date-to-filter-by">To:</label>
-                  <input id="final-date-to-filter-by" type="date" />
+                  <input
+                    id="final-date-to-filter-by"
+                    ref={finalDateRef}
+                    onChange={filterTasksByDate}
+                    type="date"
+                  />
                 </div>
               ) : (
                 filterByField !== SHOW_ALL && (
                   <select
                     id="select-filter-by-field-value"
-                    value={filterByFieldValue}
-                    onChange={changeFilterByFieldValue}
+                    ref={filterByFieldValueRef}
+                    onChange={filterTasksByField}
                   >
                     {filterByField == STATUS ? (
                       <>
