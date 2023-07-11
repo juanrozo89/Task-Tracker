@@ -3,6 +3,7 @@ import Task from "../components/Task";
 import RedirectToLogin from "../components/RedirectToLogin";
 import { UserContext } from "../Contexts";
 import useNewTaskPopup from "../hooks/useNewTaskPopup";
+import useExistingCategories from "../hooks/useExistingCategories";
 import { formatDateForDisplay } from "../utils/formatFunctions";
 import {
   TITLE,
@@ -12,6 +13,8 @@ import {
   DONE,
   PENDING,
   ONGOING,
+  CATEGORY,
+  SHOW_ALL,
 } from "../constants";
 
 const TRUE = "true";
@@ -21,8 +24,11 @@ const MyTasks = () => {
   const { user } = useContext(UserContext)!;
   const filterKeywordRef = useRef<HTMLInputElement | null>(null);
   const setNewTaskPopup = useNewTaskPopup()!;
+  const categories = useExistingCategories();
   const [sortBy, setSortBy] = useState<SortType>(CREATED_ON);
   const [sortOrderAscending, setSortOrderAscending] = useState<boolean>(true);
+  const [filterByField, setFilterByField] = useState<FilterType>(CREATED_ON);
+  const [filterByFieldValue, setFilterByFieldValue] = useState<string>("");
   const [tasksToShow, setTaskstoShow] = useState<Array<Task> | undefined>(
     user?.tasks
   );
@@ -34,6 +40,11 @@ const MyTasks = () => {
   useEffect(() => {
     sortTasks();
   }, [sortBy, sortOrderAscending]);
+
+  const filterTasksByField = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    let filteredTasks: Array<Task> = [];
+    const value = event.target.value;
+  };
 
   const filterTasksByKeyword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -63,6 +74,16 @@ const MyTasks = () => {
       }
     }
     setTaskstoShow(filteredTasks);
+  };
+
+  const changeFilterByField = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilterByField(event.target.value);
+  };
+
+  const changeFilterByFieldValue = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setFilterByFieldValue(event.target.value);
   };
 
   const sortTasks = () => {
@@ -117,7 +138,7 @@ const MyTasks = () => {
         <>
           <div id="filter-sort-tasks-container">
             <div id="sort-tasks-container">
-              <label htmlFor="select-sort-by">Sort By: </label>
+              <label htmlFor="select-sort-by">Sort By:</label>
               <select
                 id="select-sort-by"
                 value={sortBy}
@@ -128,7 +149,11 @@ const MyTasks = () => {
                 <option value={STATUS}>Status</option>
                 <option value={DUE_DATE}>Due date</option>
               </select>
-              <select id="select-sort-order" onChange={changeSelectSortOrder}>
+              <select
+                id="select-sort-order"
+                value={sortOrderAscending ? TRUE : FALSE}
+                onChange={changeSelectSortOrder}
+              >
                 <option value={FALSE}>
                   {sortBy == CREATED_ON || sortBy == DUE_DATE
                     ? "Earliest first"
@@ -149,14 +174,63 @@ const MyTasks = () => {
                 </option>
               </select>
             </div>
-            <form id="filter-tasks-form" onSubmit={filterTasksByKeyword}>
+            <div id="filter-tasks-container">
+              <label htmlFor="select-filter-by">Filter By:</label>
+              <select
+                id="select-filter-by-field"
+                value={filterByField}
+                onChange={changeFilterByField}
+              >
+                <option value={SHOW_ALL}>- Show all -</option>
+                <option value={DUE_DATE}>Due date</option>
+                <option value={CREATED_ON}>Created on</option>
+                <option value={STATUS}>Status</option>
+                <option value={CATEGORY}>Category</option>
+              </select>
+              {filterByField == DUE_DATE || filterByField == CREATED_ON ? (
+                <div id="select-filter-value-dates-between">
+                  <label htmlFor="initial-date-to-filter-by">From:</label>
+                  <input id="initial-date-to-filter-by" type="date" />
+                  <label htmlFor="final-date-to-filter-by">To:</label>
+                  <input id="final-date-to-filter-by" type="date" />
+                </div>
+              ) : (
+                filterByField !== SHOW_ALL && (
+                  <select
+                    id="select-filter-by-field-value"
+                    value={filterByFieldValue}
+                    onChange={changeFilterByFieldValue}
+                  >
+                    {filterByField == STATUS ? (
+                      <>
+                        <option value={DONE}>Done</option>
+                        <option value={ONGOING}>Ongoing</option>
+                        <option value={PENDING}>Pending</option>
+                      </>
+                    ) : filterByField == CATEGORY ? (
+                      categories.map((cat, index) => {
+                        return (
+                          <option key={`${cat}-${index}`} value={cat}>
+                            {cat}
+                          </option>
+                        );
+                      })
+                    ) : undefined}
+                  </select>
+                )
+              )}
+            </div>
+            <form id="filter-by-keyword-form" onSubmit={filterTasksByKeyword}>
+              <label htmlFor="filter-by-keyword-input">
+                Filter by keyword(s):
+              </label>
               <input
-                id="filter-tasks-input"
+                id="filter-by-keyword-input"
                 type="text"
                 placeholder="Filter by keyword(s)"
                 ref={filterKeywordRef}
               ></input>
-              <button id="filter-tasks-btn" type="submit">
+              <button id="filter-by-keyword-btn" type="submit">
                 🔍
               </button>
             </form>

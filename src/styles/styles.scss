@@ -290,25 +290,69 @@ hr {
 }
 
 #filter-sort-tasks-container {
+  & > * {
+    width: 380px;
+  }
+  label {
+    width: 65px;
+    text-align: right;
+    height: 22px;
+    line-height: 19px;
+  }
   #sort-tasks-container {
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
     #select-sort-by {
-      width: 120px;
+      width: 120px !important;
       margin: auto 5px;
     }
     #select-sort-order {
-      width: 100px;
+      width: 105px;
       margin: auto 0;
     }
   }
-  #filter-tasks-form {
+  #filter-tasks-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    #select-filter-by-field {
+      width: 120px !important;
+      min-width: 120px !important;
+      margin: 0 5px;
+    }
+    #select-filter-value-dates-between {
+      display: flex;
+      flex-wrap: wrap;
+      width: 180px;
+      text-align: right;
+      padding: 0;
+      label {
+        width: 46px;
+      }
+      input {
+        width: 120px !important;
+        margin-left: 5px;
+        &:first-of-type {
+          margin-bottom: 4px;
+        }
+      }
+    }
+    #select-filter-by-field-value {
+      width: 105px;
+      margin: auto 0;
+    }
+  }
+  #filter-by-keyword-form {
     display: flex;
     flex-direction: row;
     justify-items: center;
     margin: 0 auto 15px;
-    #filter-tasks-btn {
+    label {
+      width: fit-content;
+      margin-right: 5px;
+    }
+    #filter-by-keyword-btn {
       width: 28px;
       height: 28px;
       padding: 0;

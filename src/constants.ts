@@ -23,11 +23,13 @@ export const ONGOING = "Ongoing";
 export const PENDING = "Pending";
 export const DONE = "Done";
 
-// Sort by:
+// Filter / sort by:
+export const CATEGORY = "category";
 export const TITLE = "title";
 export const STATUS = "status";
-export const CREATED_ON = "created_on";
-export const DUE_DATE = "due_date";
+export const CREATED_ON = "created-on";
+export const DUE_DATE = "due-date";
+export const SHOW_ALL = "show-all";
 
 // Others:
 export const NEW_CATEGORY = "new-category";

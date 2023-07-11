@@ -38,7 +38,9 @@ declare global {
     | constants.TITLE
     | constants.STATUS
     | constants.CREATED_ON
-    | constants.DUE_BY;
+    | constants.DUE_DATE;
+
+  type FilterType = constants.STATUS | constants.DUE_DATE | constants.CATEGORY;
 
   type SortOrderType = constants.ASCENDING | constants.DESCENDING;
 
