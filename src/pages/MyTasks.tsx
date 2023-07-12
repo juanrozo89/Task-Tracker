@@ -17,8 +17,8 @@ import {
   SHOW_ALL,
 } from "../constants";
 
-const ASCENDING = "ascending";
-const DESCENDING = "descending";
+const ORDER_1 = "order1";
+const ORDER_2 = "order2";
 
 const MyTasks = () => {
   const { user } = useContext(UserContext)!;
@@ -37,14 +37,60 @@ const MyTasks = () => {
   );
 
   useEffect(() => {
-    setTasksToShow(user?.tasks);
+    filterTasksByField();
   }, [user?.tasks]);
+
+  const sortTasks = (tasks: Array<Task> | undefined) => {
+    const sortBy = sortByRef.current?.value;
+    console.log("sorting by: " + sortBy);
+    const sortedTasks = tasks
+      ? [...tasks].sort((t1: Task, t2: Task) => {
+          let toReturn = 0;
+          const order = sortOrderRef.current?.value == ORDER_1 ? -1 : 1;
+          console.log("ORDER = " + order);
+          const statusOrder: Record<StatusType, number> = {
+            [DONE]: 3,
+            [ONGOING]: 2,
+            [PENDING]: 1,
+          };
+          switch (sortBy) {
+            case TITLE:
+              toReturn =
+                t1.task_title.toLowerCase() < t2.task_title.toLowerCase()
+                  ? order
+                  : -order;
+              break;
+            case STATUS:
+              toReturn =
+                statusOrder[t1.status] < statusOrder[t2.status]
+                  ? order
+                  : -order;
+              break;
+            case CREATED_ON:
+              toReturn = t1.created_on < t2.created_on ? -order : order;
+              break;
+            case DUE_DATE:
+              if (t1.due_date && t2.due_date) {
+                toReturn = t1.due_date < t2.due_date ? order : -order;
+              } else if (t1.due_date) {
+                toReturn = -1;
+              } else {
+                toReturn = 0;
+              }
+              break;
+          }
+          return toReturn;
+        })
+      : undefined;
+    console.log("after sorting: " + sortedTasks?.length);
+    setTasksToShow(sortedTasks);
+  };
 
   const filterTasksByField = () => {
     const filterByField = filterByFieldRef.current?.value;
     console.log("field : " + filterByField);
     if (filterByField == SHOW_ALL) {
-      setTasksToShow(user?.tasks);
+      sortTasks(user?.tasks!);
       return;
     } else {
       let filteredTasks: Array<Task> = [...user?.tasks!];
@@ -85,8 +131,7 @@ const MyTasks = () => {
         }
         return toReturn;
       });
-
-      setTasksToShow(filteredTasks);
+      sortTasks(filteredTasks);
     }
   };
 
@@ -119,44 +164,7 @@ const MyTasks = () => {
       }
     }
     console.log("after filter by keyword: " + filteredTasks.length);
-    setTasksToShow(filteredTasks);
-  };
-
-  const sortTasks = () => {
-    const sortBy = sortByRef.current?.value;
-    console.log("before sorting: " + tasksToShow!.length);
-    console.log("sorting by: " + sortBy);
-    const sortedTasks = [...tasksToShow!].sort((t1: Task, t2: Task) => {
-      let toReturn = 0;
-      const order = sortOrderRef.current?.value == ASCENDING ? 1 : -1;
-      console.log("ORDER = " + order);
-      const statusOrder: Record<StatusType, number> = {
-        [DONE]: 3,
-        [ONGOING]: 2,
-        [PENDING]: 1,
-      };
-      switch (sortBy) {
-        case TITLE:
-          toReturn =
-            t1.task_title.toLowerCase() < t2.task_title.toLowerCase()
-              ? order
-              : -order;
-          break;
-        case STATUS:
-          toReturn =
-            statusOrder[t1.status] < statusOrder[t2.status] ? order : -order;
-          break;
-        case CREATED_ON:
-          toReturn = t1.created_on < t2.created_on ? order : -order;
-          break;
-        case DUE_DATE:
-          toReturn = t1.due_date < t2.due_date ? order : -order;
-          break;
-      }
-      return toReturn;
-    });
-    console.log("after sorting: " + sortedTasks.length);
-    setTasksToShow(sortedTasks);
+    sortTasks(filteredTasks);
   };
 
   return (
@@ -169,7 +177,11 @@ const MyTasks = () => {
           <div id="filter-sort-tasks-container">
             <div id="sort-tasks-container">
               <label htmlFor="select-sort-by">Sort By:</label>
-              <select id="select-sort-by" ref={sortByRef} onChange={sortTasks}>
+              <select
+                id="select-sort-by"
+                ref={sortByRef}
+                onChange={() => sortTasks(tasksToShow)}
+              >
                 <option value={CREATED_ON}>Created on</option>
                 <option value={TITLE}>Title</option>
                 <option value={STATUS}>Status</option>
@@ -178,21 +190,23 @@ const MyTasks = () => {
               <select
                 id="select-sort-order"
                 ref={sortOrderRef}
-                onChange={sortTasks}
+                onChange={() => sortTasks(tasksToShow)}
               >
-                <option value={DESCENDING}>
-                  {sortByRef.current?.value == CREATED_ON ||
-                  sortByRef.current?.value == DUE_DATE
-                    ? "Earliest first"
+                <option value={ORDER_1}>
+                  {sortByRef.current?.value == CREATED_ON
+                    ? "Newest first"
+                    : sortByRef.current?.value == DUE_DATE
+                    ? "Soonest first"
                     : sortByRef.current?.value == TITLE
                     ? "A to Z"
                     : sortByRef.current?.value == STATUS
-                    ? "Pending first"
+                    ? "Pending First"
                     : undefined}
                 </option>
-                <option value={ASCENDING}>
-                  {sortByRef.current?.value == CREATED_ON ||
-                  sortByRef.current?.value == DUE_DATE
+                <option value={ORDER_2}>
+                  {sortByRef.current?.value == CREATED_ON
+                    ? "Oldest first"
+                    : sortByRef.current?.value == DUE_DATE
                     ? "Latest first"
                     : sortByRef.current?.value == TITLE
                     ? "Z to A"
