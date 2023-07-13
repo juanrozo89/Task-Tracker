@@ -43,11 +43,11 @@ const MyTasks = () => {
   const sortTasks = (tasks: Array<Task> | undefined) => {
     const sortBy = sortByRef.current?.value;
     console.log("sorting by: " + sortBy);
+    console.log("tasks length: " + tasks?.length);
     const sortedTasks = tasks
       ? [...tasks].sort((t1: Task, t2: Task) => {
           let toReturn = 0;
           const order = sortOrderRef.current?.value == ORDER_1 ? -1 : 1;
-          console.log("ORDER = " + order);
           const statusOrder: Record<StatusType, number> = {
             [DONE]: 3,
             [ONGOING]: 2,
@@ -70,36 +70,44 @@ const MyTasks = () => {
               toReturn = t1.created_on < t2.created_on ? -order : order;
               break;
             case DUE_DATE:
+              console.log("T1 due date: " + t1.due_date);
+              console.log("T2 due date: " + t2.due_date);
               if (t1.due_date && t2.due_date) {
+                console.log("both dates exist");
                 toReturn = t1.due_date < t2.due_date ? order : -order;
               } else if (t1.due_date) {
-                toReturn = -1;
+                console.log(
+                  "date for t1 exists but not for t2, so t1 comes first if ascending"
+                );
+                toReturn = order;
+              } else if (t2.due_date) {
+                console.log(
+                  "date for t2 exists but not for t1, so t2 comes first if ascending"
+                );
+                toReturn = -order;
               } else {
+                console.log("neither date exists, so don't sort");
                 toReturn = 0;
               }
+              console.log("to return after due date sorting: " + toReturn);
               break;
           }
           return toReturn;
         })
       : undefined;
-    console.log("after sorting: " + sortedTasks?.length);
     setTasksToShow(sortedTasks);
   };
 
   const filterTasksByField = () => {
     const filterByField = filterByFieldRef.current?.value;
-    console.log("field : " + filterByField);
     if (filterByField == SHOW_ALL) {
       sortTasks(user?.tasks!);
       return;
     } else {
       let filteredTasks: Array<Task> = [...user?.tasks!];
-      console.log("before filtering by field: " + filteredTasks.length);
       const filterByCategoryValue =
         filterByCategoryValueRef.current?.value || categories[0];
       const filterByStatusValue = filterByStatusValueRef.current?.value || DONE;
-      console.log("cat value: " + filterByCategoryValue);
-      console.log("status value: " + filterByStatusValue);
       filteredTasks = filteredTasks?.filter((task) => {
         let toReturn = true;
         if (
@@ -125,7 +133,6 @@ const MyTasks = () => {
                 (initDate && dueDate < initDate) ||
                 (finalDate && dueDate > finalDate)))
           ) {
-            //console.log("indeed task didn't fit");
             toReturn = false;
           }
         }
@@ -138,7 +145,6 @@ const MyTasks = () => {
   const filterTasksByKeyword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let filteredTasks: Array<Task> = [...tasksToShow!];
-    console.log("before filter by keyword: " + filteredTasks.length);
     const dateKeys = ["created_on", "updated_on", "due_date"];
     const filterKeyword = filterKeywordRef.current?.value
       ? filterKeywordRef.current.value
@@ -163,7 +169,6 @@ const MyTasks = () => {
         }
       }
     }
-    console.log("after filter by keyword: " + filteredTasks.length);
     sortTasks(filteredTasks);
   };
 
