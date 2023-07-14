@@ -29,6 +29,7 @@ const userSchema = new Schema({
       status: { type: String, default: PENDING },
       task_title: { type: String, required: true },
       task_text: String,
+      priority: String,
       created_on: Date,
       //updated_on: Date,
       due_date: Date,
@@ -314,14 +315,16 @@ export default function (app: Express) {
       } else if (!req.body.category) {
         missingFieldError("category", res);
       } else {
-        const task_title = req.body.task_title;
+        const title = req.body.task_title;
         const category = req.body.category;
-        const task_text = req.body.task_text || "";
+        const priority = req.body.priority;
+        const text = req.body.task_text || "";
         const due_date = req.body.due_date ? new Date(req.body.due_date) : null;
         const date = new Date();
         let newTask = {
-          task_title: task_title,
-          task_text: task_text,
+          task_title: title,
+          task_text: text,
+          priority: priority,
           category: category,
           status: PENDING,
           created_on: date,
@@ -373,6 +376,7 @@ export default function (app: Express) {
             "_id",
             "category",
             "status",
+            "priority",
             "task_title",
             "task_text",
             "due_date",

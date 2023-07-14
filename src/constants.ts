@@ -23,6 +23,12 @@ export const ONGOING = "Ongoing";
 export const PENDING = "Pending";
 export const DONE = "Done";
 
+// Task priority
+export const URGENT_PRIORITY = "urgent";
+export const HIGH_PRIORITY = "high";
+export const MEDIUM_PRIORITY = "medium";
+export const LOW_PRIORITY = "low";
+
 // Filter / sort by:
 export const CATEGORY = "category";
 export const TITLE = "title";

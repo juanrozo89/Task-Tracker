@@ -1,6 +1,15 @@
 import { useState, useContext, useRef } from "react";
 import { UserContext, PopupContext } from "../Contexts";
-import { CONFIRM, PENDING, ONGOING, DONE } from "../constants";
+import {
+  CONFIRM,
+  PENDING,
+  ONGOING,
+  DONE,
+  URGENT_PRIORITY,
+  HIGH_PRIORITY,
+  MEDIUM_PRIORITY,
+  LOW_PRIORITY,
+} from "../constants";
 import SelectCategory from "./SelectCategory";
 
 import axios from "axios";
@@ -11,6 +20,7 @@ const Task: React.FC<Task> = ({
   _id,
   category,
   status,
+  priority,
   task_title,
   task_text,
   created_on,
@@ -21,6 +31,7 @@ const Task: React.FC<Task> = ({
 
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
   const [editingCategory, setEditingCategory] = useState<boolean>(false);
+  const [editingPriority, setEditingPriority] = useState<boolean>(false);
   const [editingText, setEditingText] = useState<boolean>(false);
   const [editingDueDate, setEditingDueDate] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<boolean>(false);
@@ -32,6 +43,13 @@ const Task: React.FC<Task> = ({
   const [updatedCategory, setUpdatedCategory] = useState<string>("");
   const handleCategoryChange = (updatedCat: string) => {
     setUpdatedCategory(updatedCat);
+  };
+
+  const [updatedPriority, setUpdatedPriority] = useState<string>("");
+  const handlePriorityChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setUpdatedPriority(event.target.value);
   };
 
   const { setPopup, setOnConfirm } = useContext(PopupContext)!;
@@ -88,6 +106,21 @@ const Task: React.FC<Task> = ({
         handleErrorAlert(error, setPopup);
       });
     setEditingCategory(false);
+  };
+
+  const editPriority = () => {
+    axios
+      .put("/api/update-task", { _id: _id, priority: updatedPriority })
+      .then((res) => {
+        setUser((prevUser) => ({
+          ...prevUser!,
+          tasks: res.data.tasks,
+        }));
+      })
+      .catch((error) => {
+        handleErrorAlert(error, setPopup);
+      });
+    setEditingPriority(false);
   };
 
   const editText = () => {
@@ -244,6 +277,52 @@ const Task: React.FC<Task> = ({
                   <span
                     className="edit-task-category-btn link"
                     onClick={() => setEditingCategory(true)}
+                  >
+                    ｢🖉｣
+                  </span>
+                </>
+              )}
+            </div>
+          )}
+
+          {editingPriority && editingTask ? (
+            <div className="edit-task-priority">
+              <label htmlFor={`edit-priority-${_id}`}>Priority:</label>
+              <br />
+              <select
+                id={`edit-priority-${_id}`}
+                onChange={handlePriorityChange}
+              >
+                <option value={URGENT_PRIORITY}>Urgent</option>
+                <option value={HIGH_PRIORITY}>High</option>
+                <option value={MEDIUM_PRIORITY}>Medium</option>
+                <option value={LOW_PRIORITY}>Low</option>
+              </select>
+              <div className="edit-priority-buttons small-btn-pair">
+                <button
+                  className="edit-priority-btn confirm-edit-priority-btn"
+                  onClick={editPriority}
+                >
+                  Apply
+                </button>
+                <button
+                  className="edit-priority-btn cancel-button cancel-edit-priority-btn"
+                  onClick={() => setEditingPriority(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="task-priority">
+              <span className="task-info-subtitle">Priority: </span>
+              {priority}
+              {editingTask && (
+                <>
+                  &nbsp;&nbsp;&nbsp;
+                  <span
+                    className="edit-task-priority-btn link"
+                    onClick={() => setEditingPriority(true)}
                   >
                     ｢🖉｣
                   </span>

@@ -1,5 +1,11 @@
 import { useContext, useRef, useState } from "react";
-import { NONE } from "../constants";
+import {
+  NONE,
+  URGENT_PRIORITY,
+  HIGH_PRIORITY,
+  MEDIUM_PRIORITY,
+  LOW_PRIORITY,
+} from "../constants";
 import { PopupContext, UserContext } from "../Contexts";
 import { handleErrorAlert } from "../utils/alertFunctions";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
@@ -17,9 +23,15 @@ const NewTaskPopup = () => {
   const formattedCurrentDate = getFormattedCurrentDate();
 
   const [category, setCategory] = useState<string>("");
-
   const handleCategoryChange = (updatedCat: string) => {
     setCategory(updatedCat);
+  };
+
+  const [priority, setPriority] = useState<string>("");
+  const handlePriorityChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setPriority(event.target.value);
   };
 
   const clearPopup = () => {
@@ -39,6 +51,7 @@ const NewTaskPopup = () => {
         task_title: title,
         task_text: text,
         category: category,
+        priority: priority,
         due_date: dueDate,
       })
       .then((res) => {
@@ -77,12 +90,19 @@ const NewTaskPopup = () => {
               ref={textRef}
             />
             <br />
-            <label>Category*</label>
+            <label htmlFor="select-category">Category*</label>
             <SelectCategory
               _id={"select-category"}
               changeCategory={handleCategoryChange}
             ></SelectCategory>
             <br />
+            <label htmlFor="select-priority">Priority*</label>
+            <select id="select-priority" onChange={handlePriorityChange}>
+              <option value={URGENT_PRIORITY}>Urgent</option>
+              <option value={HIGH_PRIORITY}>High</option>
+              <option value={MEDIUM_PRIORITY}>Medium</option>
+              <option value={LOW_PRIORITY}>Low</option>
+            </select>
             <label htmlFor="due-date">Due date</label>
             <input
               id="due-date"

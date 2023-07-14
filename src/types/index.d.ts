@@ -34,6 +34,12 @@ declare global {
 
   type StatusType = constants.ONGOING | constants.PENDING | constants.DONE;
 
+  type PriorityType =
+    | constants.URGENT_PRIORITY
+    | constants.HIGH_PRIORITY
+    | constants.MEDIUM_PRIORITY
+    | constants.LOW_PRIORITY;
+
   type SortType =
     | constants.TITLE
     | constants.STATUS
@@ -52,6 +58,7 @@ declare global {
     _id: string;
     category: string;
     status: StatusType;
+    priority: PriorityType;
     task_title: string;
     task_text: string;
     created_on: Date | string;

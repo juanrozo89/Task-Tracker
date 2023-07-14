@@ -335,7 +335,8 @@ const MyTasks = () => {
                   <Task
                     key={task._id}
                     _id={task._id}
-                    category={task.category ? task!.category : ""}
+                    category={task.category}
+                    priority={task.priority}
                     status={task.status}
                     task_title={task.task_title}
                     task_text={task.task_text}
