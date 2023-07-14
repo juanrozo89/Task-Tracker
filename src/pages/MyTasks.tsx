@@ -158,8 +158,7 @@ const MyTasks = () => {
     }
   };
 
-  const filterTasksByKeyword = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const filterTasksByKeyword = () => {
     console.log(
       "ENTERED FILTERING BY KEYWORD: " + filterKeywordRef.current?.value
     );
@@ -315,19 +314,16 @@ const MyTasks = () => {
                 ) : undefined)
               )}
             </div>
-            <form id="filter-by-keyword-form" onSubmit={filterTasksByKeyword}>
+            <form id="filter-by-keyword-form">
               <label htmlFor="filter-by-keyword-input">
                 Filter by keyword(s):
               </label>
               <input
                 id="filter-by-keyword-input"
                 type="text"
-                placeholder="Filter by keyword(s)"
                 ref={filterKeywordRef}
+                onChange={filterTasksByKeyword}
               ></input>
-              <button id="filter-by-keyword-btn" type="submit">
-                🔍
-              </button>
             </form>
           </div>
           <div id="tasks-container">
