@@ -290,9 +290,6 @@ hr {
 }
 
 #filter-sort-tasks-container {
-  & > * {
-    width: 380px;
-  }
   label {
     width: 65px;
     text-align: right;
@@ -302,6 +299,7 @@ hr {
   #sort-tasks-container {
     display: flex;
     flex-direction: row;
+    width: fit-content;
     margin-bottom: 10px;
     #select-sort-by {
       width: 120px !important;
@@ -316,6 +314,7 @@ hr {
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
+    width: fit-content;
     #select-filter-by-field {
       width: 120px !important;
       min-width: 120px !important;
@@ -324,11 +323,12 @@ hr {
     #select-filter-value-dates-between {
       display: flex;
       flex-wrap: wrap;
-      width: 180px;
+      width: 172px;
       text-align: right;
       padding: 0;
+
       label {
-        width: 46px;
+        width: 45px;
       }
       input {
         width: 120px !important;
@@ -347,16 +347,10 @@ hr {
     display: flex;
     flex-direction: row;
     justify-items: center;
-    margin: 0 auto 15px;
+    margin: 10px auto 15px;
     label {
       width: fit-content;
       margin-right: 5px;
-    }
-    #filter-by-keyword-btn {
-      width: 28px;
-      height: 28px;
-      padding: 0;
-      margin: 0 0 0 5px;
     }
   }
 }
