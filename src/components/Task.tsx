@@ -7,14 +7,14 @@ import axios from "axios";
 import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
 
-const Task: React.FC<TaskProps> = ({
+const Task: React.FC<Task> = ({
   _id,
   category,
   status,
   task_title,
   task_text,
   created_on,
-  updated_on,
+  //updated_on,
   due_date,
 }) => {
   const [showFull, setShowAll] = useState<boolean>(false);
@@ -390,13 +390,13 @@ const Task: React.FC<TaskProps> = ({
             <span className="task-info-subtitle">Created on:</span>
             <br /> {created_on as string}
           </div>
-          {updated_on && (
+          {/*{updated_on && (
             <div className="updated-on">
               <span className="task-info-subtitle">Last updated:</span>
               <br />
               {updated_on as string}
             </div>
-          )}
+          )}*/}
           <div className="small-btn-pair">
             {editingTask ? (
               <button

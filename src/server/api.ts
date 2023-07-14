@@ -4,8 +4,6 @@ import { Express, Request, Response, NextFunction } from "express";
 import { Session } from "express-session";
 import { PENDING } from "../constants";
 
-import { formatDateForDisplay } from "../utils/formatFunctions";
-
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -32,7 +30,7 @@ const userSchema = new Schema({
       task_title: { type: String, required: true },
       task_text: String,
       created_on: Date,
-      updated_on: Date,
+      //updated_on: Date,
       due_date: Date,
     },
   ],
@@ -327,7 +325,7 @@ export default function (app: Express) {
           category: category,
           status: PENDING,
           created_on: date,
-          updated_on: null,
+          //updated_on: null,
           due_date: due_date,
         };
         user.tasks.unshift(newTask);
@@ -343,73 +341,6 @@ export default function (app: Express) {
         }
       }
     });
-
-  /*
-  // get filtered tasks
-  app
-    .route("/api/get-tasks/")
-    .get(authenticateSession, getUser, (req: Request, res: Response) => {
-      const user = req.user;
-      if (JSON.stringify(req.query) == "{}") {
-        // if no query, return all tasks
-        res.json(user.tasks);
-      } else {
-        // return tasks matching the query
-        const keys = [
-          "task_title",
-          "category",
-          "task_text",
-          "status",
-          "created_on",
-          "updated_on",
-          "due_date",
-        ];
-        let validKey = true;
-        let errorKey;
-        // check if key is valid
-        for (let prop in req.query) {
-          if (!keys.includes(prop)) {
-            validKey = false;
-            errorKey = prop;
-          }
-        }
-        if (!validKey) {
-          // error: queried with an invalid key
-          res.status(400).json({ error: `"${errorKey}" is an invalid key` });
-        } else {
-          // if key exists
-          let filteredTasks: Array<any> = [];
-          user.tasks.map((task: any) => {
-            let passesTest = false;
-            for (let prop of Object.keys(req.query)) {
-              const stringProps = [
-                "task_title",
-                "category",
-                "task_text",
-                "status",
-              ];
-              const dateProps = ["created_on", "updated_on", "due_date"];
-              let keyRegex = new RegExp(req.body[prop], "i");
-              if (
-                (stringProps.includes(prop) && task[prop].match(keyRegex)) ||
-                (dateProps.includes(prop) &&
-                  formatDateForDisplay(task.prop).match(keyRegex))
-              ) {
-                // queried value is present in task
-                passesTest = true;
-              }
-            }
-            if (passesTest) filteredTasks.push(task);
-          });
-          if (filteredTasks.length === 0) {
-            notFoundError("Task", res);
-          } else {
-            res.json({ result: filteredTasks });
-          }
-        }
-      }
-    });
-  */
 
   // update a task
   app
@@ -458,7 +389,7 @@ export default function (app: Express) {
               user.tasks[task_index][prop] = req.body[prop];
             }
           }
-          user.tasks[task_index].updated_on = new Date();
+          //user.tasks[task_index].updated_on = new Date();
           try {
             user = await user.save();
             res.json({
@@ -503,78 +434,3 @@ export default function (app: Express) {
       }
     );
 }
-
-/*
-
-export default function (app: Express) {
-  
-
-  // HANDLE USERS:
-
-  app
-    .route("/api/:username/")
-
-    // get all of a user's info
-    .get(getUser, (req: Request, res: Response) => {
-      res.json({ result: req.user });
-    });
-
-  // HANDLE TASKS:
-
-  // get a user's tasks with optional filtering
-  app
-    .route("/api/:username/tasks/")
-    .get(getUser, (req: Request, res: Response) => {
-      const user = req.user;
-      if (JSON.stringify(req.query) == "{}") {
-        // if no query, return all tasks
-        res.json(user.tasks);
-      } else {
-        // return tasks matching the query
-        const keys = [
-          "category",
-          "status",
-          "task_title",
-          "task_text",
-          "created_on",
-          "updated_on",
-          "due_date",
-          "_id",
-        ];
-        let validKey = true;
-        let errorKey;
-        // check if key is valid
-        for (let prop in req.query) {
-          if (!keys.includes(prop)) {
-            validKey = false;
-            errorKey = prop;
-          }
-        }
-        if (!validKey) {
-          // error: queried with an invalid key
-          res.status(400).json({ error: `"${errorKey}" is an invalid key` });
-        } else {
-          // if key exists
-          let filteredTasks: any[] = [];
-          user.tasks.map((task: any) => {
-            let passesTest = true;
-            for (let prop of Object.keys(req.query)) {
-              // queried value coincides with task
-              if (req.query[prop] && task[prop] != req.query[prop]) {
-                passesTest = false;
-              }
-            }
-            if (passesTest) filteredTasks.push(task);
-          });
-          if (filteredTasks.length === 0) {
-            notFoundError("Task", res);
-          } else {
-            res.json({ result: filteredTasks });
-          }
-        }
-      }
-    })
-
-  });
-}
-*/

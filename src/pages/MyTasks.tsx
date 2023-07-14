@@ -182,16 +182,18 @@ const MyTasks = () => {
         "number of tasks to filter by kw after initializing array: " +
           filteredTasks.length
       );
-      const dateKeys = ["created_on", "updated_on", "due_date"];
+      const dateKeys: Array<string> = ["created_on", "due_date"];
       let keyRegex = new RegExp(filterKeyword, "i");
       filteredTasks = filteredTasks.filter((task) => {
         let toReturn = false;
         for (let prop in task) {
+          console.log(prop, (task as any)[prop]);
           if (
-            ((dateKeys as any[]).indexOf(prop) == -1 &&
+            (task as any)[prop] &&
+            ((dateKeys.indexOf(prop) == -1 &&
               (task as any)[prop].match(keyRegex)) ||
-            ((dateKeys as any[]).indexOf(prop) != -1 &&
-              formatDateForDisplay((task as any)[prop]).match(keyRegex))
+              (dateKeys.indexOf(prop) != -1 &&
+                formatDateForDisplay((task as any)[prop]).match(keyRegex)))
           ) {
             toReturn = true;
           }
@@ -208,7 +210,7 @@ const MyTasks = () => {
   return (
     <section id="my-tasks" className="content">
       <button id="add-task-button" onClick={setNewTaskPopup}>
-        Add task
+        New task
       </button>
       {tasksToShow ? (
         <>
@@ -340,11 +342,11 @@ const MyTasks = () => {
                     created_on={formatDateForDisplay(
                       task.created_on.toString()
                     )}
-                    updated_on={
+                    /*updated_on={
                       task.updated_on
                         ? formatDateForDisplay(task.updated_on.toString())
                         : null
-                    }
+                    }*/
                     due_date={
                       task.due_date
                         ? formatDateForDisplay(task.due_date.toString())

@@ -20,7 +20,7 @@ declare global {
     category: string;
     status: StatusType;
     created_on: Date | string;
-    updated_on: Date | string | null;
+    //updated_on: Date | string | null;
     due_date: Date | string | null;
   }
 
@@ -54,9 +54,9 @@ declare global {
     status: StatusType;
     task_title: string;
     task_text: string;
-    created_on: Date;
-    updated_on: Date;
-    due_date: Date;
+    created_on: Date | string;
+    //updated_on: Date;
+    due_date: Date | string | null;
   };
 
   type User = {
