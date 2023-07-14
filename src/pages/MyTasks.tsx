@@ -42,8 +42,8 @@ const MyTasks = () => {
 
   const sortTasks = (tasks: Array<Task> | undefined) => {
     const sortBy = sortByRef.current?.value;
-    console.log("sorting by: " + sortBy);
-    console.log("tasks length: " + tasks?.length);
+    console.log("SORTING BY: " + sortBy);
+    console.log("tasks length before sorting: " + tasks?.length);
     const sortedTasks = tasks
       ? [...tasks].sort((t1: Task, t2: Task) => {
           let toReturn = 0;
@@ -95,16 +95,25 @@ const MyTasks = () => {
           return toReturn;
         })
       : undefined;
+    console.log(
+      "sortedTasks length returned after sorting: " + sortedTasks?.length
+    );
     setTasksToShow(sortedTasks);
+    return sortedTasks;
   };
 
   const filterTasksByField = () => {
     const filterByField = filterByFieldRef.current?.value;
+    console.log("FILTERING BY FIELD: " + filterByField);
     if (filterByField == SHOW_ALL) {
-      sortTasks(user?.tasks!);
-      return;
+      console.log("total user tasks: " + user?.tasks.length);
+      const tasksToReturn = sortTasks(user?.tasks!);
+      return tasksToReturn;
     } else {
       let filteredTasks: Array<Task> = [...user?.tasks!];
+      console.log(
+        "tasks length before filtering by field: " + filteredTasks.length
+      );
       const filterByCategoryValue =
         filterByCategoryValueRef.current?.value || categories[0];
       const filterByStatusValue = filterByStatusValueRef.current?.value || DONE;
@@ -138,38 +147,63 @@ const MyTasks = () => {
         }
         return toReturn;
       });
-      sortTasks(filteredTasks);
+      console.log(
+        "tasks length after filtering by field: " + filteredTasks.length
+      );
+      const tasksToReturn = sortTasks(filteredTasks);
+      console.log(
+        "tasks to return after filtering by field: " + tasksToReturn?.length
+      );
+      return tasksToReturn;
     }
   };
 
   const filterTasksByKeyword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    let filteredTasks: Array<Task> = [...tasksToShow!];
-    const dateKeys = ["created_on", "updated_on", "due_date"];
+    console.log(
+      "ENTERED FILTERING BY KEYWORD: " + filterKeywordRef.current?.value
+    );
+    const tasksToFilter = filterTasksByField();
+    console.log("should have logged the filterTasksByField console logs");
+    console.log("tasks to filter by keyword: " + tasksToFilter?.length);
     const filterKeyword = filterKeywordRef.current?.value
       ? filterKeywordRef.current.value
       : null;
+    console.log("filtering by keyword '" + filterKeyword + "'");
     if (!filterKeyword) {
-      setTasksToShow(user?.tasks);
+      console.log("no keyword");
       return;
-    } else if (user?.tasks && user.tasks.length > 0) {
+    } else if (tasksToFilter && tasksToFilter.length > 0) {
+      console.log(
+        "number of tasks to show before filtering by kw: " +
+          tasksToFilter.length
+      );
+      let filteredTasks: Array<Task> = [...tasksToFilter!];
+      console.log(
+        "number of tasks to filter by kw after initializing array: " +
+          filteredTasks.length
+      );
+      const dateKeys = ["created_on", "updated_on", "due_date"];
       let keyRegex = new RegExp(filterKeyword, "i");
-      for (let task of user?.tasks) {
+      filteredTasks = filteredTasks.filter((task) => {
+        let toReturn = false;
         for (let prop in task) {
-          if (filteredTasks.indexOf(task) == -1 && (task as any)[prop]) {
-            if (
-              ((dateKeys as any[]).indexOf(prop) == -1 &&
-                (task as any)[prop].match(keyRegex)) ||
-              ((dateKeys as any[]).indexOf(prop) != -1 &&
-                formatDateForDisplay((task as any)[prop]).match(keyRegex))
-            ) {
-              filteredTasks.unshift(task);
-            }
+          if (
+            ((dateKeys as any[]).indexOf(prop) == -1 &&
+              (task as any)[prop].match(keyRegex)) ||
+            ((dateKeys as any[]).indexOf(prop) != -1 &&
+              formatDateForDisplay((task as any)[prop]).match(keyRegex))
+          ) {
+            toReturn = true;
           }
         }
-      }
+        return toReturn;
+      });
+      console.log(
+        "number of tasks after filter by kw: " + filteredTasks.length
+      );
+      setTasksToShow(filteredTasks);
     }
-    sortTasks(filteredTasks);
   };
 
   return (
