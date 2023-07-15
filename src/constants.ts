@@ -24,15 +24,16 @@ export const PENDING = "Pending";
 export const DONE = "Done";
 
 // Task priority
-export const URGENT_PRIORITY = "urgent";
-export const HIGH_PRIORITY = "high";
-export const MEDIUM_PRIORITY = "medium";
-export const LOW_PRIORITY = "low";
+export const URGENT_PRIORITY = "Urgent";
+export const HIGH_PRIORITY = "High";
+export const MEDIUM_PRIORITY = "Medium";
+export const LOW_PRIORITY = "Low";
 
 // Filter / sort by:
 export const CATEGORY = "category";
 export const TITLE = "title";
 export const STATUS = "status";
+export const PRIORITY = "priority";
 export const CREATED_ON = "created-on";
 export const DUE_DATE = "due-date";
 export const SHOW_ALL = "show-all";

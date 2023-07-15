@@ -39,17 +39,11 @@ const Task: React.FC<Task> = ({
   const editTitleRef = useRef<HTMLInputElement | null>(null);
   const editTextRef = useRef<HTMLTextAreaElement | null>(null);
   const editDueDateRef = useRef<HTMLInputElement | null>(null);
+  const updatedPriorityRef = useRef<HTMLSelectElement | null>(null);
 
   const [updatedCategory, setUpdatedCategory] = useState<string>("");
   const handleCategoryChange = (updatedCat: string) => {
     setUpdatedCategory(updatedCat);
-  };
-
-  const [updatedPriority, setUpdatedPriority] = useState<string>("");
-  const handlePriorityChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setUpdatedPriority(event.target.value);
   };
 
   const { setPopup, setOnConfirm } = useContext(PopupContext)!;
@@ -109,6 +103,7 @@ const Task: React.FC<Task> = ({
   };
 
   const editPriority = () => {
+    const updatedPriority = updatedPriorityRef.current?.value || null;
     axios
       .put("/api/update-task", { _id: _id, priority: updatedPriority })
       .then((res) => {
@@ -189,6 +184,7 @@ const Task: React.FC<Task> = ({
   return (
     <div className={`${status} task-cell`} id={_id}>
       <div className="task-header">
+        {/*--TITLE--*/}
         {editingTitle && editingTask ? (
           <div className="edit-task-title-container">
             <label htmlFor={`edit-title-${_id}`}>New title:</label>
@@ -216,10 +212,25 @@ const Task: React.FC<Task> = ({
         ) : (
           <>
             <h3 className="task-title">
+              {/*---PRIORITY ON TITLE---*/}
+              {priority == URGENT_PRIORITY ? (
+                <span className="urgent-priority-mark">‼&nbsp;&nbsp;</span>
+              ) : priority == HIGH_PRIORITY ? (
+                <span className="high-priority-mark">
+                  !&nbsp;&nbsp;
+                </span> /*: priority == MEDIUM_PRIORITY ? (
+                <span className="medium-priority-mark">↠&nbsp;&nbsp;</span>
+              )*/
+              ) : priority == LOW_PRIORITY ? (
+                <span className="low-priority-mark">↡&nbsp;&nbsp;</span>
+              ) : undefined}
+              {/*---STATUS ON TITLE---*/}
               {status == DONE ? (
                 <span className="check-mark">🗹&nbsp;&nbsp;</span>
               ) : status == ONGOING ? (
                 <span className="ongoing-mark">🞔&nbsp;&nbsp;</span>
+              ) : status == PENDING ? (
+                <span className="pending-mark">⏹&nbsp;&nbsp;</span>
               ) : undefined}
               {task_title}
               {editingTask && (
@@ -244,6 +255,51 @@ const Task: React.FC<Task> = ({
       </div>
       {showFull && (
         <div className="task-content">
+          {/*--PRIORITY--*/}
+          {editingPriority && editingTask ? (
+            <div className="edit-task-priority">
+              <label htmlFor={`edit-priority-${_id}`}>Priority:</label>
+              <br />
+              <select id={`edit-priority-${_id}`} ref={updatedPriorityRef}>
+                <option value={URGENT_PRIORITY}>Urgent</option>
+                <option value={HIGH_PRIORITY}>High</option>
+                <option value={MEDIUM_PRIORITY}>Medium</option>
+                <option value={LOW_PRIORITY}>Low</option>
+              </select>
+              <div className="edit-priority-buttons small-btn-pair">
+                <button
+                  className="edit-priority-btn confirm-edit-priority-btn"
+                  onClick={editPriority}
+                >
+                  Apply
+                </button>
+                <button
+                  className="edit-priority-btn cancel-button cancel-edit-priority-btn"
+                  onClick={() => setEditingPriority(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="task-priority">
+              <span className="task-info-subtitle">Priority: </span>
+              {priority}
+              {editingTask && (
+                <>
+                  &nbsp;&nbsp;&nbsp;
+                  <span
+                    className="edit-task-priority-btn link"
+                    onClick={() => setEditingPriority(true)}
+                  >
+                    ｢🖉｣
+                  </span>
+                </>
+              )}
+            </div>
+          )}
+
+          {/*--CATEGORY--*/}
           {editingCategory && editingTask ? (
             <div className="edit-task-category-container">
               <label htmlFor={`edit-category-${_id}`}>New category:</label>
@@ -285,52 +341,7 @@ const Task: React.FC<Task> = ({
             </div>
           )}
 
-          {editingPriority && editingTask ? (
-            <div className="edit-task-priority">
-              <label htmlFor={`edit-priority-${_id}`}>Priority:</label>
-              <br />
-              <select
-                id={`edit-priority-${_id}`}
-                onChange={handlePriorityChange}
-              >
-                <option value={URGENT_PRIORITY}>Urgent</option>
-                <option value={HIGH_PRIORITY}>High</option>
-                <option value={MEDIUM_PRIORITY}>Medium</option>
-                <option value={LOW_PRIORITY}>Low</option>
-              </select>
-              <div className="edit-priority-buttons small-btn-pair">
-                <button
-                  className="edit-priority-btn confirm-edit-priority-btn"
-                  onClick={editPriority}
-                >
-                  Apply
-                </button>
-                <button
-                  className="edit-priority-btn cancel-button cancel-edit-priority-btn"
-                  onClick={() => setEditingPriority(false)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="task-priority">
-              <span className="task-info-subtitle">Priority: </span>
-              {priority}
-              {editingTask && (
-                <>
-                  &nbsp;&nbsp;&nbsp;
-                  <span
-                    className="edit-task-priority-btn link"
-                    onClick={() => setEditingPriority(true)}
-                  >
-                    ｢🖉｣
-                  </span>
-                </>
-              )}
-            </div>
-          )}
-
+          {/*--DESCRIPTION--*/}
           {editingText && editingTask ? (
             <div className="edit-task-text-container">
               <label htmlFor={`edit-text-${_id}`}>New description:</label>
@@ -380,6 +391,8 @@ const Task: React.FC<Task> = ({
               </div>
             )
           )}
+
+          {/*--STATUS--*/}
           <div className="task-status-container">
             <div
               className={
@@ -412,6 +425,8 @@ const Task: React.FC<Task> = ({
               {DONE}
             </div>
           </div>
+
+          {/*---DUE DATE---*/}
           {editingDueDate && editingTask ? (
             <div className="edit-task-due-date-container">
               <label htmlFor={`edit-due-date-${_id}`}>New due date:</label>
@@ -465,6 +480,8 @@ const Task: React.FC<Task> = ({
               </div>
             )
           )}
+
+          {/*--CREATED ON--*/}
           <div className="created-on">
             <span className="task-info-subtitle">Created on:</span>
             <br /> {created_on as string}

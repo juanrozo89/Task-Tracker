@@ -14,7 +14,12 @@ import {
   PENDING,
   ONGOING,
   CATEGORY,
+  PRIORITY,
   SHOW_ALL,
+  LOW_PRIORITY,
+  MEDIUM_PRIORITY,
+  HIGH_PRIORITY,
+  URGENT_PRIORITY,
 } from "../constants";
 
 const ORDER_1 = "order1";
@@ -30,6 +35,7 @@ const MyTasks = () => {
   const filterByFieldRef = useRef<HTMLSelectElement | null>(null);
   const filterByStatusValueRef = useRef<HTMLSelectElement | null>(null);
   const filterByCategoryValueRef = useRef<HTMLSelectElement | null>(null);
+  const filterByPriorityValueRef = useRef<HTMLSelectElement | null>(null);
   const initialDateRef = useRef<HTMLInputElement | null>(null);
   const finalDateRef = useRef<HTMLInputElement | null>(null);
   const [tasksToShow, setTasksToShow] = useState<Array<Task> | undefined>(
@@ -42,12 +48,16 @@ const MyTasks = () => {
 
   const sortTasks = (tasks: Array<Task> | undefined) => {
     const sortBy = sortByRef.current?.value;
-    console.log("SORTING BY: " + sortBy);
-    console.log("tasks length before sorting: " + tasks?.length);
     const sortedTasks = tasks
       ? [...tasks].sort((t1: Task, t2: Task) => {
           let toReturn = 0;
           const order = sortOrderRef.current?.value == ORDER_1 ? -1 : 1;
+          const priorityOrder: Record<StatusType, number> = {
+            [URGENT_PRIORITY]: 1,
+            [HIGH_PRIORITY]: 2,
+            [MEDIUM_PRIORITY]: 3,
+            [LOW_PRIORITY]: 4,
+          };
           const statusOrder: Record<StatusType, number> = {
             [DONE]: 3,
             [ONGOING]: 2,
@@ -57,6 +67,12 @@ const MyTasks = () => {
             case TITLE:
               toReturn =
                 t1.task_title.toLowerCase() < t2.task_title.toLowerCase()
+                  ? order
+                  : -order;
+              break;
+            case PRIORITY:
+              toReturn =
+                priorityOrder[t1.priority] < priorityOrder[t2.priority]
                   ? order
                   : -order;
               break;
@@ -70,58 +86,43 @@ const MyTasks = () => {
               toReturn = t1.created_on < t2.created_on ? -order : order;
               break;
             case DUE_DATE:
-              console.log("T1 due date: " + t1.due_date);
-              console.log("T2 due date: " + t2.due_date);
               if (t1.due_date && t2.due_date) {
-                console.log("both dates exist");
                 toReturn = t1.due_date < t2.due_date ? order : -order;
               } else if (t1.due_date) {
-                console.log(
-                  "date for t1 exists but not for t2, so t1 comes first if ascending"
-                );
                 toReturn = order;
               } else if (t2.due_date) {
-                console.log(
-                  "date for t2 exists but not for t1, so t2 comes first if ascending"
-                );
                 toReturn = -order;
               } else {
-                console.log("neither date exists, so don't sort");
                 toReturn = 0;
               }
-              console.log("to return after due date sorting: " + toReturn);
               break;
           }
           return toReturn;
         })
       : undefined;
-    console.log(
-      "sortedTasks length returned after sorting: " + sortedTasks?.length
-    );
     setTasksToShow(sortedTasks);
     return sortedTasks;
   };
 
   const filterTasksByField = () => {
     const filterByField = filterByFieldRef.current?.value;
-    console.log("FILTERING BY FIELD: " + filterByField);
     if (filterByField == SHOW_ALL) {
-      console.log("total user tasks: " + user?.tasks.length);
       const tasksToReturn = sortTasks(user?.tasks!);
       return tasksToReturn;
     } else {
       let filteredTasks: Array<Task> = [...user?.tasks!];
-      console.log(
-        "tasks length before filtering by field: " + filteredTasks.length
-      );
       const filterByCategoryValue =
         filterByCategoryValueRef.current?.value || categories[0];
+      const filterByPriorityValue =
+        filterByPriorityValueRef.current?.value || URGENT_PRIORITY;
       const filterByStatusValue = filterByStatusValueRef.current?.value || DONE;
       filteredTasks = filteredTasks?.filter((task) => {
         let toReturn = true;
         if (
           (filterByField == STATUS && task.status !== filterByStatusValue) ||
-          (filterByField == CATEGORY && task.category !== filterByCategoryValue)
+          (filterByField == CATEGORY &&
+            task.category !== filterByCategoryValue) ||
+          (filterByField == PRIORITY && task.priority !== filterByPriorityValue)
         ) {
           toReturn = false;
         } else {
@@ -147,47 +148,25 @@ const MyTasks = () => {
         }
         return toReturn;
       });
-      console.log(
-        "tasks length after filtering by field: " + filteredTasks.length
-      );
       const tasksToReturn = sortTasks(filteredTasks);
-      console.log(
-        "tasks to return after filtering by field: " + tasksToReturn?.length
-      );
       return tasksToReturn;
     }
   };
 
   const filterTasksByKeyword = () => {
-    console.log(
-      "ENTERED FILTERING BY KEYWORD: " + filterKeywordRef.current?.value
-    );
     const tasksToFilter = filterTasksByField();
-    console.log("should have logged the filterTasksByField console logs");
-    console.log("tasks to filter by keyword: " + tasksToFilter?.length);
     const filterKeyword = filterKeywordRef.current?.value
       ? filterKeywordRef.current.value
       : null;
-    console.log("filtering by keyword '" + filterKeyword + "'");
     if (!filterKeyword) {
-      console.log("no keyword");
       return;
     } else if (tasksToFilter && tasksToFilter.length > 0) {
-      console.log(
-        "number of tasks to show before filtering by kw: " +
-          tasksToFilter.length
-      );
       let filteredTasks: Array<Task> = [...tasksToFilter!];
-      console.log(
-        "number of tasks to filter by kw after initializing array: " +
-          filteredTasks.length
-      );
       const dateKeys: Array<string> = ["created_on", "due_date"];
       let keyRegex = new RegExp(filterKeyword, "i");
       filteredTasks = filteredTasks.filter((task) => {
         let toReturn = false;
         for (let prop in task) {
-          console.log(prop, (task as any)[prop]);
           if (
             (task as any)[prop] &&
             ((dateKeys.indexOf(prop) == -1 &&
@@ -200,9 +179,6 @@ const MyTasks = () => {
         }
         return toReturn;
       });
-      console.log(
-        "number of tasks after filter by kw: " + filteredTasks.length
-      );
       setTasksToShow(filteredTasks);
     }
   };
@@ -225,6 +201,7 @@ const MyTasks = () => {
                 <option value={CREATED_ON}>Created on</option>
                 <option value={TITLE}>Title</option>
                 <option value={STATUS}>Status</option>
+                <option value={PRIORITY}>Priority</option>
                 <option value={DUE_DATE}>Due date</option>
               </select>
               <select
@@ -241,6 +218,8 @@ const MyTasks = () => {
                     ? "A to Z"
                     : sortByRef.current?.value == STATUS
                     ? "Pending First"
+                    : sortByRef.current?.value == PRIORITY
+                    ? "Urgent First"
                     : undefined}
                 </option>
                 <option value={ORDER_2}>
@@ -252,6 +231,8 @@ const MyTasks = () => {
                     ? "Z to A"
                     : sortByRef.current?.value == STATUS
                     ? "Done first"
+                    : sortByRef.current?.value == PRIORITY
+                    ? "Low First"
                     : undefined}
                 </option>
               </select>
@@ -264,10 +245,11 @@ const MyTasks = () => {
                 onChange={filterTasksByField}
               >
                 <option value={SHOW_ALL}>- Show all -</option>
+                <option value={CATEGORY}>Category</option>
+                <option value={PRIORITY}>Priority</option>
+                <option value={STATUS}>Status</option>
                 <option value={DUE_DATE}>Due date</option>
                 <option value={CREATED_ON}>Created on</option>
-                <option value={STATUS}>Status</option>
-                <option value={CATEGORY}>Category</option>
               </select>
               {filterByFieldRef.current?.value == DUE_DATE ||
               filterByFieldRef.current?.value == CREATED_ON ? (
@@ -312,6 +294,17 @@ const MyTasks = () => {
                         </option>
                       );
                     })}{" "}
+                  </select>
+                ) : filterByFieldRef.current?.value == PRIORITY ? (
+                  <select
+                    id="select-filter-by-field-value"
+                    ref={filterByPriorityValueRef}
+                    onChange={filterTasksByField}
+                  >
+                    <option value={URGENT_PRIORITY}>Urgent</option>
+                    <option value={HIGH_PRIORITY}>High</option>
+                    <option value={MEDIUM_PRIORITY}>Medium</option>
+                    <option value={LOW_PRIORITY}>Low</option>
                   </select>
                 ) : undefined)
               )}
