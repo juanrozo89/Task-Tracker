@@ -43,7 +43,7 @@ const MyTasks = () => {
   );
 
   useEffect(() => {
-    filterTasksByField();
+    filterTasksByKeyword();
   }, [user?.tasks]);
 
   const sortTasks = (tasks: Array<Task> | undefined) => {
