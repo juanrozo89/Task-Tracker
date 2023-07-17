@@ -10,6 +10,7 @@ import { PopupContext, UserContext } from "../Contexts";
 import { handleErrorAlert } from "../utils/alertFunctions";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
 import SelectCategory from "./SelectCategory";
+import Loading from "./Loading";
 
 import axios from "axios";
 
@@ -21,6 +22,8 @@ const NewTaskPopup = () => {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const dueDateRef = useRef<HTMLInputElement>(null);
   const formattedCurrentDate = getFormattedCurrentDate();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [category, setCategory] = useState<string>("");
   const handleCategoryChange = (updatedCat: string) => {
@@ -46,6 +49,7 @@ const NewTaskPopup = () => {
     const title = titleRef.current?.value ? titleRef.current.value : "";
     const text = textRef.current?.value ? textRef.current.value : "";
     const dueDate = dueDateRef.current?.value ? dueDateRef.current.value : "";
+    setIsLoading(true);
     axios
       .post("/api/new-task", {
         task_title: title,
@@ -63,13 +67,16 @@ const NewTaskPopup = () => {
       })
       .catch((error) => {
         handleErrorAlert(error, setPopup);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        clearPopup();
       });
-    clearPopup();
   };
 
   return (
     <section id="alert-box" className="popup">
-      <div className="overlay"></div>
+      {isLoading ? <Loading /> : <div className="overlay"></div>}
       <div className="popup-box">
         <h3 className="popup-title">Add a new task</h3>
         <div className="popup-content">
@@ -100,7 +107,9 @@ const NewTaskPopup = () => {
             <select id="select-priority" onChange={handlePriorityChange}>
               <option value={URGENT_PRIORITY}>Urgent</option>
               <option value={HIGH_PRIORITY}>High</option>
-              <option value={MEDIUM_PRIORITY}>Medium</option>
+              <option value={MEDIUM_PRIORITY} selected>
+                Medium
+              </option>
               <option value={LOW_PRIORITY}>Low</option>
             </select>
             <label htmlFor="due-date">Due date</label>

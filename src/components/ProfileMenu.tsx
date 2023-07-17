@@ -20,7 +20,7 @@ const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
             className="menu-slot"
             onClick={setNewTaskPopup}
           >
-            Add task
+            Add new task
           </Link>
         </li>
         <li>

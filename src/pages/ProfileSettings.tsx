@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext, PopupContext } from "../Contexts";
 import RedirectToLogin from "../components/RedirectToLogin";
 import { CONFIRM } from "../constants";
+import Loading from "../components/Loading";
 
 import axios from "axios";
 import { handleErrorAlert, handleSuccessAlert } from "../utils/alertFunctions";
@@ -15,6 +16,8 @@ const ProfileSettings = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -23,6 +26,7 @@ const ProfileSettings = () => {
 
   const updateUsername = () => {
     const request = () => {
+      setIsLoading(true);
       axios
         .put("/api/update-info", {
           new_username: newUsername,
@@ -39,6 +43,9 @@ const ProfileSettings = () => {
         })
         .catch((error) => {
           handleErrorAlert(error, setPopup);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     };
     return request;
@@ -46,7 +53,6 @@ const ProfileSettings = () => {
 
   const confirmUpdateUsername = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     setPopup({
       type: CONFIRM,
       title: "Confirm",
@@ -54,12 +60,12 @@ const ProfileSettings = () => {
         user!.username
       }' to '${newUsername}'?`,
     });
-
     setOnConfirm(updateUsername);
   };
 
   const updatePassword = () => {
     const request = () => {
+      setIsLoading(true);
       axios
         .put("/api/update-info", {
           new_username: "",
@@ -77,6 +83,9 @@ const ProfileSettings = () => {
         })
         .catch((error) => {
           handleErrorAlert(error, setPopup);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     };
     return request;
@@ -84,18 +93,17 @@ const ProfileSettings = () => {
 
   const confirmUpdatePassword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     setPopup({
       type: CONFIRM,
       title: "Confirm",
       content: "Are you sure you want to change your password?",
     });
-
     setOnConfirm(updatePassword);
   };
 
   const deleteAccount = () => {
     const request = () => {
+      setIsLoading(true);
       axios
         .delete("/api/delete-account")
         .then((res) => {
@@ -108,6 +116,9 @@ const ProfileSettings = () => {
         })
         .catch((error) => {
           handleErrorAlert(error, setPopup);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     };
     return request;
@@ -130,6 +141,7 @@ const ProfileSettings = () => {
   } else {
     content = (
       <section id="profile-settings" className="content">
+        {isLoading && <Loading />}
         <h2>Update your info</h2>
         <div id="profile-settings-forms">
           <form
