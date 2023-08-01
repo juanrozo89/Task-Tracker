@@ -149,7 +149,10 @@ const ProfileSettings = () => {
             className="left-aligned-form"
             onSubmit={confirmUpdateUsername}
           >
-            <label htmlFor="update-new-username">Change username: </label>
+            <p>
+              Current username: <b>{user.username}</b>
+            </p>
+            <label htmlFor="update-new-username">New username: </label>
             <div>
               <input
                 type="text"
@@ -169,7 +172,7 @@ const ProfileSettings = () => {
             className="left-aligned-form"
             onSubmit={confirmUpdatePassword}
           >
-            <label htmlFor="update-new-password">Change password: </label>
+            <label htmlFor="update-new-password">New password: </label>
             <input
               type="password"
               name="new_password"

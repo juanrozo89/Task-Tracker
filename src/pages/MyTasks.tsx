@@ -106,25 +106,30 @@ const MyTasks = () => {
 
   const filterTasksByField = () => {
     const filterByField = filterByFieldRef.current?.value;
+
     if (filterByField == SHOW_ALL) {
       const tasksToReturn = sortTasks(user?.tasks!);
       return tasksToReturn;
     } else {
       let filteredTasks: Array<Task> = [...user?.tasks!];
+
       const filterByCategoryValue =
         filterByCategoryValueRef.current?.value || categories[0];
+
       const filterByPriorityValue =
         filterByPriorityValueRef.current?.value || URGENT_PRIORITY;
+
       const filterByStatusValue = filterByStatusValueRef.current?.value || DONE;
+
       filteredTasks = filteredTasks?.filter((task) => {
-        let toReturn = true;
+        let includeTask = true;
         if (
           (filterByField == STATUS && task.status !== filterByStatusValue) ||
           (filterByField == CATEGORY &&
             task.category !== filterByCategoryValue) ||
           (filterByField == PRIORITY && task.priority !== filterByPriorityValue)
         ) {
-          toReturn = false;
+          includeTask = false;
         } else {
           const createdOn = new Date(task.created_on);
           const dueDate = task.due_date ? new Date(task.due_date) : null;
@@ -134,19 +139,21 @@ const MyTasks = () => {
           const finalDate = finalDateRef.current?.value
             ? new Date(finalDateRef.current?.value)
             : null;
+
           if (
             (filterByField == CREATED_ON &&
               ((initDate && createdOn < initDate) ||
                 (finalDate && createdOn > finalDate))) ||
             (filterByField == DUE_DATE &&
+              (initDate || finalDate) &&
               (!dueDate ||
                 (initDate && dueDate < initDate) ||
                 (finalDate && dueDate > finalDate)))
           ) {
-            toReturn = false;
+            includeTask = false;
           }
         }
-        return toReturn;
+        return includeTask;
       });
       const tasksToReturn = sortTasks(filteredTasks);
       return tasksToReturn;

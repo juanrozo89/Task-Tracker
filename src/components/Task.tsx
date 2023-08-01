@@ -212,6 +212,15 @@ const Task: React.FC<Task> = ({
         ) : (
           <>
             <h3 className="task-title">
+              {/*---STATUS ON TITLE---*/}
+              {status == DONE ? (
+                <span className="check-mark">🗹&nbsp;&nbsp;</span>
+              ) : status == ONGOING ? (
+                <span className="ongoing-mark">🞔&nbsp;&nbsp;</span>
+              ) : status == PENDING ? (
+                <span className="pending-mark">⏹&nbsp;&nbsp;</span>
+              ) : undefined}
+
               {/*---PRIORITY ON TITLE---*/}
               {priority == URGENT_PRIORITY ? (
                 <span className="urgent-priority-mark">‼&nbsp;&nbsp;</span>
@@ -224,14 +233,8 @@ const Task: React.FC<Task> = ({
               ) : priority == LOW_PRIORITY ? (
                 <span className="low-priority-mark">↡&nbsp;&nbsp;</span>
               ) : undefined}
-              {/*---STATUS ON TITLE---*/}
-              {status == DONE ? (
-                <span className="check-mark">🗹&nbsp;&nbsp;</span>
-              ) : status == ONGOING ? (
-                <span className="ongoing-mark">🞔&nbsp;&nbsp;</span>
-              ) : status == PENDING ? (
-                <span className="pending-mark">⏹&nbsp;&nbsp;</span>
-              ) : undefined}
+
+              {/*---TITLE---*/}
               {task_title}
               {editingTask && (
                 <>
