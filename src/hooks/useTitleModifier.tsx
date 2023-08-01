@@ -14,7 +14,7 @@ const useTitleModifier = (user: any) => {
     } else {
       setPageTitle(MAIN);
     }
-  }, [location]);
+  }, [location, user]);
 
   return pageTitle;
 };
