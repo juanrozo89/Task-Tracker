@@ -324,7 +324,7 @@
       .task-title {
         color: $lightest;
         .urgent-priority-mark {
-          color: darken($ongoing-light, 12%);
+          color: lighten($warning-dark, 23%);
         }
         .high-priority-mark {
           color: darken($warning-light, 12%);

@@ -64,13 +64,13 @@ const NewTaskPopup = () => {
           ...prevUser!,
           tasks: res.data.tasks,
         }));
+        clearPopup();
       })
       .catch((error) => {
         handleErrorAlert(error, setPopup);
       })
       .finally(() => {
         setIsLoading(false);
-        clearPopup();
       });
   };
 
