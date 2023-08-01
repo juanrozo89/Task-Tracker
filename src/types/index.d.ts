@@ -13,6 +13,7 @@ declare global {
     pageTitle: string;
   }
 
+  /*
   interface TaskProps {
     _id: string;
     task_title: string;
@@ -20,9 +21,10 @@ declare global {
     category: string;
     status: StatusType;
     created_on: Date | string;
-    //updated_on: Date | string | null;
+    accomplished_on: Date | string | null;
     due_date: Date | string | null;
   }
+  */
 
   type PopupType =
     | constants.CONFIRM
@@ -62,7 +64,7 @@ declare global {
     task_title: string;
     task_text: string;
     created_on: Date | string;
-    //updated_on: Date;
+    accomplished_on: Date | string | null;
     due_date: Date | string | null;
   };
 

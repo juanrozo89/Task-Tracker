@@ -340,6 +340,7 @@ const MyTasks = () => {
                     status={task.status}
                     task_title={task.task_title}
                     task_text={task.task_text}
+                    accomplished_on={task.accomplished_on}
                     created_on={formatDateForDisplay(
                       task.created_on.toString()
                     )}

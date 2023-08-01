@@ -31,7 +31,7 @@ const userSchema = new Schema({
       task_text: String,
       priority: String,
       created_on: Date,
-      // accomplished_on: Date,
+      accomplished_on: Date,
       due_date: Date,
     },
   ],
@@ -328,7 +328,7 @@ export default function (app: Express) {
           category: category,
           status: PENDING,
           created_on: date,
-          //updated_on: null,
+          accomplished_on: null,
           due_date: due_date,
         };
         user.tasks.unshift(newTask);
@@ -380,6 +380,7 @@ export default function (app: Express) {
             "task_title",
             "task_text",
             "due_date",
+            "accomplished_on",
           ];
           for (let prop in req.body) {
             if (!validKeys.includes(prop)) {
@@ -389,11 +390,12 @@ export default function (app: Express) {
                   .join(", ")}`,
               });
               return;
+            } else if (prop === "accomplished_on" && req.body[prop] === "") {
+              user.tasks[task_index][prop] = null;
             } else if (req.body[prop] || req.body[prop] === "") {
               user.tasks[task_index][prop] = req.body[prop];
             }
           }
-          //user.tasks[task_index].updated_on = new Date();
           try {
             user = await user.save();
             res.json({
