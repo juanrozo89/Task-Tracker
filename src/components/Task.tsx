@@ -456,7 +456,7 @@ const Task: React.FC<Task> = ({
               <br />
               <input
                 id={`edit-due-date-${_id}`}
-                type="date"
+                type="datetime-local"
                 className="edit-task-due-date-input"
                 defaultValue={due_date?.toString()}
                 min={formattedCurrentDate}

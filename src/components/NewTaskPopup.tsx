@@ -104,18 +104,20 @@ const NewTaskPopup = () => {
             ></SelectCategory>
             <br />
             <label htmlFor="select-priority">Priority*</label>
-            <select id="select-priority" onChange={handlePriorityChange}>
+            <select
+              id="select-priority"
+              onChange={handlePriorityChange}
+              defaultValue={MEDIUM_PRIORITY}
+            >
               <option value={URGENT_PRIORITY}>Urgent</option>
               <option value={HIGH_PRIORITY}>High</option>
-              <option value={MEDIUM_PRIORITY} selected>
-                Medium
-              </option>
+              <option value={MEDIUM_PRIORITY}>Medium</option>
               <option value={LOW_PRIORITY}>Low</option>
             </select>
             <label htmlFor="due-date">Due date</label>
             <input
               id="due-date"
-              type="date"
+              type="datetime-local"
               name="due_date"
               ref={dueDateRef}
               min={formattedCurrentDate}
