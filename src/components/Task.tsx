@@ -263,31 +263,23 @@ const Task: React.FC<Task> = ({
             <div className="edit-task-priority">
               <label htmlFor={`edit-priority-${_id}`}>Priority:</label>
               <br />
-              <select id={`edit-priority-${_id}`} ref={updatedPriorityRef}>
-                <option
-                  value={URGENT_PRIORITY}
-                  selected={priority == URGENT_PRIORITY ? true : false}
-                >
-                  Urgent
-                </option>
-                <option
-                  value={HIGH_PRIORITY}
-                  selected={priority == HIGH_PRIORITY ? true : false}
-                >
-                  High
-                </option>
-                <option
-                  value={MEDIUM_PRIORITY}
-                  selected={priority == MEDIUM_PRIORITY ? true : false}
-                >
-                  Medium
-                </option>
-                <option
-                  value={LOW_PRIORITY}
-                  selected={priority == LOW_PRIORITY ? true : false}
-                >
-                  Low
-                </option>
+              <select
+                id={`edit-priority-${_id}`}
+                ref={updatedPriorityRef}
+                defaultValue={
+                  priority == URGENT_PRIORITY
+                    ? URGENT_PRIORITY
+                    : priority == HIGH_PRIORITY
+                    ? HIGH_PRIORITY
+                    : priority == MEDIUM_PRIORITY
+                    ? MEDIUM_PRIORITY
+                    : LOW_PRIORITY
+                }
+              >
+                <option value={URGENT_PRIORITY}>Urgent</option>
+                <option value={HIGH_PRIORITY}>High</option>
+                <option value={MEDIUM_PRIORITY}>Medium</option>
+                <option value={LOW_PRIORITY}>Low</option>
               </select>
               <div className="edit-priority-buttons small-btn-pair">
                 <button

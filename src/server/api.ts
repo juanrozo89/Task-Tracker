@@ -31,7 +31,7 @@ const userSchema = new Schema({
       task_text: String,
       priority: String,
       created_on: Date,
-      //updated_on: Date,
+      // accomplished_on: Date,
       due_date: Date,
     },
   ],
