@@ -149,8 +149,8 @@ const ProfileSettings = () => {
             className="left-aligned-form"
             onSubmit={confirmUpdateUsername}
           >
-            <p>
-              Current username: <b>{user.username}</b>
+            <p id="username-in-profile">
+              Current username:&nbsp;&nbsp;<b>{user.username}</b>
             </p>
             <label htmlFor="update-new-username">New username: </label>
             <div>
