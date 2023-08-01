@@ -30,7 +30,7 @@ const NewTaskPopup = () => {
     setCategory(updatedCat);
   };
 
-  const [priority, setPriority] = useState<string>("");
+  const [priority, setPriority] = useState<string>(MEDIUM_PRIORITY);
   const handlePriorityChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
