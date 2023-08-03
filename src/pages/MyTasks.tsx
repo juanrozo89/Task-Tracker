@@ -302,6 +302,11 @@ const MyTasks = () => {
                   <input
                     id="initial-date-to-filter-by"
                     ref={initialDateRef}
+                    max={
+                      finalDateRef.current
+                        ? finalDateRef.current.value
+                        : undefined
+                    }
                     onChange={filterTasksByField}
                     type="date"
                   />
@@ -309,6 +314,11 @@ const MyTasks = () => {
                   <input
                     id="final-date-to-filter-by"
                     ref={finalDateRef}
+                    min={
+                      initialDateRef.current
+                        ? initialDateRef.current.value
+                        : undefined
+                    }
                     onChange={filterTasksByField}
                     type="date"
                   />
