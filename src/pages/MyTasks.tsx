@@ -10,6 +10,7 @@ import {
   STATUS,
   CREATED_ON,
   DUE_DATE,
+  ACCOMPLISHED_ON,
   DONE,
   PENDING,
   ONGOING,
@@ -85,13 +86,25 @@ const MyTasks = () => {
             case CREATED_ON:
               toReturn = t1.created_on < t2.created_on ? -order : order;
               break;
+            case ACCOMPLISHED_ON:
+              if (t1.accomplished_on && t2.accomplished_on) {
+                toReturn =
+                  t1.accomplished_on < t2.accomplished_on ? order : -order;
+              } else if (t1.accomplished_on) {
+                toReturn = -1;
+              } else if (t2.accomplished_on) {
+                toReturn = 1;
+              } else {
+                toReturn = 0;
+              }
+              break;
             case DUE_DATE:
               if (t1.due_date && t2.due_date) {
                 toReturn = t1.due_date < t2.due_date ? order : -order;
               } else if (t1.due_date) {
-                toReturn = order;
+                toReturn = -1;
               } else if (t2.due_date) {
-                toReturn = -order;
+                toReturn = 1;
               } else {
                 toReturn = 0;
               }
@@ -133,6 +146,9 @@ const MyTasks = () => {
         } else {
           const createdOn = new Date(task.created_on);
           const dueDate = task.due_date ? new Date(task.due_date) : null;
+          const accomplishedOn = task.accomplished_on
+            ? new Date(task.accomplished_on)
+            : null;
           const initDate = initialDateRef.current?.value
             ? new Date(initialDateRef.current?.value)
             : null;
@@ -148,7 +164,12 @@ const MyTasks = () => {
               (initDate || finalDate) &&
               (!dueDate ||
                 (initDate && dueDate < initDate) ||
-                (finalDate && dueDate > finalDate)))
+                (finalDate && dueDate > finalDate))) ||
+            (filterByField == ACCOMPLISHED_ON &&
+              (initDate || finalDate) &&
+              (!accomplishedOn ||
+                (initDate && accomplishedOn < initDate) ||
+                (finalDate && accomplishedOn > finalDate)))
           ) {
             includeTask = false;
           }
@@ -169,7 +190,11 @@ const MyTasks = () => {
       return;
     } else if (tasksToFilter && tasksToFilter.length > 0) {
       let filteredTasks: Array<Task> = [...tasksToFilter!];
-      const dateKeys: Array<string> = ["created_on", "due_date"];
+      const dateKeys: Array<string> = [
+        "created_on",
+        "due_date",
+        "accomplished_on",
+      ];
       let keyRegex = new RegExp(filterKeyword, "i");
       filteredTasks = filteredTasks.filter((task) => {
         let toReturn = false;
@@ -198,6 +223,8 @@ const MyTasks = () => {
       {tasksToShow ? (
         <>
           <div id="filter-sort-tasks-container">
+            {/* ---- SORT TASKS ---- */}
+
             <div id="sort-tasks-container">
               <label htmlFor="select-sort-by">Sort By:</label>
               <select
@@ -206,6 +233,7 @@ const MyTasks = () => {
                 onChange={() => sortTasks(tasksToShow)}
               >
                 <option value={CREATED_ON}>Created on</option>
+                <option value={ACCOMPLISHED_ON}>Accomplished on</option>
                 <option value={TITLE}>Title</option>
                 <option value={STATUS}>Status</option>
                 <option value={PRIORITY}>Priority</option>
@@ -221,6 +249,8 @@ const MyTasks = () => {
                     ? "Newest first"
                     : sortByRef.current?.value == DUE_DATE
                     ? "Soonest first"
+                    : sortByRef.current?.value == ACCOMPLISHED_ON
+                    ? "Latest first"
                     : sortByRef.current?.value == TITLE
                     ? "A to Z"
                     : sortByRef.current?.value == STATUS
@@ -234,6 +264,8 @@ const MyTasks = () => {
                     ? "Oldest first"
                     : sortByRef.current?.value == DUE_DATE
                     ? "Latest first"
+                    : sortByRef.current?.value == ACCOMPLISHED_ON
+                    ? "Oldest first"
                     : sortByRef.current?.value == TITLE
                     ? "Z to A"
                     : sortByRef.current?.value == STATUS
@@ -244,6 +276,9 @@ const MyTasks = () => {
                 </option>
               </select>
             </div>
+
+            {/* --- FILTER TAKS --- */}
+
             <div id="filter-tasks-container">
               <label htmlFor="select-filter-by">Filter By:</label>
               <select
@@ -257,9 +292,11 @@ const MyTasks = () => {
                 <option value={STATUS}>Status</option>
                 <option value={DUE_DATE}>Due date</option>
                 <option value={CREATED_ON}>Created on</option>
+                <option value={ACCOMPLISHED_ON}>Accomplished on</option>
               </select>
               {filterByFieldRef.current?.value == DUE_DATE ||
-              filterByFieldRef.current?.value == CREATED_ON ? (
+              filterByFieldRef.current?.value == CREATED_ON ||
+              filterByFieldRef.current?.value == ACCOMPLISHED_ON ? (
                 <div id="select-filter-value-dates-between">
                   <label htmlFor="initial-date-to-filter-by">From:</label>
                   <input
@@ -316,6 +353,9 @@ const MyTasks = () => {
                 ) : undefined)
               )}
             </div>
+
+            {/* --- FILTER BY KEYWORD --- */}
+
             <form id="filter-by-keyword-form">
               <label htmlFor="filter-by-keyword-input">
                 Filter by keyword(s):
@@ -328,6 +368,9 @@ const MyTasks = () => {
               ></input>
             </form>
           </div>
+
+          {/* ---- TASKS ---- */}
+
           <div id="tasks-container">
             {tasksToShow.length > 0 ? (
               tasksToShow.map((task) => {
@@ -340,15 +383,14 @@ const MyTasks = () => {
                     status={task.status}
                     task_title={task.task_title}
                     task_text={task.task_text}
-                    accomplished_on={task.accomplished_on}
+                    accomplished_on={
+                      task.accomplished_on
+                        ? formatDateForDisplay(task.accomplished_on.toString())
+                        : null
+                    }
                     created_on={formatDateForDisplay(
                       task.created_on.toString()
                     )}
-                    /*updated_on={
-                      task.updated_on
-                        ? formatDateForDisplay(task.updated_on.toString())
-                        : null
-                    }*/
                     due_date={
                       task.due_date
                         ? formatDateForDisplay(task.due_date.toString())

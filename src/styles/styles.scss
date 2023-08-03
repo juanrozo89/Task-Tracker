@@ -162,6 +162,11 @@ button {
   z-index: 99999;
 }
 
+@mixin select-input {
+  width: 125px !important;
+  min-width: 125px;
+}
+
 /* -------------- */
 /*     HEADER     */
 /* -------------- */
@@ -329,7 +334,7 @@ hr {
     width: fit-content;
     margin-bottom: 10px;
     #select-sort-by {
-      width: 120px !important;
+      @include select-input;
       margin: auto 5px;
     }
     #select-sort-order {
@@ -343,8 +348,7 @@ hr {
     margin-bottom: 10px;
     width: fit-content;
     #select-filter-by-field {
-      width: 120px !important;
-      min-width: 120px !important;
+      @include select-input;
       margin: 0 5px;
     }
     #select-filter-value-dates-between {

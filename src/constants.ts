@@ -36,6 +36,7 @@ export const STATUS = "status";
 export const PRIORITY = "priority";
 export const CREATED_ON = "created-on";
 export const DUE_DATE = "due-date";
+export const ACCOMPLISHED_ON = "accomplished-on";
 export const SHOW_ALL = "show-all";
 
 // Others:
