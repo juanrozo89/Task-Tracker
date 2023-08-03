@@ -214,14 +214,101 @@ const MyTasks = () => {
       setTasksToShow(filteredTasks);
     }
   };
-
+  /*
+  const FilterByField = () => {
+    return (
+      <div id="filter-tasks-container">
+        <label htmlFor="select-filter-by">Filter By:</label>
+        <select
+          id="select-filter-by-field"
+          ref={filterByFieldRef}
+          onChange={filterTasksByField}
+        >
+          <option value={SHOW_ALL}>- Show all -</option>
+          <option value={CATEGORY}>Category</option>
+          <option value={PRIORITY}>Priority</option>
+          <option value={STATUS}>Status</option>
+          <option value={DUE_DATE}>Due date</option>
+          <option value={CREATED_ON}>Created on</option>
+          <option value={ACCOMPLISHED_ON}>Accomplished on</option>
+        </select>
+        {filterByFieldRef.current?.value == DUE_DATE ||
+        filterByFieldRef.current?.value == CREATED_ON ||
+        filterByFieldRef.current?.value == ACCOMPLISHED_ON ? (
+          <div id="select-filter-value-dates-between">
+            <label htmlFor="initial-date-to-filter-by">From:</label>
+            <input
+              id="initial-date-to-filter-by"
+              ref={initialDateRef}
+              max={
+                finalDateRef.current ? finalDateRef.current.value : undefined
+              }
+              onChange={filterTasksByField}
+              type="date"
+            />
+            <label htmlFor="final-date-to-filter-by">To:</label>
+            <input
+              id="final-date-to-filter-by"
+              ref={finalDateRef}
+              min={
+                initialDateRef.current
+                  ? initialDateRef.current.value
+                  : undefined
+              }
+              onChange={filterTasksByField}
+              type="date"
+            />
+          </div>
+        ) : (
+          filterByFieldRef.current?.value !== SHOW_ALL &&
+          (filterByFieldRef.current?.value == STATUS ? (
+            <select
+              id="select-filter-by-field-value"
+              ref={filterByStatusValueRef}
+              onChange={filterTasksByField}
+            >
+              <option value={DONE}>Done</option>
+              <option value={ONGOING}>Ongoing</option>
+              <option value={PENDING}>Pending</option>
+            </select>
+          ) : filterByFieldRef.current?.value == CATEGORY ? (
+            <select
+              id="select-filter-by-field-value"
+              ref={filterByCategoryValueRef}
+              onChange={filterTasksByField}
+            >
+              {categories.map((cat, index) => {
+                return (
+                  <option key={`${cat}-${index}`} value={cat}>
+                    {cat}
+                  </option>
+                );
+              })}{" "}
+            </select>
+          ) : filterByFieldRef.current?.value == PRIORITY ? (
+            <select
+              id="select-filter-by-field-value"
+              ref={filterByPriorityValueRef}
+              onChange={filterTasksByField}
+            >
+              <option value={URGENT_PRIORITY}>Urgent</option>
+              <option value={HIGH_PRIORITY}>High</option>
+              <option value={MEDIUM_PRIORITY}>Medium</option>
+              <option value={LOW_PRIORITY}>Low</option>
+            </select>
+          ) : undefined)
+        )}
+      </div>
+    );
+  };
+*/
   return (
     <section id="my-tasks" className="content">
-      <button id="add-task-button" onClick={setNewTaskPopup}>
-        New task
-      </button>
-      {tasksToShow ? (
-        <>
+      <div id="tasks-header">
+        <button id="add-task-button" onClick={setNewTaskPopup}>
+          New task
+        </button>
+        {tasksToShow && (
           <div id="filter-sort-tasks-container">
             {/* ---- SORT TASKS ---- */}
 
@@ -378,42 +465,42 @@ const MyTasks = () => {
               ></input>
             </form>
           </div>
+        )}
+      </div>
 
-          {/* ---- TASKS ---- */}
+      {/* ---- TASKS ---- */}
 
-          <div id="tasks-container">
-            {tasksToShow.length > 0 ? (
-              tasksToShow.map((task) => {
-                return (
-                  <Task
-                    key={task._id}
-                    _id={task._id}
-                    category={task.category}
-                    priority={task.priority}
-                    status={task.status}
-                    task_title={task.task_title}
-                    task_text={task.task_text}
-                    accomplished_on={
-                      task.accomplished_on
-                        ? formatDateForDisplay(task.accomplished_on.toString())
-                        : null
-                    }
-                    created_on={formatDateForDisplay(
-                      task.created_on.toString()
-                    )}
-                    due_date={
-                      task.due_date
-                        ? formatDateForDisplay(task.due_date.toString())
-                        : null
-                    }
-                  />
-                );
-              })
-            ) : (
-              <p>No tasks to show</p>
-            )}
-          </div>
-        </>
+      {tasksToShow ? (
+        <div id="tasks-container">
+          {tasksToShow.length > 0 ? (
+            tasksToShow.map((task) => {
+              return (
+                <Task
+                  key={task._id}
+                  _id={task._id}
+                  category={task.category}
+                  priority={task.priority}
+                  status={task.status}
+                  task_title={task.task_title}
+                  task_text={task.task_text}
+                  accomplished_on={
+                    task.accomplished_on
+                      ? formatDateForDisplay(task.accomplished_on.toString())
+                      : null
+                  }
+                  created_on={formatDateForDisplay(task.created_on.toString())}
+                  due_date={
+                    task.due_date
+                      ? formatDateForDisplay(task.due_date.toString())
+                      : null
+                  }
+                />
+              );
+            })
+          ) : (
+            <p>No tasks to show</p>
+          )}
+        </div>
       ) : (
         <RedirectToLogin />
       )}
