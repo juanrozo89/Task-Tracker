@@ -111,7 +111,12 @@
       background-color: $medium-light;
     }
   }
-
+  #tasks-container-border {
+    &::before,
+    &::after {
+      box-shadow: inset 0px 10px 5px white, inset 0px -10px 5px white;
+    }
+  }
   .task-cell {
     background-color: white;
     label {
@@ -313,6 +318,12 @@
     }
   }
 
+  #tasks-container-border {
+    &::before,
+    &::after {
+      box-shadow: inset 0px 10px 5px $darkest, inset 0px -10px 5px $darkest;
+    }
+  }
   .task-cell {
     background-color: $dark;
     input,

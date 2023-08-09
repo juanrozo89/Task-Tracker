@@ -305,9 +305,6 @@ const MyTasks = () => {
   return (
     <section id="my-tasks" className="content">
       <div id="tasks-header">
-        <button id="add-task-button" onClick={setNewTaskPopup}>
-          New task
-        </button>
         {tasksToShow && (
           <div id="filter-sort-tasks-container">
             {/* ---- SORT TASKS ---- */}
@@ -319,12 +316,12 @@ const MyTasks = () => {
                 ref={sortByRef}
                 onChange={() => sortTasks(tasksToShow)}
               >
-                <option value={CREATED_ON}>Created on</option>
-                <option value={ACCOMPLISHED_ON}>Accomplished on</option>
+                <option value={PRIORITY}>Priority</option>
                 <option value={TITLE}>Title</option>
                 <option value={STATUS}>Status</option>
-                <option value={PRIORITY}>Priority</option>
+                <option value={CREATED_ON}>Created on</option>
                 <option value={DUE_DATE}>Due date</option>
+                <option value={ACCOMPLISHED_ON}>Accomplished on</option>
               </select>
               <select
                 id="select-sort-order"
@@ -384,8 +381,8 @@ const MyTasks = () => {
               {filterByFieldRef.current?.value == DUE_DATE ||
               filterByFieldRef.current?.value == CREATED_ON ||
               filterByFieldRef.current?.value == ACCOMPLISHED_ON ? (
-                <div id="select-filter-value-dates-between">
-                  <label htmlFor="initial-date-to-filter-by">From:</label>
+                <div id="filter-dates-between">
+                  <label htmlFor="initial-date-to-filter-by">from:</label>
                   <input
                     id="initial-date-to-filter-by"
                     ref={initialDateRef}
@@ -397,7 +394,7 @@ const MyTasks = () => {
                     onChange={filterTasksByField}
                     type="date"
                   />
-                  <label htmlFor="final-date-to-filter-by">To:</label>
+                  <label htmlFor="final-date-to-filter-by">to:</label>
                   <input
                     id="final-date-to-filter-by"
                     ref={finalDateRef}
@@ -454,9 +451,7 @@ const MyTasks = () => {
             {/* --- FILTER BY KEYWORD --- */}
 
             <form id="filter-by-keyword-form">
-              <label htmlFor="filter-by-keyword-input">
-                Filter by keyword(s):
-              </label>
+              <label htmlFor="filter-by-keyword-input">Search:</label>
               <input
                 id="filter-by-keyword-input"
                 type="text"
@@ -466,40 +461,47 @@ const MyTasks = () => {
             </form>
           </div>
         )}
+        <button id="add-task-button" onClick={setNewTaskPopup}>
+          New task
+        </button>
       </div>
 
       {/* ---- TASKS ---- */}
 
       {tasksToShow ? (
-        <div id="tasks-container">
-          {tasksToShow.length > 0 ? (
-            tasksToShow.map((task) => {
-              return (
-                <Task
-                  key={task._id}
-                  _id={task._id}
-                  category={task.category}
-                  priority={task.priority}
-                  status={task.status}
-                  task_title={task.task_title}
-                  task_text={task.task_text}
-                  accomplished_on={
-                    task.accomplished_on
-                      ? formatDateForDisplay(task.accomplished_on.toString())
-                      : null
-                  }
-                  created_on={formatDateForDisplay(task.created_on.toString())}
-                  due_date={
-                    task.due_date
-                      ? formatDateForDisplay(task.due_date.toString())
-                      : null
-                  }
-                />
-              );
-            })
-          ) : (
-            <p>No tasks to show</p>
-          )}
+        <div id="tasks-container-border">
+          <div id="tasks-container">
+            {tasksToShow.length > 0 ? (
+              tasksToShow.map((task) => {
+                return (
+                  <Task
+                    key={task._id}
+                    _id={task._id}
+                    category={task.category}
+                    priority={task.priority}
+                    status={task.status}
+                    task_title={task.task_title}
+                    task_text={task.task_text}
+                    accomplished_on={
+                      task.accomplished_on
+                        ? formatDateForDisplay(task.accomplished_on.toString())
+                        : null
+                    }
+                    created_on={formatDateForDisplay(
+                      task.created_on.toString()
+                    )}
+                    due_date={
+                      task.due_date
+                        ? formatDateForDisplay(task.due_date.toString())
+                        : null
+                    }
+                  />
+                );
+              })
+            ) : (
+              <p>No tasks to show</p>
+            )}
+          </div>
         </div>
       ) : (
         <RedirectToLogin />

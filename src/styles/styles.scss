@@ -326,44 +326,20 @@ hr {
     & > *:first-child {
       margin-right: 25px;
     }
-    #tasks-container {
-      position: relative;
-      margin-top: 15px;
-      margin-bottom: 0;
-      min-width: 384px;
-      height: calc(100vh - $header-height - 55px);
-      padding: 10px;
-      overflow-y: auto;
-      &::after {
-        position: sticky;
-        content: "";
-        left: 0px;
-        top: 0px;
-        height: 300px;
-        width: 300px;
-        background: linear-gradient(
-          gray 0%,
-          transparent 5%,
-          transparent 95%,
-          gray 100%
-        );
-        pointer-events: none;
-        z-index: 999999;
-      }
-    }
   }
-
   @media (max-width: 800px) {
     display: flex;
     flex-direction: column;
   }
 
   #tasks-header {
-    #add-task-button {
-      margin: 20px;
-    }
-
     #filter-sort-tasks-container {
+      @media (max-width: 800px) {
+        margin-top: 20px;
+      }
+      @media (min-width: 801px) {
+        margin-top: 30px;
+      }
       label {
         width: 65px;
         text-align: right;
@@ -387,24 +363,24 @@ hr {
       #filter-tasks-container {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         margin-bottom: 10px;
-        width: fit-content;
+        width: 310px;
         #select-filter-by-field {
           @include select-input;
           margin: 0 5px;
         }
-        #select-filter-value-dates-between {
+        #filter-dates-between {
           display: flex;
+          flex-direction: row;
           flex-wrap: wrap;
-          width: 172px;
+          width: 195px;
           text-align: right;
+          margin-top: 5px;
           padding: 0;
 
-          label {
-            width: 45px;
-          }
           input {
-            width: 120px !important;
+            @include select-input;
             margin-left: 5px;
             &:first-of-type {
               margin-bottom: 4px;
@@ -420,17 +396,77 @@ hr {
         display: flex;
         flex-direction: row;
         justify-items: center;
-        margin: 10px auto 15px;
+        margin: 10px 0;
         label {
           min-width: fit-content;
           margin-right: 5px;
         }
+        input {
+          @include select-input;
+        }
+      }
+    }
+    #add-task-button {
+      @media (min-width: 801px) {
+        margin: 5px 0 0 -45px;
+      }
+      @media (max-width: 800px) {
+        margin: 5px auto 20px;
       }
     }
   }
 
+  #tasks-container-border {
+    position: relative;
+    //border: 2px solid pink;
+    min-width: 384px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    &::before,
+    &::after {
+      position: absolute;
+      content: "";
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      //box-shadow: inset 0px 10px 5px #dba632, inset 0px -10px 5px #dba632;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @media (max-width: 800px) {
+      max-height: calc(100vh - $header-height - 40px);
+      margin-bottom: -26px;
+    }
+    @media (min-width: 801px) {
+      margin-top: 15px;
+      margin-bottom: 0;
+      height: calc(100vh - $header-height - 55px);
+    }
+  }
   #tasks-container {
+    //border: 2px solid green;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+    }
+    overflow-y: auto;
+    height: inherit;
+    width: 100%;
     .task-cell {
+      &:first-child {
+        margin-top: 12px;
+      }
+      &:last-child {
+        margin-bottom: 12px;
+      }
       /*border: 2px solid grey;*/
       box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
       padding: 10px;
