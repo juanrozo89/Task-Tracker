@@ -230,7 +230,7 @@ header {
     /*box-shadow: 0 0 8px var(--medium-light);*/
     text-align: center;
     font-size: 45px;
-    font-family: "Arial", sans-serif;
+    font-family: $base-font;
     line-height: 48px;
     vertical-align: middle;
     cursor: pointer;
@@ -445,6 +445,33 @@ hr {
       margin-bottom: 0;
       height: calc(100vh - $header-height - 55px);
     }
+    .scroll-indicator {
+      position: absolute;
+      z-index: 888;
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      font-family: $base-font;
+      font-weight: bold;
+      font-size: 24px;
+      text-align: center;
+      padding: 0;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+      &.top {
+        top: 0;
+        & > * {
+          margin-top: -21px;
+        }
+      }
+      &.bottom {
+        bottom: 0;
+        & > * {
+          margin-top: -1px;
+        }
+      }
+    }
   }
   #tasks-container {
     //border: 2px solid green;
@@ -458,6 +485,7 @@ hr {
       display: none; /* Safari and Chrome */
     }
     overflow-y: auto;
+    scroll-behavior: smooth;
     height: inherit;
     width: 100%;
     .task-cell {
@@ -468,7 +496,7 @@ hr {
         margin-bottom: 12px;
       }
       /*border: 2px solid grey;*/
-      box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 1px 7px rgba(0, 0, 0, 0.4);
       padding: 10px;
       border-radius: 5px;
       width: 350px;
@@ -492,7 +520,7 @@ hr {
           .ongoing-mark,
           .pending-mark {
             font-size: 22px;
-            font-family: Arial, sans-serif;
+            font-family: $base-font;
             line-height: 1em;
             vertical-align: baseline;
           }
@@ -514,7 +542,7 @@ hr {
           width: 30px;
           aspect-ratio: 1/1;
           padding: 0 0 3px;
-          font-family: "Arial" sans-serif;
+          font-family: $base-font;
           font-size: 16px;
           text-align: center;
           position: absolute;

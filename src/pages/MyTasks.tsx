@@ -28,9 +28,9 @@ const ORDER_2 = "order2";
 
 const MyTasks = () => {
   const { user } = useContext(UserContext)!;
-  const filterKeywordRef = useRef<HTMLInputElement | null>(null);
   const setNewTaskPopup = useNewTaskPopup()!;
   const categories = useExistingCategories();
+  const filterKeywordRef = useRef<HTMLInputElement | null>(null);
   const sortByRef = useRef<HTMLSelectElement | null>(null);
   const sortOrderRef = useRef<HTMLSelectElement | null>(null);
   const filterByFieldRef = useRef<HTMLSelectElement | null>(null);
@@ -39,6 +39,8 @@ const MyTasks = () => {
   const filterByPriorityValueRef = useRef<HTMLSelectElement | null>(null);
   const initialDateRef = useRef<HTMLInputElement | null>(null);
   const finalDateRef = useRef<HTMLInputElement | null>(null);
+  const [isTopOverflowing, setIsTopOverflowing] = useState(false);
+  const [isBottomOverflowing, setIsBottomOverflowing] = useState(false);
   const [tasksToShow, setTasksToShow] = useState<Array<Task> | undefined>(
     user?.tasks
   );
@@ -68,6 +70,12 @@ const MyTasks = () => {
             case TITLE:
               toReturn =
                 t1.task_title.toLowerCase() < t2.task_title.toLowerCase()
+                  ? order
+                  : -order;
+              break;
+            case CATEGORY:
+              toReturn =
+                t1.category.toLowerCase() < t2.category.toLowerCase()
                   ? order
                   : -order;
               break;
@@ -214,94 +222,25 @@ const MyTasks = () => {
       setTasksToShow(filteredTasks);
     }
   };
-  /*
-  const FilterByField = () => {
-    return (
-      <div id="filter-tasks-container">
-        <label htmlFor="select-filter-by">Filter By:</label>
-        <select
-          id="select-filter-by-field"
-          ref={filterByFieldRef}
-          onChange={filterTasksByField}
-        >
-          <option value={SHOW_ALL}>- Show all -</option>
-          <option value={CATEGORY}>Category</option>
-          <option value={PRIORITY}>Priority</option>
-          <option value={STATUS}>Status</option>
-          <option value={DUE_DATE}>Due date</option>
-          <option value={CREATED_ON}>Created on</option>
-          <option value={ACCOMPLISHED_ON}>Accomplished on</option>
-        </select>
-        {filterByFieldRef.current?.value == DUE_DATE ||
-        filterByFieldRef.current?.value == CREATED_ON ||
-        filterByFieldRef.current?.value == ACCOMPLISHED_ON ? (
-          <div id="select-filter-value-dates-between">
-            <label htmlFor="initial-date-to-filter-by">From:</label>
-            <input
-              id="initial-date-to-filter-by"
-              ref={initialDateRef}
-              max={
-                finalDateRef.current ? finalDateRef.current.value : undefined
-              }
-              onChange={filterTasksByField}
-              type="date"
-            />
-            <label htmlFor="final-date-to-filter-by">To:</label>
-            <input
-              id="final-date-to-filter-by"
-              ref={finalDateRef}
-              min={
-                initialDateRef.current
-                  ? initialDateRef.current.value
-                  : undefined
-              }
-              onChange={filterTasksByField}
-              type="date"
-            />
-          </div>
-        ) : (
-          filterByFieldRef.current?.value !== SHOW_ALL &&
-          (filterByFieldRef.current?.value == STATUS ? (
-            <select
-              id="select-filter-by-field-value"
-              ref={filterByStatusValueRef}
-              onChange={filterTasksByField}
-            >
-              <option value={DONE}>Done</option>
-              <option value={ONGOING}>Ongoing</option>
-              <option value={PENDING}>Pending</option>
-            </select>
-          ) : filterByFieldRef.current?.value == CATEGORY ? (
-            <select
-              id="select-filter-by-field-value"
-              ref={filterByCategoryValueRef}
-              onChange={filterTasksByField}
-            >
-              {categories.map((cat, index) => {
-                return (
-                  <option key={`${cat}-${index}`} value={cat}>
-                    {cat}
-                  </option>
-                );
-              })}{" "}
-            </select>
-          ) : filterByFieldRef.current?.value == PRIORITY ? (
-            <select
-              id="select-filter-by-field-value"
-              ref={filterByPriorityValueRef}
-              onChange={filterTasksByField}
-            >
-              <option value={URGENT_PRIORITY}>Urgent</option>
-              <option value={HIGH_PRIORITY}>High</option>
-              <option value={MEDIUM_PRIORITY}>Medium</option>
-              <option value={LOW_PRIORITY}>Low</option>
-            </select>
-          ) : undefined)
-        )}
-      </div>
-    );
+
+  const handleScroll = (e: React.UIEvent<HTMLElement>) => {
+    const element = e.target as HTMLElement;
+    const scrollTop = element.scrollTop;
+    const scrollHeight = element.scrollHeight;
+    const clientHeight = element.clientHeight;
+    setIsTopOverflowing(scrollTop > 0);
+    setIsBottomOverflowing(scrollTop + clientHeight < scrollHeight);
   };
-*/
+
+  const scrollTop = () => {
+    document.querySelector("#tasks-container")!.scrollTop = 0;
+  };
+
+  const scrollBottom = () => {
+    const container = document.querySelector("#tasks-container")!;
+    container.scrollTop = container.scrollHeight - container.clientHeight;
+  };
+
   return (
     <section id="my-tasks" className="content">
       <div id="tasks-header">
@@ -318,6 +257,7 @@ const MyTasks = () => {
               >
                 <option value={PRIORITY}>Priority</option>
                 <option value={TITLE}>Title</option>
+                <option value={CATEGORY}>Category</option>
                 <option value={STATUS}>Status</option>
                 <option value={CREATED_ON}>Created on</option>
                 <option value={DUE_DATE}>Due date</option>
@@ -337,6 +277,8 @@ const MyTasks = () => {
                     ? "Latest first"
                     : sortByRef.current?.value == TITLE
                     ? "A to Z"
+                    : sortByRef.current?.value == CATEGORY
+                    ? "A to Z"
                     : sortByRef.current?.value == STATUS
                     ? "Pending First"
                     : sortByRef.current?.value == PRIORITY
@@ -351,6 +293,8 @@ const MyTasks = () => {
                     : sortByRef.current?.value == ACCOMPLISHED_ON
                     ? "Oldest first"
                     : sortByRef.current?.value == TITLE
+                    ? "Z to A"
+                    : sortByRef.current?.value == CATEGORY
                     ? "Z to A"
                     : sortByRef.current?.value == STATUS
                     ? "Done first"
@@ -470,7 +414,12 @@ const MyTasks = () => {
 
       {tasksToShow ? (
         <div id="tasks-container-border">
-          <div id="tasks-container">
+          {isTopOverflowing && (
+            <div className="scroll-indicator top" onClick={scrollTop}>
+              <p>🢑</p>
+            </div>
+          )}
+          <div id="tasks-container" onScroll={handleScroll}>
             {tasksToShow.length > 0 ? (
               tasksToShow.map((task) => {
                 return (
@@ -502,6 +451,11 @@ const MyTasks = () => {
               <p>No tasks to show</p>
             )}
           </div>
+          {isBottomOverflowing && (
+            <div className="scroll-indicator bottom" onClick={scrollBottom}>
+              <p>🢓</p>
+            </div>
+          )}
         </div>
       ) : (
         <RedirectToLogin />

@@ -116,6 +116,16 @@
     &::after {
       box-shadow: inset 0px 10px 5px white, inset 0px -10px 5px white;
     }
+    .scroll-indicator {
+      background-color: $light;
+      &.top {
+        box-shadow: 0 -0 10px 4px white;
+      }
+      &.bottom {
+        box-shadow: 0 -1px 10px 4px white;
+      }
+      color: $medium-dark;
+    }
   }
   .task-cell {
     background-color: white;
@@ -322,6 +332,16 @@
     &::before,
     &::after {
       box-shadow: inset 0px 10px 5px $darkest, inset 0px -10px 5px $darkest;
+    }
+    .scroll-indicator {
+      background-color: darken($medium, 5%);
+      &.top {
+        box-shadow: 0 -0 9px $darkest;
+      }
+      &.bottom {
+        box-shadow: 0 -1px 9px $darkest;
+      }
+      color: white;
     }
   }
   .task-cell {
