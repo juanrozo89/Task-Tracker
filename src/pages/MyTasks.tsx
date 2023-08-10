@@ -252,11 +252,6 @@ const MyTasks = () => {
     const scrollHeight = element.scrollHeight;
     const clientHeight = element.clientHeight;
     const scrollBottom = scrollHeight - scrollTop - clientHeight;
-    console.log("-----------");
-    console.log("sHeight:" + scrollHeight);
-    console.log("sTop:" + scrollTop);
-    console.log("clientHeight:" + clientHeight);
-    console.log("bottom:" + scrollBottom);
     setIsTopOverflowing(scrollTop > 0);
     setIsBottomOverflowing(scrollBottom > 0);
   };
@@ -268,7 +263,7 @@ const MyTasks = () => {
     const clientHeight = element.clientHeight;
     const scrollBottom = scrollHeight - scrollTop - clientHeight;
     setIsBottomOverflowing(scrollBottom > 0);
-  }, [scrollableTasksRef.current!.clientHeight]);
+  }, [scrollableTasksRef.current?.clientHeight]);
 
   const scrollTop = () => {
     scrollableTasksRef.current!.scrollTop = 0;
@@ -293,7 +288,7 @@ const MyTasks = () => {
                 type="text"
                 ref={filterKeywordRef}
                 onChange={filterTasksByKeyword}
-                placeholder="Search by keyword(s)"
+                placeholder="Filter by keyword(s)"
               ></input>
             </form>
 
