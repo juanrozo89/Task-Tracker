@@ -39,6 +39,7 @@ const MyTasks = () => {
   const filterByPriorityValueRef = useRef<HTMLSelectElement | null>(null);
   const initialDateRef = useRef<HTMLInputElement | null>(null);
   const finalDateRef = useRef<HTMLInputElement | null>(null);
+  const scrollableTasksRef = useRef<HTMLDivElement | null>(null);
   const [isTopOverflowing, setIsTopOverflowing] = useState(false);
   const [isBottomOverflowing, setIsBottomOverflowing] = useState(false);
   const [tasksToShow, setTasksToShow] = useState<Array<Task> | undefined>(
@@ -71,33 +72,50 @@ const MyTasks = () => {
               toReturn =
                 t1.task_title.toLowerCase() < t2.task_title.toLowerCase()
                   ? order
-                  : -order;
+                  : t1.task_title.toLowerCase() > t2.task_title.toLowerCase()
+                  ? -order
+                  : 0;
               break;
             case CATEGORY:
               toReturn =
                 t1.category.toLowerCase() < t2.category.toLowerCase()
                   ? order
-                  : -order;
+                  : t1.category.toLowerCase() > t2.category.toLowerCase()
+                  ? -order
+                  : 0;
               break;
             case PRIORITY:
               toReturn =
                 priorityOrder[t1.priority] < priorityOrder[t2.priority]
                   ? order
-                  : -order;
+                  : priorityOrder[t1.priority] > priorityOrder[t2.priority]
+                  ? -order
+                  : 0;
               break;
             case STATUS:
               toReturn =
                 statusOrder[t1.status] < statusOrder[t2.status]
                   ? order
-                  : -order;
+                  : statusOrder[t1.status] > statusOrder[t2.status]
+                  ? -order
+                  : 0;
               break;
             case CREATED_ON:
-              toReturn = t1.created_on < t2.created_on ? -order : order;
+              toReturn =
+                t1.created_on < t2.created_on
+                  ? -order
+                  : t1.created_on > t2.created_on
+                  ? order
+                  : 0;
               break;
             case ACCOMPLISHED_ON:
               if (t1.accomplished_on && t2.accomplished_on) {
                 toReturn =
-                  t1.accomplished_on < t2.accomplished_on ? order : -order;
+                  t1.accomplished_on < t2.accomplished_on
+                    ? order
+                    : t1.accomplished_on > t2.accomplished_on
+                    ? -order
+                    : 0;
               } else if (t1.accomplished_on) {
                 toReturn = -1;
               } else if (t2.accomplished_on) {
@@ -108,7 +126,12 @@ const MyTasks = () => {
               break;
             case DUE_DATE:
               if (t1.due_date && t2.due_date) {
-                toReturn = t1.due_date < t2.due_date ? order : -order;
+                toReturn =
+                  t1.due_date < t2.due_date
+                    ? order
+                    : t1.due_date > t2.due_date
+                    ? -order
+                    : 0;
               } else if (t1.due_date) {
                 toReturn = -1;
               } else if (t2.due_date) {
@@ -228,16 +251,31 @@ const MyTasks = () => {
     const scrollTop = element.scrollTop;
     const scrollHeight = element.scrollHeight;
     const clientHeight = element.clientHeight;
+    const scrollBottom = scrollHeight - scrollTop - clientHeight;
+    console.log("-----------");
+    console.log("sHeight:" + scrollHeight);
+    console.log("sTop:" + scrollTop);
+    console.log("clientHeight:" + clientHeight);
+    console.log("bottom:" + scrollBottom);
     setIsTopOverflowing(scrollTop > 0);
-    setIsBottomOverflowing(scrollTop + clientHeight < scrollHeight);
+    setIsBottomOverflowing(scrollBottom > 0);
   };
 
+  useEffect(() => {
+    const element = scrollableTasksRef.current!;
+    const scrollTop = element.scrollTop;
+    const scrollHeight = element.scrollHeight;
+    const clientHeight = element.clientHeight;
+    const scrollBottom = scrollHeight - scrollTop - clientHeight;
+    setIsBottomOverflowing(scrollBottom > 0);
+  }, [scrollableTasksRef.current!.clientHeight]);
+
   const scrollTop = () => {
-    document.querySelector("#tasks-container")!.scrollTop = 0;
+    scrollableTasksRef.current!.scrollTop = 0;
   };
 
   const scrollBottom = () => {
-    const container = document.querySelector("#tasks-container")!;
+    const container = scrollableTasksRef.current!;
     container.scrollTop = container.scrollHeight - container.clientHeight;
   };
 
@@ -246,6 +284,19 @@ const MyTasks = () => {
       <div id="tasks-header">
         {tasksToShow && (
           <div id="filter-sort-tasks-container">
+            {/* --- FILTER BY KEYWORD --- */}
+
+            <form id="filter-by-keyword-form">
+              <label htmlFor="filter-by-keyword-input">Search:</label>
+              <input
+                id="filter-by-keyword-input"
+                type="text"
+                ref={filterKeywordRef}
+                onChange={filterTasksByKeyword}
+                placeholder="Search by keyword(s)"
+              ></input>
+            </form>
+
             {/* ---- SORT TASKS ---- */}
 
             <div id="sort-tasks-container">
@@ -391,18 +442,6 @@ const MyTasks = () => {
                 ) : undefined)
               )}
             </div>
-
-            {/* --- FILTER BY KEYWORD --- */}
-
-            <form id="filter-by-keyword-form">
-              <label htmlFor="filter-by-keyword-input">Search:</label>
-              <input
-                id="filter-by-keyword-input"
-                type="text"
-                ref={filterKeywordRef}
-                onChange={filterTasksByKeyword}
-              ></input>
-            </form>
           </div>
         )}
         <button id="add-task-button" onClick={setNewTaskPopup}>
@@ -419,7 +458,11 @@ const MyTasks = () => {
               <p>🢑</p>
             </div>
           )}
-          <div id="tasks-container" onScroll={handleScroll}>
+          <div
+            id="tasks-container"
+            onScroll={handleScroll}
+            ref={scrollableTasksRef}
+          >
             {tasksToShow.length > 0 ? (
               tasksToShow.map((task) => {
                 return (

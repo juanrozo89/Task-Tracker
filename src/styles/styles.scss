@@ -402,7 +402,7 @@ hr {
           margin-right: 5px;
         }
         input {
-          @include select-input;
+          width: 235px;
         }
       }
     }
@@ -443,7 +443,7 @@ hr {
     @media (min-width: 801px) {
       margin-top: 15px;
       margin-bottom: 0;
-      height: calc(100vh - $header-height - 55px);
+      max-height: calc(100vh - $header-height - 55px);
     }
     .scroll-indicator {
       position: absolute;
