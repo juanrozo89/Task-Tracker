@@ -14,6 +14,7 @@ import SelectCategory from "./SelectCategory";
 import Loading from "./Loading";
 
 import axios from "axios";
+import DOMPurify from "dompurify";
 import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
 
@@ -45,7 +46,7 @@ const Task: React.FC<Task> = ({
 
   const [updatedCategory, setUpdatedCategory] = useState<string>("");
   const handleCategoryChange = (updatedCat: string) => {
-    setUpdatedCategory(updatedCat);
+    setUpdatedCategory(DOMPurify.sanitize(updatedCat));
   };
 
   const { setPopup, setOnConfirm } = useContext(PopupContext)!;
@@ -88,7 +89,7 @@ const Task: React.FC<Task> = ({
 
   const editTitle = () => {
     const updatedTitle = editTitleRef.current?.value
-      ? editTitleRef.current.value
+      ? DOMPurify.sanitize(editTitleRef.current.value)
       : null;
 
     setIsLoading(true);
@@ -151,7 +152,7 @@ const Task: React.FC<Task> = ({
 
   const editText = () => {
     const updatedText = editTextRef.current?.value
-      ? editTextRef.current.value
+      ? DOMPurify.sanitize(editTextRef.current.value)
       : "";
 
     setIsLoading(true);

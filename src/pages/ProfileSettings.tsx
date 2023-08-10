@@ -6,6 +6,7 @@ import { CONFIRM } from "../constants";
 import Loading from "../components/Loading";
 
 import axios from "axios";
+import DOMPurify from "dompurify";
 import { handleErrorAlert, handleSuccessAlert } from "../utils/alertFunctions";
 
 const ProfileSettings = () => {
@@ -158,7 +159,9 @@ const ProfileSettings = () => {
                 type="text"
                 name="new_username"
                 id="update-new-username"
-                onChange={(e) => setNewUsername(e.target.value)}
+                onChange={(e) =>
+                  setNewUsername(DOMPurify.sanitize(e.target.value))
+                }
                 ref={usernameRef}
                 required
               />
@@ -178,7 +181,9 @@ const ProfileSettings = () => {
               name="new_password"
               id="update-new-password"
               autoComplete="new-password"
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={(e) =>
+                setNewPassword(DOMPurify.sanitize(e.target.value))
+              }
               ref={passwordRef}
               required
             />
@@ -190,7 +195,9 @@ const ProfileSettings = () => {
                 type="password"
                 name="confirm_new_password"
                 id="update-confirm-password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) =>
+                  setConfirmPassword(DOMPurify.sanitize(e.target.value))
+                }
                 ref={confirmPasswordRef}
                 required
               />

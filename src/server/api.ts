@@ -14,9 +14,9 @@ import mongoose from "mongoose";
 mongoose
   .connect(process.env.MONGO_URI!)
   .then(() => console.log("Successfully connected to 'task-tracker' database"))
-  .catch((err) =>
-    console.log("Error connecting to 'task-tracker' database: ", err)
-  );
+  .catch((err) => {
+    console.log("Error connecting to 'task-tracker' database: ", err);
+  });
 
 const Schema = mongoose.Schema;
 

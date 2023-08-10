@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NEW_CATEGORY } from "../constants";
 import useExistingCategories from "../hooks/useExistingCategories";
+import DOMPurify from "dompurify";
 
 const SelectCategory: React.FC<{
   _id: string;
@@ -42,7 +43,7 @@ const SelectCategory: React.FC<{
           id="catgeory-input"
           type="text"
           name="category"
-          onChange={(e) => changeCategory(e.target.value)}
+          onChange={(e) => changeCategory(DOMPurify.sanitize(e.target.value))}
           required
         />
       )}

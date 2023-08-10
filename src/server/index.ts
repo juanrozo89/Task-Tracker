@@ -25,14 +25,11 @@ store.on("connected", () => {
   console.log("Succesfully connected to MongoDBStore");
 });
 
-// import path from "path";
 // import helmet from "helmet";
-// import cors from "cors";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-//app.use(cors());
 // app.use(helmet());
 
 const oneMonth = 1000 * 60 * 60 * 24 * 7 * 30;

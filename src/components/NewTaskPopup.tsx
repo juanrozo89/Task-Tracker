@@ -13,6 +13,7 @@ import SelectCategory from "./SelectCategory";
 import Loading from "./Loading";
 
 import axios from "axios";
+import DOMPurify from "dompurify";
 
 const NewTaskPopup = () => {
   const { setPopup } = useContext(PopupContext)!;
@@ -27,7 +28,7 @@ const NewTaskPopup = () => {
 
   const [category, setCategory] = useState<string>("");
   const handleCategoryChange = (updatedCat: string) => {
-    setCategory(updatedCat);
+    setCategory(DOMPurify.sanitize(updatedCat));
   };
 
   const [priority, setPriority] = useState<string>(MEDIUM_PRIORITY);
@@ -46,8 +47,8 @@ const NewTaskPopup = () => {
   };
 
   const addNewTask = () => {
-    const title = titleRef.current?.value ? titleRef.current.value : "";
-    const text = textRef.current?.value ? textRef.current.value : "";
+    const title = DOMPurify.sanitize(titleRef.current?.value || "");
+    const text = DOMPurify.sanitize(textRef.current?.value || "");
     const dueDate = dueDateRef.current?.value ? dueDateRef.current.value : "";
     setIsLoading(true);
     axios

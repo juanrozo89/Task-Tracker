@@ -3,11 +3,12 @@ import { useState, useContext } from "react";
 import { UserContext, PopupContext } from "../Contexts";
 
 import axios from "axios";
+import DOMPurify from "dompurify";
 import { handleErrorAlert } from "../utils/alertFunctions";
 
 const LogIn = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const navigate = useNavigate();
 
@@ -42,7 +43,7 @@ const LogIn = () => {
           type="text"
           name="username"
           id="login-username"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsername(DOMPurify.sanitize(e.target.value))}
           required
         />
 
@@ -51,7 +52,7 @@ const LogIn = () => {
           type="password"
           name="password"
           id="login-password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPassword(DOMPurify.sanitize(e.target.value))}
           autoComplete="new-password"
           required
         />

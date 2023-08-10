@@ -281,7 +281,7 @@ const MyTasks = () => {
           <div id="filter-sort-tasks-container">
             {/* --- FILTER BY KEYWORD --- */}
 
-            <form id="filter-by-keyword-form">
+            <div id="filter-by-keyword-container">
               <label htmlFor="filter-by-keyword-input">Search:</label>
               <input
                 id="filter-by-keyword-input"
@@ -290,7 +290,7 @@ const MyTasks = () => {
                 onChange={filterTasksByKeyword}
                 placeholder="Filter by keyword(s)"
               ></input>
-            </form>
+            </div>
 
             {/* ---- SORT TASKS ---- */}
 
