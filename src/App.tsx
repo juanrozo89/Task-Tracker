@@ -28,8 +28,6 @@ function App() {
 
   return (
     <>
-      {/*<h1>Vite + React</h1>
-      <p>Server response: {greeting}</p>*/}
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
         <UserContext.Provider value={{ user, setUser }}>
           <Routes>

@@ -135,25 +135,25 @@
     .task-header {
       .task-title {
         color: $dark;
-        .urgent-priority-mark {
+        .urgent.priority-mark {
           color: darken($warning-light, 20%);
         }
-        .high-priority-mark {
+        .high.priority-mark {
           color: darken($warning-light, 10%);
         }
-        .medium-priority-mark {
+        .medium.priority-mark {
           color: $dark;
         }
-        .low-priority-mark {
+        .low.priority-mark {
           color: $pending-dark;
         }
-        .check-mark {
+        .status-mark.check {
           color: darken($done-light, 20%);
         }
-        .ongoing-mark {
+        .status-mark.ongoing {
           color: darken($ongoing-light, 30%);
         }
-        .pending-mark {
+        .status-mark.pending {
           color: lighten($pending-dark, 40%);
         }
       }
@@ -354,25 +354,25 @@
     .task-header {
       .task-title {
         color: $lightest;
-        .urgent-priority-mark {
+        .urgent.priority-mark {
           color: lighten($warning-dark, 23%);
         }
-        .high-priority-mark {
+        .high.priority-mark {
           color: darken($warning-light, 12%);
         }
-        .medium-priority-mark {
+        .medium.priority-mark {
           color: $dark;
         }
-        .low-priority-mark {
+        .low.priority-mark {
           color: lighten($pending-dark, 15%);
         }
-        .check-mark {
+        .status-mark.check {
           color: $done-dark;
         }
-        .ongoing-mark {
+        .status-mark.ongoing {
           color: darken($ongoing-dark, 20%);
         }
-        .pending-mark {
+        .status-mark.pending {
           color: $pending-dark;
         }
       }

@@ -15,7 +15,7 @@ import Loading from "./Loading";
 
 import axios from "axios";
 import DOMPurify from "dompurify";
-import { handleSuccessAlert, handleErrorAlert } from "../utils/alertFunctions";
+import { handleErrorAlert } from "../utils/alertFunctions";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
 
 const Task: React.FC<Task> = ({
@@ -262,24 +262,34 @@ const Task: React.FC<Task> = ({
               <h3 className="task-title">
                 {/*---STATUS ON TITLE---*/}
                 {status == DONE ? (
-                  <span className="check-mark">🗹&nbsp;&nbsp;</span>
+                  <span className="status-mark check" title="Done">
+                    🗹&nbsp;&nbsp;
+                  </span>
                 ) : status == ONGOING ? (
-                  <span className="ongoing-mark">🞔&nbsp;&nbsp;</span>
+                  <span className="status-mark ongoing" title="Ongoing">
+                    🞔&nbsp;&nbsp;
+                  </span>
                 ) : status == PENDING ? (
-                  <span className="pending-mark">⏹&nbsp;&nbsp;</span>
+                  <span className="status-mark pending" title="Pending">
+                    ⏹&nbsp;&nbsp;
+                  </span>
                 ) : undefined}
 
                 {/*---PRIORITY ON TITLE---*/}
                 {priority == URGENT_PRIORITY ? (
-                  <span className="urgent-priority-mark">‼&nbsp;&nbsp;</span>
+                  <span className="urgent priority-mark" title="Urgent">
+                    ‼&nbsp;&nbsp;
+                  </span>
                 ) : priority == HIGH_PRIORITY ? (
-                  <span className="high-priority-mark">
+                  <span className="high priority-mark" title="High priority">
                     !&nbsp;&nbsp;
                   </span> /*: priority == MEDIUM_PRIORITY ? (
                 <span className="medium-priority-mark">↠&nbsp;&nbsp;</span>
               )*/
                 ) : priority == LOW_PRIORITY ? (
-                  <span className="low-priority-mark">↡&nbsp;&nbsp;</span>
+                  <span className="low priority-mark" title="Low priority">
+                    ↡&nbsp;&nbsp;
+                  </span>
                 ) : undefined}
 
                 {/*---TITLE---*/}
