@@ -32,6 +32,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // app.use(helmet());
 
+import { query, body } from "express-validator";
+app.use((req, res, next) => {
+  body("*").escape()(req, res, () => {});
+  query("*").escape()(req, res, () => {});
+  next();
+});
+
 const oneMonth = 1000 * 60 * 60 * 24 * 7 * 30;
 app.use(
   session({

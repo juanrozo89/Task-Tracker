@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import * as constants from "./constants";
+import { useEffect } from "react";
 import "./styles/styles.scss";
 
 // contexts
@@ -25,6 +24,11 @@ function App() {
 
   const { theme, toggleTheme } = useThemeHandler();
   const pageTitle = useTitleModifier(user);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = "../images/loading1.gif";
+  }, []);
 
   return (
     <>
