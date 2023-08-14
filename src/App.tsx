@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     const img = new Image();
-    img.src = "../images/loading1.gif";
+    img.src = "/src/images/loading1.gif";
   }, []);
 
   return (
