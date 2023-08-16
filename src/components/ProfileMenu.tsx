@@ -13,7 +13,7 @@ const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
   if (username) {
     menuContent = (
       <ul id="profile-menu-list" className="menu-list">
-        <li>
+        {/*<li>
           <Link
             to="/"
             id="profile-add-task"
@@ -22,7 +22,7 @@ const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
           >
             Add new task
           </Link>
-        </li>
+    </li>*/}
         <li>
           <Link to="/" id="profile-tasks" className="menu-slot">
             My Tasks

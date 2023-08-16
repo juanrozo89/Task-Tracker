@@ -38,11 +38,11 @@ const MainMenu = () => {
               Github Repo&nbsp;&nbsp;&nbsp;↗
             </Link>
           </li>
-          <li>
+          {/*<li>
             <Link to="/" target="_blank" id="menu-donate" className="menu-slot">
               Make a Donation&nbsp;&nbsp;&nbsp;↗
             </Link>
-          </li>
+      </li>*/}
           <li>
             <Link
               to=""

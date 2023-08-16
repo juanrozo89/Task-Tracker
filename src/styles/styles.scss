@@ -30,6 +30,15 @@
   flex-direction: column;
 }
 
+#location-error {
+  position: fixed;
+  top: 150px;
+  left: 100px;
+  color: blue;
+  font-size: 30px;
+  z-index: 9999999999;
+}
+
 form {
   display: flex;
   flex-direction: column;
