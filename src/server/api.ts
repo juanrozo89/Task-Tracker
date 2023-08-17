@@ -57,11 +57,11 @@ const usernameExistsError = (username: string, res: Response) => {
 };
 
 const handle500Error = (error: any, errorMessage: string, res: Response) => {
-  console.log(errorMessage + ": ", error);
+  console.log(`${errorMessage}${error ? ": " + error : ""}`);
   res.status(500).json({ error: errorMessage });
 };
 
-// FUNCTIONS AND MIDDLEWARE:
+// FUNCTIONS:
 
 // get index of item
 const getIndex = (list: Array<any>, key: string, value: any) => {
@@ -93,7 +93,32 @@ const destroySession = (session: Session, res: Response) => {
   });
 };
 
-// middleware: get user from id or username
+// MIDDLEWARE:
+
+// check if there is connection to sessions and users databases
+/*const checkDBConnection = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.session) {
+    handle500Error(null, "Unable to connect to sessions database", res);
+  } else if (!mongoose.connection || mongoose.connection.readyState !== 1) {
+    handle500Error(null, "Unable to connect to users database", res);
+  }
+  next();
+};*/
+
+// autheticate if the user session is active
+const authenticateSession = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.session.user) {
+    next();
+  } else {
+    res.status(401).json({ error: "Unauthorized request. Please log in" });
+  }
+};
+
+// get user id from session
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.session.user || null;
   const username = req.body.username || null;
@@ -115,20 +140,8 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// middleware: session authentication
-const authenticateSession = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  if (req.session.user) {
-    next();
-  } else {
-    res.status(401).json({ error: "Unauthorized request. Please log in" });
-  }
-};
-
 // API ROUTES:
+
 export default function (app: Express) {
   // ~~~ HANDLE USER SESSION ~~~
 

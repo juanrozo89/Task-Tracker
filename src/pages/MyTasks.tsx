@@ -21,6 +21,7 @@ import {
   MEDIUM_PRIORITY,
   HIGH_PRIORITY,
   URGENT_PRIORITY,
+  FILTER_KEYWORD_LIMIT,
 } from "../constants";
 
 const ORDER_1 = "order1";
@@ -289,6 +290,7 @@ const MyTasks = () => {
                 ref={filterKeywordRef}
                 onChange={filterTasksByKeyword}
                 placeholder="Filter by keyword(s)"
+                maxLength={FILTER_KEYWORD_LIMIT}
               ></input>
             </div>
 

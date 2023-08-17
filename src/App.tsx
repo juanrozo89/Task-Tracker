@@ -1,6 +1,6 @@
-import { Route, Routes, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 import "./styles/styles.scss";
+import { useState } from "react";
 
 // contexts
 import { ThemeContext, UserContext } from "./Contexts";
@@ -22,32 +22,17 @@ import MyTasks from "./pages/MyTasks";
 
 function App() {
   const { user, setUser } = useUserSession();
+  //const [user, setUser] = useState<User | null>(null);
+
+  const [hasInternalError, setHasInternalError] = useState<boolean>(false);
 
   const { theme, toggleTheme } = useThemeHandler();
   const pageTitle = useTitleModifier(user);
-
-  const location = useLocation();
-  const [hasInternalError, setHasInternalError] = useState<boolean>(true);
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = "/src/images/loading1.gif";
-  }, []);
-
-  useEffect(() => {
-    if (location.state && location.state.error) {
-      console.log("LOCATION ERROR: " + location.state.error);
-      setHasInternalError(true);
-    } else {
-      setHasInternalError(false);
-    }
-  }, [location]);
 
   return (
     <>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
         <UserContext.Provider value={{ user, setUser }}>
-          <h1 id="location-error">Location error: {location.state?.error}</h1>
           <Routes>
             <Route
               path="/"

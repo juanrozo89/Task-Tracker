@@ -1,4 +1,5 @@
 import express from "express";
+import { Request, Response, NextFunction } from "express";
 export const app = express();
 
 import dotenv from "dotenv";
@@ -8,27 +9,10 @@ import apiRoutes from "./api.ts";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 
-import MongoDBSession from "connect-mongodb-session";
-const MongoDBStore = MongoDBSession(session);
-const store = new MongoDBStore(
-  {
-    uri: process.env.MONGO_URI_SESSIONS!,
-    collection: "sessions",
-  },
-  (error) => {
-    if (error) {
-      console.error("Error connecting to MongoDBStore: ", error);
-    }
-  }
-);
-store.on("connected", () => {
-  console.log("Succesfully connected to MongoDBStore");
-});
-
 // import helmet from "helmet";
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ limit: "10kb", extended: true }));
 app.use(cookieParser());
 // app.use(helmet());
 
@@ -37,6 +21,33 @@ app.use((req, res, next) => {
   body("*").escape()(req, res, () => {});
   query("*").escape()(req, res, () => {});
   next();
+});
+
+// Handle database connection errors
+/*app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err);
+  res.status(500).json({ error: "Internal server error" });
+});*/
+
+import MongoDBSession from "connect-mongodb-session";
+const MongoDBStore = MongoDBSession(session);
+const store = new MongoDBStore(
+  {
+    uri: process.env.MONGO_URI_SESSIONS!,
+    //uri: "bad",
+    collection: "sessions",
+  },
+  (error) => {
+    if (error) {
+      console.log(
+        "Could not connect to sessions database via MongoDBStore: ",
+        error
+      );
+    }
+  }
+);
+store.on("connected", () => {
+  console.log("Succesfully connected to sessions database via MongoDBStore");
 });
 
 const oneMonth = 1000 * 60 * 60 * 24 * 7 * 30;

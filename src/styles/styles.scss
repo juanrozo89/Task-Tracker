@@ -28,13 +28,27 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-wrap: break-word;
 }
+
+/* -------------- */
+/* ERROR MESSAGES */
+/* -------------- */
 
 #location-error {
   position: fixed;
   top: 150px;
   left: 100px;
   color: blue;
+  font-size: 30px;
+  z-index: 9999999999;
+}
+
+#error-boundary-message {
+  position: fixed;
+  top: 250px;
+  left: 100px;
+  color: red;
   font-size: 30px;
   z-index: 9999999999;
 }

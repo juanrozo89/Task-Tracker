@@ -5,6 +5,8 @@ import {
   HIGH_PRIORITY,
   MEDIUM_PRIORITY,
   LOW_PRIORITY,
+  TITLE_LIMIT,
+  DESCRIPTION_LIMIT,
 } from "../constants";
 import { PopupContext, UserContext } from "../Contexts";
 import { handleErrorAlert } from "../utils/alertFunctions";
@@ -88,6 +90,7 @@ const NewTaskPopup = () => {
               type="text"
               name="task_title"
               ref={titleRef}
+              maxLength={TITLE_LIMIT}
               required
             />
             <br />
@@ -95,6 +98,7 @@ const NewTaskPopup = () => {
             <textarea
               id="task-description"
               name="task_description"
+              maxLength={DESCRIPTION_LIMIT}
               ref={textRef}
             />
             <br />

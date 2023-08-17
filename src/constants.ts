@@ -39,5 +39,13 @@ export const DUE_DATE = "due-date";
 export const ACCOMPLISHED_ON = "accomplished-on";
 export const SHOW_ALL = "show-all";
 
+// Input limits
+export const USERNAME_LIMIT = 32;
+export const PASSWORD_LIMIT = 32;
+export const TITLE_LIMIT = 64;
+export const DESCRIPTION_LIMIT = 2056;
+export const CATEGORY_LIMIT = 32;
+export const FILTER_KEYWORD_LIMIT = 64;
+
 // Others:
 export const NEW_CATEGORY = "new-category";

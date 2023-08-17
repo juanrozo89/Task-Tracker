@@ -9,6 +9,8 @@ import {
   HIGH_PRIORITY,
   MEDIUM_PRIORITY,
   LOW_PRIORITY,
+  TITLE_LIMIT,
+  DESCRIPTION_LIMIT,
 } from "../constants";
 import SelectCategory from "./SelectCategory";
 import Loading from "./Loading";
@@ -241,6 +243,7 @@ const Task: React.FC<Task> = ({
                 className="edit-task-title-input"
                 defaultValue={task_title}
                 ref={editTitleRef}
+                maxLength={TITLE_LIMIT}
               ></input>
               <div className="edit-text-buttons small-btn-pair">
                 <button
@@ -423,6 +426,7 @@ const Task: React.FC<Task> = ({
                   className="edit-task-text-area"
                   defaultValue={task_text}
                   ref={editTextRef}
+                  maxLength={DESCRIPTION_LIMIT}
                 ></textarea>
                 <div className="edit-text-buttons small-btn-pair">
                   <button

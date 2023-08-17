@@ -16,7 +16,7 @@ const useUserSession = () => {
       } catch (error) {
         axios.isAxiosError(error)
           ? handleAxiosError(error)
-          : console.log("Error: " + error);
+          : console.log(error);
       }
     };
     getUserData();

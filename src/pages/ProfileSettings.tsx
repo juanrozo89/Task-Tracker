@@ -5,6 +5,8 @@ import RedirectToLogin from "../components/RedirectToLogin";
 import { CONFIRM } from "../constants";
 import Loading from "../components/Loading";
 
+import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
+
 import axios from "axios";
 import DOMPurify from "dompurify";
 import { handleErrorAlert, handleSuccessAlert } from "../utils/alertFunctions";
@@ -163,6 +165,7 @@ const ProfileSettings = () => {
                   setNewUsername(DOMPurify.sanitize(e.target.value))
                 }
                 ref={usernameRef}
+                maxLength={USERNAME_LIMIT}
                 required
               />
               <button type="submit" className="inline-button">
@@ -185,6 +188,7 @@ const ProfileSettings = () => {
                 setNewPassword(DOMPurify.sanitize(e.target.value))
               }
               ref={passwordRef}
+              maxLength={PASSWORD_LIMIT}
               required
             />
             <label htmlFor="update-confirm-password">
@@ -199,6 +203,7 @@ const ProfileSettings = () => {
                   setConfirmPassword(DOMPurify.sanitize(e.target.value))
                 }
                 ref={confirmPasswordRef}
+                maxLength={PASSWORD_LIMIT}
                 required
               />
               <button type="submit" className="inline-button">

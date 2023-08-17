@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NEW_CATEGORY } from "../constants";
+import { NEW_CATEGORY, CATEGORY_LIMIT } from "../constants";
 import useExistingCategories from "../hooks/useExistingCategories";
 import DOMPurify from "dompurify";
 
@@ -44,6 +44,7 @@ const SelectCategory: React.FC<{
           type="text"
           name="category"
           onChange={(e) => changeCategory(DOMPurify.sanitize(e.target.value))}
+          maxLength={CATEGORY_LIMIT}
           required
         />
       )}

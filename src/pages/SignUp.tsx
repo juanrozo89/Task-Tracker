@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { UserContext, PopupContext } from "../Contexts";
 
+import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
+
 import axios from "axios";
 import DOMPurify from "dompurify";
 import { handleErrorAlert } from "../utils/alertFunctions";
@@ -46,6 +48,7 @@ const SignUp = () => {
           name="username"
           id="signup-username"
           onChange={(e) => setUsername(DOMPurify.sanitize(e.target.value))}
+          maxLength={USERNAME_LIMIT}
           required
         />
 
@@ -56,6 +59,7 @@ const SignUp = () => {
           id="signup-password"
           onChange={(e) => setPassword(DOMPurify.sanitize(e.target.value))}
           autoComplete="new-password"
+          maxLength={PASSWORD_LIMIT}
           required
         />
 
@@ -68,6 +72,7 @@ const SignUp = () => {
             setConfirmPassword(DOMPurify.sanitize(e.target.value))
           }
           autoComplete="new-password"
+          maxLength={PASSWORD_LIMIT}
           required
         />
 
