@@ -88,6 +88,10 @@ const conflictingPasswordError = (res: Response) => {
   res.status(400).json({ error: "Confirmation password does not match" });
 };
 
+const longPasswordError = (res: Response) => {
+  res.status(400).json({ error: "Password is too long" });
+};
+
 const usernameExistsError = (username: string, res: Response) => {
   res.status(409).json({ error: `Username '${username}' already exists` });
 };
@@ -206,6 +210,11 @@ export default function (app: Express) {
       missingFieldError("password", res);
     } else if (!req.body.confirm_password) {
       missingFieldError("confirm password", res);
+    } else if (
+      req.body.password.length > PASSWORD_LIMIT ||
+      req.body.confirm_password.length > PASSWORD_LIMIT
+    ) {
+      longPasswordError(res);
     } else {
       const username = req.body.username;
       const user = await User.findOne({
@@ -292,6 +301,11 @@ export default function (app: Express) {
         missingFieldError("fields", res);
       } else if (newPassword && newPassword != confirmPassword) {
         conflictingPasswordError(res);
+      } else if (
+        req.body.password.length > PASSWORD_LIMIT ||
+        req.body.confirm_password.length > PASSWORD_LIMIT
+      ) {
+        longPasswordError(res);
       } else {
         let fieldUpdated = false;
         if (newUsername != "") {
