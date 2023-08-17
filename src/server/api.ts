@@ -2,7 +2,20 @@
 
 import { Express, Request, Response, NextFunction } from "express";
 import { Session } from "express-session";
-import { PENDING } from "../constants";
+import {
+  PENDING,
+  ONGOING,
+  DONE,
+  LOW_PRIORITY,
+  MEDIUM_PRIORITY,
+  HIGH_PRIORITY,
+  URGENT_PRIORITY,
+  USERNAME_LIMIT,
+  PASSWORD_LIMIT,
+  TITLE_LIMIT,
+  DESCRIPTION_LIMIT,
+  CATEGORY_LIMIT,
+} from "../constants";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -21,15 +34,38 @@ mongoose
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: { type: String, required: true, unique: true },
+  username: {
+    type: String,
+    maxLength: USERNAME_LIMIT,
+    required: true,
+    unique: true,
+  },
   password: { type: String, required: true },
   tasks: [
     {
-      category: { type: String, required: true },
-      status: { type: String, default: PENDING },
-      task_title: { type: String, required: true },
-      task_text: String,
-      priority: String,
+      category: { type: String, maxLength: CATEGORY_LIMIT, required: true },
+      status: {
+        type: String,
+        enum: {
+          values: [PENDING, ONGOING, DONE],
+          message: `Status must be ${PENDING} ,${ONGOING} or ${DONE}`,
+        },
+        default: PENDING,
+      },
+      task_title: { type: String, maxLength: TITLE_LIMIT, required: true },
+      task_text: { type: String, maxLength: DESCRIPTION_LIMIT },
+      priority: {
+        type: String,
+        enum: {
+          values: [
+            LOW_PRIORITY,
+            MEDIUM_PRIORITY,
+            HIGH_PRIORITY,
+            URGENT_PRIORITY,
+          ],
+          message: `Priority must be ${LOW_PRIORITY} ,${MEDIUM_PRIORITY}, ${HIGH_PRIORITY} or ${URGENT_PRIORITY}`,
+        },
+      },
       created_on: Date,
       accomplished_on: Date,
       due_date: Date,
