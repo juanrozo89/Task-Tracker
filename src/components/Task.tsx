@@ -445,7 +445,11 @@ const Task: React.FC<Task> = ({
               </div>
             ) : task_text ? (
               <div className="task-text">
-                {task_text}
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: task_text.replace(/\n/g, "<br>"),
+                  }}
+                />
                 {editingTask && (
                   <>
                     &nbsp;&nbsp;&nbsp;

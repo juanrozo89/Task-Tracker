@@ -28,7 +28,11 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  word-break: break-all;
   overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
 }
 
 /* -------------- */
@@ -713,18 +717,3 @@ hr {
     width: calc($popup-width - 60px);
   }
 }
-
-/*
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-*/
