@@ -33,6 +33,11 @@ function App() {
     <>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
         <UserContext.Provider value={{ user, setUser }}>
+          <img
+            style={{ display: "none" }}
+            src="/src/images/loading1.gif"
+            alt="Loading"
+          />
           <Routes>
             <Route
               path="/"
