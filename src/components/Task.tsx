@@ -229,6 +229,17 @@ const Task: React.FC<Task> = ({
     setOnConfirm(deleteTask);
   };
 
+  const formatToHtml = (text: String) => {
+    let formatted = DOMPurify.sanitize(text.replace(/\n/g, "<br>"));
+    return formatted;
+  };
+
+  const decodeHtml = (html: string) => {
+    const textArea = document.createElement("textarea");
+    textArea.innerHTML = html;
+    return textArea.value;
+  };
+
   return (
     <>
       {isLoading && <Loading />}
@@ -424,8 +435,8 @@ const Task: React.FC<Task> = ({
                 <textarea
                   id={`edit-text-${_id}`}
                   className="edit-task-text-area"
-                  defaultValue={task_text}
                   ref={editTextRef}
+                  defaultValue={decodeHtml(task_text)}
                   maxLength={DESCRIPTION_LIMIT}
                 ></textarea>
                 <div className="edit-text-buttons small-btn-pair">
@@ -447,7 +458,7 @@ const Task: React.FC<Task> = ({
               <div className="task-text">
                 <p
                   dangerouslySetInnerHTML={{
-                    __html: task_text.replace(/\n/g, "<br>"),
+                    __html: formatToHtml(task_text),
                   }}
                 />
                 {editingTask && (
