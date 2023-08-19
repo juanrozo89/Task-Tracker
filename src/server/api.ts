@@ -26,9 +26,11 @@ const saltRounds = 10;
 import mongoose from "mongoose";
 mongoose
   .connect(process.env.MONGO_URI!)
-  .then(() => console.log("Successfully connected to 'task-tracker' database"))
+  .then(() =>
+    console.log("Successfully connected to users database via Mongoose")
+  )
   .catch((err) => {
-    console.log("Error connecting to 'task-tracker' database: ", err);
+    console.log("Error connecting to users database via Mongoose: ", err);
   });
 
 const Schema = mongoose.Schema;

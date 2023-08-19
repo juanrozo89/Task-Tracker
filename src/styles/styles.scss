@@ -715,5 +715,6 @@ hr {
   textarea,
   select {
     width: calc($popup-width - 60px);
+    font-size: $small-font-size;
   }
 }
