@@ -28,7 +28,6 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  word-break: break-all;
   overflow-wrap: break-word;
   hyphens: auto;
   -webkit-hyphens: auto;
@@ -702,6 +701,7 @@ hr {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      word-break: break-all;
     }
     .confirm-btn {
       display: block;

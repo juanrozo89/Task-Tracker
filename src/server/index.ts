@@ -9,12 +9,12 @@ import apiRoutes from "./api.ts";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 
-// import helmet from "helmet";
+import helmet from "helmet";
 
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ limit: "10kb", extended: true }));
 app.use(cookieParser());
-// app.use(helmet());
+app.use(helmet());
 
 import { query, body } from "express-validator";
 app.use((req, res, next) => {
