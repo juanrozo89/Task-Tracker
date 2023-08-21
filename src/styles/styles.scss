@@ -38,24 +38,6 @@
 /* ERROR MESSAGES */
 /* -------------- */
 
-#location-error {
-  position: fixed;
-  top: 150px;
-  left: 100px;
-  color: blue;
-  font-size: 30px;
-  z-index: 9999999999;
-}
-
-#error-boundary-message {
-  position: fixed;
-  top: 250px;
-  left: 100px;
-  color: red;
-  font-size: 30px;
-  z-index: 9999999999;
-}
-
 form {
   display: flex;
   flex-direction: column;
@@ -173,9 +155,9 @@ button {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 8888;
+  z-index: $z-index-popup-overlay;
   &.loading-overlay {
-    z-index: 99998;
+    z-index: $z-index-loading-overlay;
   }
 }
 
@@ -185,7 +167,7 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80px;
-  z-index: 99999;
+  z-index: $z-index-loading-img;
 }
 
 @mixin select-input {
@@ -208,7 +190,7 @@ header {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  z-index: 2;
+  z-index: $z-index-header;
   /*box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);*/
   /*border: 1px solid red;*/
 
@@ -217,14 +199,14 @@ header {
     text-align: center;
     font-size: $largest-font-size;
     margin-top: 35px;
-    z-index: 1;
+    z-index: $z-index-title;
   }
 
   #header-background {
     width: 100vw;
     height: $header-height;
     position: absolute;
-    z-index: -3;
+    z-index: $z-index-header-background;
   }
 
   .menu-list {
@@ -233,7 +215,7 @@ header {
     margin: -5px 0 0 0;
     padding: 10px 0 10px;
     display: block;
-    z-index: 1;
+    z-index: $z-index-menu-list;
     .menu-slot {
       display: block;
       width: 220px;
@@ -261,7 +243,7 @@ header {
     vertical-align: middle;
     cursor: pointer;
     user-select: none;
-    z-index: 1;
+    z-index: $z-index-menu-button;
     &:hover {
       transition: background-color 0.2s;
     }
@@ -286,7 +268,7 @@ header {
     vertical-align: middle;
     cursor: pointer;
     user-select: none;
-    z-index: 1;
+    z-index: $z-index-menu-button;
     &:hover {
       transition: background-color 0.2s;
     }
@@ -314,7 +296,7 @@ hr {
     $medium,
     hsla(0, 100%, 100%, 0)
   );
-  z-index: 1;
+  z-index: $z-index-hr;
 }
 
 /* ---------------- */
@@ -460,7 +442,7 @@ hr {
       width: 100%;
       //box-shadow: inset 0px 10px 5px #dba632, inset 0px -10px 5px #dba632;
       pointer-events: none;
-      z-index: 0;
+      //z-index: 0;
     }
     @media (max-width: 800px) {
       max-height: calc(100vh - $header-height - 40px);
@@ -473,7 +455,7 @@ hr {
     }
     .scroll-indicator {
       position: absolute;
-      z-index: 888;
+      z-index: $z-index-scroll-indicator;
       width: 18px;
       height: 18px;
       border-radius: 5px;
@@ -683,7 +665,7 @@ hr {
     }
     overflow-y: auto;
     transform: translate(-50%, -50%);
-    z-index: 9999;
+    z-index: $z-index-popup;
     width: $popup-width;
     border-radius: 5px;
 
