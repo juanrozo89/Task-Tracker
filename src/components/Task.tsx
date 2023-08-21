@@ -57,9 +57,12 @@ const Task: React.FC<Task> = ({
 
   const formattedCurrentDate = getFormattedCurrentDate();
 
-  const axiosInstance = axios.create({
+  //const controller = new AbortController();
+  /*const axiosInstance = axios.create({
     signal: AbortSignal.timeout(REQUEST_TIMEOUT + 100),
-  });
+  });*/
+  const axiosInstance = axios.create();
+  axiosInstance.defaults.signal = AbortSignal.timeout(REQUEST_TIMEOUT + 100);
 
   const toggleShowFull = () => {
     setShowAll(!showFull);
