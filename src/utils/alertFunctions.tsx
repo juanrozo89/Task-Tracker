@@ -1,6 +1,5 @@
 import { ALERT } from "../constants";
-import { AxiosResponse } from "axios";
-import { AxiosError } from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 
 interface ErrorResponse {
   message: string;
@@ -22,13 +21,28 @@ export const handleErrorAlert = (
   error: any,
   setPopupFunc: React.Dispatch<React.SetStateAction<Popup>>
 ) => {
-  if (error.response.status) {
+  setPopupFunc({
+    type: ALERT,
+    title: "Error",
+    content: axios.isCancel(error)
+      ? "Connection issue or server delay. Please check your connection or try again later.<br>zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+      : error.response.status
+      ? error.response.data.error
+      : null,
+  });
+  /*if (axios.isCancel(error)) {
     setPopupFunc({
       type: ALERT,
       title: "Error",
-      content: `${error.response.data.error}`,
+      content: "Request timeout reached",
     });
-  }
+  } else if (error.response.status) {
+    setPopupFunc({
+      type: ALERT,
+      title: "Error",
+      content: error.response.data.error,
+    });
+  }*/
   handleAxiosError(error);
 };
 

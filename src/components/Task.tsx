@@ -11,6 +11,7 @@ import {
   LOW_PRIORITY,
   TITLE_LIMIT,
   DESCRIPTION_LIMIT,
+  REQUEST_TIMEOUT,
 } from "../constants";
 import SelectCategory from "./SelectCategory";
 import Loading from "./Loading";
@@ -56,6 +57,10 @@ const Task: React.FC<Task> = ({
 
   const formattedCurrentDate = getFormattedCurrentDate();
 
+  const axiosInstance = axios.create({
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT + 100),
+  });
+
   const toggleShowFull = () => {
     setShowAll(!showFull);
   };
@@ -69,7 +74,7 @@ const Task: React.FC<Task> = ({
     }
 
     setIsLoading(true);
-    axios
+    axiosInstance
       .put("/api/update-task", {
         _id: _id,
         status: status,
@@ -95,7 +100,7 @@ const Task: React.FC<Task> = ({
       : null;
 
     setIsLoading(true);
-    axios
+    axiosInstance
       .put("/api/update-task", { _id: _id, task_title: updatedTitle })
       .then((res) => {
         setUser((prevUser) => ({
@@ -114,7 +119,7 @@ const Task: React.FC<Task> = ({
 
   const editCategory = () => {
     setIsLoading(true);
-    axios
+    axiosInstance
       .put("/api/update-task", { _id: _id, category: updatedCategory })
       .then((res) => {
         setUser((prevUser) => ({
@@ -135,7 +140,7 @@ const Task: React.FC<Task> = ({
     const updatedPriority = updatedPriorityRef.current?.value || null;
 
     setIsLoading(true);
-    axios
+    axiosInstance
       .put("/api/update-task", { _id: _id, priority: updatedPriority })
       .then((res) => {
         setUser((prevUser) => ({
@@ -158,7 +163,7 @@ const Task: React.FC<Task> = ({
       : "";
 
     setIsLoading(true);
-    axios
+    axiosInstance
       .put("/api/update-task", { _id: _id, task_text: updatedText })
       .then((res) => {
         setUser((prevUser) => ({
@@ -181,7 +186,7 @@ const Task: React.FC<Task> = ({
       : "";
 
     setIsLoading(true);
-    axios
+    axiosInstance
       .put("/api/update-task", { _id: _id, due_date: updatedDueDate })
       .then((res) => {
         setUser((prevUser) => ({
@@ -201,7 +206,7 @@ const Task: React.FC<Task> = ({
   const deleteTask = () => {
     const request = () => {
       setIsLoading(true);
-      axios
+      axiosInstance
         .delete("/api/delete-task", { data: { _id: _id } })
         .then((res) => {
           // handleSuccessAlert(res, setPopup);
