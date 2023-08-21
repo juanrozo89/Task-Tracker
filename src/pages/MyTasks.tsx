@@ -292,7 +292,7 @@ const MyTasks = () => {
                 id="filter-by-keyword-input"
                 type="text"
                 ref={filterKeywordRef}
-                onChange={filterTasksByKeyword}
+                onChange={applySortAndFilter}
                 placeholder="Filter by keyword(s)"
                 maxLength={FILTER_KEYWORD_LIMIT}
               ></input>
