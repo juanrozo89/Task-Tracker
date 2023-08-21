@@ -25,8 +25,8 @@ export const handleErrorAlert = (
     type: ALERT,
     title: "Error",
     content: axios.isCancel(error)
-      ? "Connection issue or server delay. Please check your connection or try again later.<br>zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
-      : error.response.status
+      ? "Connection issue or server delay. Please check your connection or try again later."
+      : error.response?.status
       ? error.response.data.error
       : null,
   });

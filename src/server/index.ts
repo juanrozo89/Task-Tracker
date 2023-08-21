@@ -1,5 +1,5 @@
 import express from "express";
-import { Request, Response, NextFunction } from "express";
+//import { Request, Response, NextFunction } from "express";
 export const app = express();
 
 import dotenv from "dotenv";
@@ -8,8 +8,15 @@ dotenv.config();
 import apiRoutes from "./api.ts";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-
 import helmet from "helmet";
+
+import { REQUEST_TIMEOUT } from "../constants";
+
+declare module "express-session" {
+  export interface SessionData {
+    user: string;
+  }
+}
 
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ limit: "10kb", extended: true }));
@@ -62,11 +69,15 @@ app.use(
   })
 );
 
-declare module "express-session" {
-  export interface SessionData {
-    user: string;
-  }
-}
+/*app.use((req, res, next) => {
+  req.setTimeout(10000, () => {
+    res.status(408).json({
+      error:
+        "The server timed out waiting for the request. Please check your connection or try again later",
+    });
+  });
+  next();
+});*/
 
 apiRoutes(app);
 
