@@ -48,8 +48,13 @@ const MyTasks = () => {
   );
 
   useEffect(() => {
-    filterTasksByKeyword();
+    applySortAndFilter();
   }, [user?.tasks]);
+
+  const applySortAndFilter = () => {
+    const tasksToFilter = filterTasksByField();
+    filterTasksByKeyword(tasksToFilter);
+  };
 
   const sortTasks = (tasks: Array<Task> | undefined) => {
     const sortBy = sortByRef.current?.value;
@@ -213,8 +218,7 @@ const MyTasks = () => {
     }
   };
 
-  const filterTasksByKeyword = () => {
-    const tasksToFilter = filterTasksByField();
+  const filterTasksByKeyword = (tasksToFilter: Array<Task> | undefined) => {
     const filterKeyword = filterKeywordRef.current?.value
       ? filterKeywordRef.current.value
       : null;
