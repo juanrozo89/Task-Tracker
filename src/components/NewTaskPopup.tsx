@@ -8,11 +8,10 @@ import {
   TITLE_LIMIT,
   DESCRIPTION_LIMIT,
 } from "../constants";
-import { PopupContext, UserContext } from "../Contexts";
+import { PopupContext, UserContext, IsLoadingContext } from "../Contexts";
 import { handleErrorAlert } from "../utils/alertFunctions";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
 import SelectCategory from "./SelectCategory";
-import Loading from "./Loading";
 
 import axios from "axios";
 import DOMPurify from "dompurify";
@@ -20,13 +19,12 @@ import DOMPurify from "dompurify";
 const NewTaskPopup = () => {
   const { setPopup } = useContext(PopupContext)!;
   const { setUser } = useContext(UserContext)!;
+  const { isLoading, setIsLoading } = useContext(IsLoadingContext)!;
 
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const dueDateRef = useRef<HTMLInputElement>(null);
   const formattedCurrentDate = getFormattedCurrentDate();
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [category, setCategory] = useState<string>("");
   const handleCategoryChange = (updatedCat: string) => {
@@ -79,7 +77,7 @@ const NewTaskPopup = () => {
 
   return (
     <section id="alert-box" className="popup">
-      {isLoading ? <Loading /> : <div className="overlay"></div>}
+      {!isLoading && <div className="overlay"></div>}
       <div className="popup-box">
         <h3 className="popup-title">Add a new task</h3>
         <div className="popup-content">

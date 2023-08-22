@@ -3,7 +3,7 @@ import "./styles/styles.scss";
 import { useState } from "react";
 
 // contexts
-import { ThemeContext, UserContext } from "./Contexts";
+import { ThemeContext, UserContext, IsLoadingContext } from "./Contexts";
 
 // custom hooks
 import useThemeHandler from "./hooks/useThemeHandler";
@@ -20,11 +20,14 @@ import ProfileSettings from "./pages/ProfileSettings";
 import SignUp from "./pages/SignUp";
 import MyTasks from "./pages/MyTasks";
 
+// components
+import Loading from "./components/Loading";
+
 function App() {
   const { user, setUser } = useUserSession();
-  //const [user, setUser] = useState<User | null>(null);
 
   const [hasInternalError, setHasInternalError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)!;
 
   const { theme, toggleTheme } = useThemeHandler();
   const pageTitle = useTitleModifier(user);
@@ -32,46 +35,49 @@ function App() {
   return (
     <>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <UserContext.Provider value={{ user, setUser }}>
-          <img
-            style={{ display: "none" }}
-            src="/src/images/loading1.gif"
-            alt="Loading"
-          />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Layout
-                  username={user ? user.username : ""}
-                  pageTitle={pageTitle}
-                />
-              }
-            >
-              {hasInternalError ? (
-                <>
-                  <Route index element={<InternalError />} />
-                  <Route
-                    path={"profile-settings"}
-                    element={<InternalError />}
+        <IsLoadingContext.Provider value={{ isLoading, setIsLoading }}>
+          {isLoading && <Loading />}
+          <UserContext.Provider value={{ user, setUser }}>
+            <img
+              style={{ display: "none" }}
+              src="/src/images/loading1.gif"
+              alt="Loading"
+            />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Layout
+                    username={user ? user.username : ""}
+                    pageTitle={pageTitle}
                   />
-                  <Route path="sign-up" element={<InternalError />} />
-                </>
-              ) : (
-                <>
-                  <Route index element={user ? <MyTasks /> : <LogIn />} />
-                  <Route
-                    path={"profile-settings"}
-                    element={<ProfileSettings />}
-                  />
-                  <Route path="sign-up" element={<SignUp />} />
-                </>
-              )}
-              <Route path="about" element={<About />} />
-              <Route path="*" element={<NoPage />} />
-            </Route>
-          </Routes>
-        </UserContext.Provider>
+                }
+              >
+                {hasInternalError ? (
+                  <>
+                    <Route index element={<InternalError />} />
+                    <Route
+                      path={"profile-settings"}
+                      element={<InternalError />}
+                    />
+                    <Route path="sign-up" element={<InternalError />} />
+                  </>
+                ) : (
+                  <>
+                    <Route index element={user ? <MyTasks /> : <LogIn />} />
+                    <Route
+                      path={"profile-settings"}
+                      element={<ProfileSettings />}
+                    />
+                    <Route path="sign-up" element={<SignUp />} />
+                  </>
+                )}
+                <Route path="about" element={<About />} />
+                <Route path="*" element={<NoPage />} />
+              </Route>
+            </Routes>
+          </UserContext.Provider>
+        </IsLoadingContext.Provider>
       </ThemeContext.Provider>
     </>
   );

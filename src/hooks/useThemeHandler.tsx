@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { Theme, LIGHT, DARK } from "../constants";
+import { LIGHT, DARK } from "../constants";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const useThemeHandler = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setTheme] = useState<ThemeType>(() => {
     const storedTheme = localStorage.getItem("theme");
-    return storedTheme ? (storedTheme as Theme) : LIGHT;
+    return storedTheme ? (storedTheme as ThemeType) : LIGHT;
   });
 
   // preserve location when changing theme

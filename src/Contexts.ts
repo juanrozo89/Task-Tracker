@@ -8,6 +8,16 @@ interface ThemeContextValues {
 
 export const ThemeContext = createContext<ThemeContextValues | null>(null);
 
+// IS LOADING CONTEXT
+interface IsLoadingContextValues {
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const IsLoadingContext = createContext<IsLoadingContextValues | null>(
+  null
+);
+
 // USER CONTEXT
 interface UserContextValues {
   user: User | null;

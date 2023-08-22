@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { UserContext } from "../Contexts";
+import { IsLoadingContext, UserContext } from "../Contexts";
 
 import axios from "axios";
 
 const useLogout = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext)!;
+  const { setIsLoading } = useContext(IsLoadingContext)!;
 
   const logoutUser = () => {
+    setIsLoading(true);
     axios
       .post("/api/log-out", { username: `${user ? user.username : ""}` })
       .then((res) => {
@@ -26,6 +28,9 @@ const useLogout = () => {
         } else {
           console.log("Error: ", error.message);
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 

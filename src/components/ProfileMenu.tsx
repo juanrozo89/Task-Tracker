@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import useDisplayMenu from "../hooks/useDisplayMenu";
 import useLogout from "../hooks/useLogout";
-import useNewTaskPopup from "../hooks/useNewTaskPopup";
 
 const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
   let { displayMenu, setDisplayMenu, menuRef } = useDisplayMenu();
-  const setNewTaskPopup = useNewTaskPopup()!;
   let menuContent;
 
   const logoutUser = useLogout();
@@ -13,16 +11,6 @@ const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
   if (username) {
     menuContent = (
       <ul id="profile-menu-list" className="menu-list">
-        {/*<li>
-          <Link
-            to="/"
-            id="profile-add-task"
-            className="menu-slot"
-            onClick={setNewTaskPopup}
-          >
-            Add new task
-          </Link>
-    </li>*/}
         <li>
           <Link to="/" id="profile-tasks" className="menu-slot">
             My Tasks
@@ -64,6 +52,7 @@ const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
     <div id="profile-menu" className="menu" ref={menuRef}>
       <div
         id="profile-menu-button"
+        title={`Hi ${username}!`}
         onClick={() => {
           setDisplayMenu(!displayMenu);
         }}

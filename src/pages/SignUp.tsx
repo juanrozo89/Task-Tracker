@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
-import { UserContext, PopupContext } from "../Contexts";
+import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
 
 import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
-import Loading from "../components/Loading";
 
 import axios from "axios";
 import DOMPurify from "dompurify";
@@ -13,7 +12,7 @@ const SignUp = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setIsLoading } = useContext(IsLoadingContext)!;
 
   const navigate = useNavigate();
 
@@ -43,50 +42,47 @@ const SignUp = () => {
   };
 
   return (
-    <>
-      {isLoading && <Loading />}
-      <section id="sign-up" className="content">
-        <h2>Register a new account:</h2>
+    <section id="sign-up" className="content">
+      <h2>Register a new account:</h2>
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="signup-username">Username: </label>
-          <input
-            type="text"
-            name="username"
-            id="signup-username"
-            onChange={(e) => setUsername(DOMPurify.sanitize(e.target.value))}
-            maxLength={USERNAME_LIMIT}
-            required
-          />
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="signup-username">Username: </label>
+        <input
+          type="text"
+          name="username"
+          id="signup-username"
+          onChange={(e) => setUsername(DOMPurify.sanitize(e.target.value))}
+          maxLength={USERNAME_LIMIT}
+          required
+        />
 
-          <label htmlFor="signup-password">Password: </label>
-          <input
-            type="password"
-            name="password"
-            id="signup-password"
-            onChange={(e) => setPassword(DOMPurify.sanitize(e.target.value))}
-            autoComplete="new-password"
-            maxLength={PASSWORD_LIMIT}
-            required
-          />
+        <label htmlFor="signup-password">Password: </label>
+        <input
+          type="password"
+          name="password"
+          id="signup-password"
+          onChange={(e) => setPassword(DOMPurify.sanitize(e.target.value))}
+          autoComplete="new-password"
+          maxLength={PASSWORD_LIMIT}
+          required
+        />
 
-          <label htmlFor="signup-confirm-password">Confirm password: </label>
-          <input
-            type="password"
-            name="confirm_password"
-            id="confirm-password-signup"
-            onChange={(e) =>
-              setConfirmPassword(DOMPurify.sanitize(e.target.value))
-            }
-            autoComplete="new-password"
-            maxLength={PASSWORD_LIMIT}
-            required
-          />
+        <label htmlFor="signup-confirm-password">Confirm password: </label>
+        <input
+          type="password"
+          name="confirm_password"
+          id="confirm-password-signup"
+          onChange={(e) =>
+            setConfirmPassword(DOMPurify.sanitize(e.target.value))
+          }
+          autoComplete="new-password"
+          maxLength={PASSWORD_LIMIT}
+          required
+        />
 
-          <button type="submit">Sign Up!</button>
-        </form>
-      </section>
-    </>
+        <button type="submit">Sign Up!</button>
+      </form>
+    </section>
   );
 };
 
