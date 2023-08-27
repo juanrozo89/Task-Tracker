@@ -13,18 +13,14 @@ declare global {
     pageTitle: string;
   }
 
-  /*
-  interface TaskProps {
-    _id: string;
-    task_title: string;
-    task_text: string;
-    category: string;
-    status: StatusType;
-    created_on: Date | string;
-    accomplished_on: Date | string | null;
-    due_date: Date | string | null;
+  interface ErrorBoundaryProps {
+    children: ReactNode;
+    fallback: ReactElement;
   }
-  */
+
+  interface ErrorBoundaryState {
+    hasError: boolean;
+  }
 
   type PopupType =
     | constants.CONFIRM
