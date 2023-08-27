@@ -3,9 +3,9 @@ import { useState, useContext } from "react";
 import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
 import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
 
-import axios from "axios";
 import DOMPurify from "dompurify";
 import { handleErrorAlert } from "../utils/alertFunctions";
+import useAxiosInstance from "../hooks/useAxiosInstance";
 
 const LogIn = () => {
   const [username, setUsername] = useState<string>("");
@@ -14,13 +14,15 @@ const LogIn = () => {
 
   const navigate = useNavigate();
 
+  const axiosInstance = useAxiosInstance();
+
   const { setUser } = useContext(UserContext)!;
   const { setPopup } = useContext(PopupContext)!;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    axios
+    axiosInstance
       .post("/api/log-in", {
         username: username,
         password: password,

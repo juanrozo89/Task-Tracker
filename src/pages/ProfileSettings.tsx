@@ -7,9 +7,9 @@ import Loading from "../components/Loading";
 
 import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
 
-import axios from "axios";
 import DOMPurify from "dompurify";
 import { handleErrorAlert, handleSuccessAlert } from "../utils/alertFunctions";
+import useAxiosInstance from "../hooks/useAxiosInstance";
 
 const ProfileSettings = () => {
   const { user, setUser } = useContext(UserContext)!;
@@ -23,6 +23,8 @@ const ProfileSettings = () => {
 
   const navigate = useNavigate();
 
+  const axiosInstance = useAxiosInstance();
+
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
@@ -30,7 +32,7 @@ const ProfileSettings = () => {
   const updateUsername = () => {
     const request = () => {
       setIsLoading(true);
-      axios
+      axiosInstance
         .put("/api/update-info", {
           new_username: newUsername,
           new_password: "",
@@ -69,7 +71,7 @@ const ProfileSettings = () => {
   const updatePassword = () => {
     const request = () => {
       setIsLoading(true);
-      axios
+      axiosInstance
         .put("/api/update-info", {
           new_username: "",
           new_password: newPassword,
@@ -107,7 +109,7 @@ const ProfileSettings = () => {
   const deleteAccount = () => {
     const request = () => {
       setIsLoading(true);
-      axios
+      axiosInstance
         .delete("/api/delete-account")
         .then((res) => {
           handleSuccessAlert(res, setPopup);

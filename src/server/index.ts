@@ -10,7 +10,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import helmet from "helmet";
 
-import { REQUEST_TIMEOUT } from "../constants";
+import { REQ_TIMEOUT_SERVER } from "../constants";
 
 declare module "express-session" {
   export interface SessionData {

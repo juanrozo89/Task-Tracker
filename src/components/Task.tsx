@@ -11,13 +11,12 @@ import {
   LOW_PRIORITY,
   TITLE_LIMIT,
   DESCRIPTION_LIMIT,
-  REQUEST_TIMEOUT,
 } from "../constants";
 import SelectCategory from "./SelectCategory";
 
-import axios from "axios";
 import DOMPurify from "dompurify";
 import { handleErrorAlert } from "../utils/alertFunctions";
+import useAxiosInstance from "../hooks/useAxiosInstance";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
 
 const Task: React.FC<Task> = ({
@@ -56,12 +55,7 @@ const Task: React.FC<Task> = ({
 
   const formattedCurrentDate = getFormattedCurrentDate();
 
-  //const controller = new AbortController();
-  /*const axiosInstance = axios.create({
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT + 100),
-  });*/
-  const axiosInstance = axios.create();
-  axiosInstance.defaults.signal = AbortSignal.timeout(REQUEST_TIMEOUT + 100);
+  const axiosInstance = useAxiosInstance();
 
   const toggleShowFull = () => {
     setShowAll(!showFull);
