@@ -246,7 +246,7 @@ const Task: React.FC<Task> = ({
     <>
       {editingTask && <div className="editing-overlay"></div>}
       <div
-        className={`${status} task-cell ${editingTask ? "sticky-task" : ""}`}
+        className={`${status} task-cell ${editingTask ? "editing-task" : ""}`}
         id={_id}
       >
         <div className="task-header">
