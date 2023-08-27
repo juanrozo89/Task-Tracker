@@ -210,6 +210,9 @@ header {
     font-size: $largest-font-size;
     margin-top: 35px;
     z-index: $z-index-title;
+    @media (max-width: calc($small-screen-width + 1px)) {
+      font-size: calc($largest-font-size * 0.9);
+    }
   }
 
   #header-background {
@@ -244,10 +247,15 @@ header {
     margin-left: 10px;
     width: 60px;
     height: 50px;
+    font-size: 45px;
+    @media (max-width: calc($small-screen-width + 1px)) {
+      width: 55px;
+      height: 45px;
+      font-size: 42px;
+    }
     border-radius: 5px;
     /*box-shadow: 0 0 8px var(--medium-light);*/
     text-align: center;
-    font-size: 45px;
     font-family: $base-font;
     line-height: 48px;
     vertical-align: middle;
@@ -263,17 +271,17 @@ header {
     left: 10px;
     border-radius: 0 5px 5px 3px;
   }
-
   #profile-menu-button {
     position: relative;
     margin-right: 10px;
     height: 50px;
     aspect-ratio: 1;
+    line-height: 43px;
+    font-size: 30px;
+
     border-radius: 50%;
     vertical-align: center;
     text-align: center;
-    line-height: 43px;
-    font-size: 30px;
     font-family: "Arial", sans-serif;
     vertical-align: middle;
     cursor: pointer;
@@ -533,7 +541,11 @@ hr {
         box-shadow: 0 1px 7px rgba(0, 0, 0, 0.4);
         padding: 10px;
         border-radius: 5px;
-        width: 350px;
+        width: 360px;
+        max-width: 360px;
+        @media (max-width: calc($small-screen-width + 1px)) {
+          width: 87vw;
+        }
         margin-bottom: 7px;
         label {
           font-weight: bold;
