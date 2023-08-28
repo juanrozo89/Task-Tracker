@@ -28,7 +28,7 @@ export const handleErrorAlert = (
     title: "Error",
     content: error.response?.status
       ? error.response.data.error
-      : "Connection issue or server delay. Please check your connection or try again later.",
+      : "There is a connection issue. Please check your connection and try again later.",
   });
   /*if (axios.isCancel(error)) {
     setPopupFunc({

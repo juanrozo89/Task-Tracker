@@ -69,15 +69,16 @@ app.use(
   })
 );
 
-/*app.use((req, res, next) => {
-  req.setTimeout(10000, () => {
+// Request timeout limit
+app.use((req, res, next) => {
+  req.setTimeout(REQ_TIMEOUT_SERVER, () => {
     res.status(408).json({
       error:
-        "The server timed out waiting for the request. Please check your connection or try again later",
+        "Sorry fot the inconveniences! The server timed out waiting for the request. Please try again later",
     });
   });
   next();
-});*/
+});
 
 apiRoutes(app);
 
