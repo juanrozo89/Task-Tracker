@@ -16,7 +16,6 @@ import {
   TITLE_LIMIT,
   DESCRIPTION_LIMIT,
   CATEGORY_LIMIT,
-  REQ_TIMEOUT_SERVER,
 } from "../constants";
 
 import dotenv from "dotenv";
@@ -200,19 +199,6 @@ const attemptPasswordLimiter = rateLimit({
 // API ROUTES:
 
 export default function (app: Express) {
-  // REQUEST TIMEOUT FOR API ROUTES
-  /*
-  app.use("/api/", (req, res, next) => {
-    req.setTimeout(REQ_TIMEOUT_SERVER, () => {
-      res.status(408).json({
-        error:
-          "The server timed out waiting for the request. Please check your connection or try again later",
-      });
-    });
-    next();
-  });
-  */
-
   // ~~~ HANDLE USER SESSION ~~~
 
   // get user from session:

@@ -23,6 +23,7 @@ app.use(express.urlencoded({ limit: "10kb", extended: true }));
 app.use(cookieParser());
 app.use(helmet());
 
+// Middleware to validate and sanitize input
 import { query, body } from "express-validator";
 app.use((req, res, next) => {
   body("*").escape()(req, res, () => {});
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
   res.status(500).json({ error: "Internal server error" });
 });*/
 
+// Connect to MongoDB sessions database
 import MongoDBSession from "connect-mongodb-session";
 const MongoDBStore = MongoDBSession(session);
 const store = new MongoDBStore(
@@ -57,6 +59,7 @@ store.on("connected", () => {
   console.log("Succesfully connected to sessions database via MongoDBStore");
 });
 
+// Initialize session store
 const oneMonth = 1000 * 60 * 60 * 24 * 7 * 30;
 app.use(
   session({
