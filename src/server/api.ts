@@ -3,6 +3,7 @@
 import { Express, Request, Response, NextFunction } from "express";
 import { Session } from "express-session";
 import { rateLimit } from "express-rate-limit";
+import isEmail from "validator/es/lib/isEmail";
 import {
   PENDING,
   ONGOING,
@@ -44,8 +45,10 @@ const userSchema = new Schema({
     maxLength: USERNAME_LIMIT,
     required: true,
     unique: true,
+    trim: true,
   },
   password: { type: String, required: true },
+  email: { type: String, required: true },
   tasks: [
     {
       category: { type: String, maxLength: CATEGORY_LIMIT, required: true },
@@ -113,6 +116,10 @@ const usernameExistsError = (username: string, res: Response) => {
   res.status(409).json({ error: `Username '${username}' already exists` });
 };
 
+const invalidEmailFormatError = (res: Response) => {
+  res.status(400).json({ error: "Invalid e-mail format" });
+};
+
 const handle500Error = (error: any, errorMessage: string, res: Response) => {
   console.log(`${errorMessage}${error ? ": " + error : ""}`);
   res.status(500).json({ error: errorMessage });
@@ -175,7 +182,7 @@ const authenticateSession = (
   }
 };
 
-// get user id from session
+// get user id
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.session.user || null;
   const username = req.body.username || null;
@@ -218,14 +225,14 @@ export default function (app: Express) {
   // recover password
   app
     .route("/api/recover-password")
-    .post(async (req: Request, res: Response) => {
+    .post(getUser, async (req: Request, res: Response) => {
+      const email = req.user.email;
       const resetToken = crypto.randomBytes(32).toString("hex");
       req.session.user = `${resetToken}`;
       const resetLink = `${req.protocol}://${req.get(
         "host"
       )}/reset-password?token=${resetToken}`;
       try {
-        const email = req.body.email;
         const mailOptions = {
           from: process.env["EMAIL"],
           to: email,
@@ -233,7 +240,7 @@ export default function (app: Express) {
           text: `Click on ${resetLink} to reset your password`,
         };
         await transporter.sendMail(mailOptions);
-        res.status(200).json({ message: "Email sent successfully." });
+        res.status(200).json({ result: "Email sent successfully." });
       } catch (error) {
         console.error("Error sending email: ", error);
         res.status(500).json({ error: "Failed to send email." });
@@ -263,6 +270,10 @@ export default function (app: Express) {
       missingFieldError("username", res);
     } else if (!req.body.password) {
       missingFieldError("password", res);
+    } else if (!req.body.email) {
+      missingFieldError("e-mail", res);
+    } else if (!isEmail(req.body.email)) {
+      invalidEmailFormatError(res);
     } else if (!req.body.confirm_password) {
       missingFieldError("confirm password", res);
     } else if (
@@ -281,9 +292,11 @@ export default function (app: Express) {
         conflictingPasswordError(res);
       } else {
         const hashed = bcrypt.hashSync(req.body.password, saltRounds);
+        const email = req.body.email;
         let newUser = new User({
           username: username,
           password: hashed,
+          email: email,
           tasks: [],
         });
         try {
@@ -354,10 +367,11 @@ export default function (app: Express) {
     .put(authenticateSession, getUser, async (req: Request, res: Response) => {
       let user = req.user;
       const newUsername = req.body.new_username || "";
+      const newEmail = req.body.new_email || "";
       const newPassword = req.body.new_password || "";
       const confirmPassword = req.body.confirm_password || "";
-      if (!newUsername && !newPassword) {
-        missingFieldError("fields", res);
+      if (!newUsername && !newPassword && !newEmail) {
+        missingFieldError("username, password or email", res);
       } else if (newPassword && newPassword != confirmPassword) {
         conflictingPasswordError(res);
       } else if (
@@ -365,10 +379,14 @@ export default function (app: Express) {
         req.body.confirm_password.length > PASSWORD_LIMIT
       ) {
         longPasswordError(res);
+      } else if (newEmail && !isEmail(newEmail)) {
+        invalidEmailFormatError(res);
       } else {
         let fieldUpdated = false;
         if (newUsername != "") {
-          const usernameExists = await User.findOne({ username: newUsername });
+          const usernameExists = await User.findOne({
+            username: newUsername,
+          });
           if (usernameExists) {
             usernameExistsError(newUsername, res);
             return;
@@ -381,6 +399,10 @@ export default function (app: Express) {
         if (newPassword != "") {
           hashed = bcrypt.hashSync(newPassword, saltRounds);
           user.password = hashed;
+          fieldUpdated = true;
+        }
+        if (newEmail != "") {
+          user.email = newEmail;
           fieldUpdated = true;
         }
         if (fieldUpdated) {
