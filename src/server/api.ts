@@ -2,6 +2,7 @@
 
 import { Express, Request, Response, NextFunction } from "express";
 import { Session } from "express-session";
+import { rateLimit } from "express-rate-limit";
 import {
   PENDING,
   ONGOING,
@@ -182,6 +183,19 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+// REQUEST LIMITERS:
+
+const attemptPasswordLimiter = rateLimit({
+  windowMs: 30 * 60 * 1000,
+  max: 5,
+  message: {
+    error:
+      "Too many attempts to input password. Please try again after 30 minutes",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 // API ROUTES:
 
 export default function (app: Express) {
@@ -254,34 +268,38 @@ export default function (app: Express) {
   // log in a user
   app
     .route("/api/log-in")
-    .post(getUser, async (req: Request, res: Response) => {
-      if (!req.body.password) {
-        missingFieldError("password", res);
-      } else {
-        const user = req.user;
-        const username = req.body.username;
-        const password = req.body.password;
-        const validPassword = bcrypt.compareSync(password, user.password);
-        if (!validPassword) {
-          res.status(401).json({ error: "Invalid password" });
+    .post(
+      getUser,
+      attemptPasswordLimiter,
+      async (req: Request, res: Response) => {
+        if (!req.body.password) {
+          missingFieldError("password", res);
         } else {
-          try {
-            await user.save();
-            req.session.user = `${user._id}`;
-            res.json({
-              result: `${username} logged in`,
-              user: user,
-            });
-          } catch (error) {
-            handle500Error(
-              error,
-              "An internal error occurred while logging in",
-              res
-            );
+          const user = req.user;
+          const username = req.body.username;
+          const password = req.body.password;
+          const validPassword = bcrypt.compareSync(password, user.password);
+          if (!validPassword) {
+            res.status(401).json({ error: "Invalid password" });
+          } else {
+            try {
+              await user.save();
+              req.session.user = `${user._id}`;
+              res.json({
+                result: `${username} logged in`,
+                user: user,
+              });
+            } catch (error) {
+              handle500Error(
+                error,
+                "An internal error occurred while logging in",
+                res
+              );
+            }
           }
         }
       }
-    });
+    );
 
   // log out a user
   app

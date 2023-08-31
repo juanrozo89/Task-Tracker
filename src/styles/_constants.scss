@@ -31,6 +31,8 @@ $grey-medium-dark: hsl(255, 11%, 40%);
 $grey-dark: hsl(255, 11%, 30%);
 $grey-darkest: hsl(255, 11%, 20%);
 
+$overlay-color: rgba(0, 0, 0, 0.5);
+
 /* ~~~ FONT ~~~ */
 $small-font-size: 14px;
 $font-size: 16px;
@@ -44,6 +46,8 @@ $z-index-loading-img: 9;
 $z-index-loading-overlay: 8;
 $z-index-popup: 7;
 $z-index-popup-overlay: 6;
+$z-index-editing-task: 5;
+$z-index-editing-overlay: 4;
 $z-index-display-menu: 3;
 $z-index-header: 2;
 $z-index-scroll-indicator: 2;
@@ -56,3 +60,5 @@ $z-index-header-background: -1;
 /* ~~~ OTHER ~~~ */
 $header-height: 90px;
 $popup-width: 300px;
+$small-screen-width: 414px;
+$small-screen-height: 640px;

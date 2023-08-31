@@ -4,9 +4,9 @@ import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
 
 import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
 
-import axios from "axios";
 import DOMPurify from "dompurify";
 import { handleErrorAlert } from "../utils/alertFunctions";
+import useAxiosInstance from "../hooks/useAxiosInstance";
 
 const SignUp = () => {
   const [username, setUsername] = useState<string>("");
@@ -15,6 +15,7 @@ const SignUp = () => {
   const { setIsLoading } = useContext(IsLoadingContext)!;
 
   const navigate = useNavigate();
+  const axiosInstance = useAxiosInstance();
 
   const { setUser } = useContext(UserContext)!;
   const { setPopup } = useContext(PopupContext)!;
@@ -22,7 +23,7 @@ const SignUp = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    axios
+    axiosInstance
       .post("/api/sign-up", {
         username: username,
         password: password,

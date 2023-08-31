@@ -49,4 +49,5 @@ export const FILTER_KEYWORD_LIMIT = 64;
 
 // Others:
 export const NEW_CATEGORY = "new-category";
-export const REQUEST_TIMEOUT = 6000;
+export const REQ_TIMEOUT_CLIENT = 7100;
+export const REQ_TIMEOUT_SERVER = 7000;

@@ -1,5 +1,5 @@
 import { ALERT } from "../constants";
-import axios, { AxiosResponse, AxiosError } from "axios";
+import { AxiosResponse, AxiosError } from "axios";
 
 interface ErrorResponse {
   message: string;
@@ -12,8 +12,10 @@ export const handleAxiosError = (error: AxiosError<ErrorResponse>) => {
     console.log(error.response.headers);
   } else if (error.request) {
     console.log(error.request);
+  } else if (error.message) {
+    console.log(error.message);
   } else {
-    console.log("Error: ", error.message);
+    console.log(error);
   }
 };
 
@@ -24,11 +26,9 @@ export const handleErrorAlert = (
   setPopupFunc({
     type: ALERT,
     title: "Error",
-    content: axios.isCancel(error)
-      ? "Connection issue or server delay. Please check your connection or try again later."
-      : error.response?.status
+    content: error.response?.status
       ? error.response.data.error
-      : null,
+      : "There is a connection issue. Please check your connection and try again later.",
   });
   /*if (axios.isCancel(error)) {
     setPopupFunc({

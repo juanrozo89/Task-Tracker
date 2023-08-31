@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { IsLoadingContext, UserContext } from "../Contexts";
-
-import axios from "axios";
+import useAxiosInstance from "./useAxiosInstance";
 
 const useLogout = () => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext)!;
   const { setIsLoading } = useContext(IsLoadingContext)!;
+  const axiosInstance = useAxiosInstance();
 
   const logoutUser = () => {
     setIsLoading(true);
-    axios
+    axiosInstance
       .post("/api/log-out", { username: `${user ? user.username : ""}` })
       .then((res) => {
         console.log(`${res.data.result}`);

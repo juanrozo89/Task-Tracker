@@ -10,7 +10,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import helmet from "helmet";
 
-import { REQUEST_TIMEOUT } from "../constants";
+import { REQ_TIMEOUT_SERVER } from "../constants";
 
 declare module "express-session" {
   export interface SessionData {
@@ -23,6 +23,7 @@ app.use(express.urlencoded({ limit: "10kb", extended: true }));
 app.use(cookieParser());
 app.use(helmet());
 
+// Middleware to validate and sanitize input
 import { query, body } from "express-validator";
 app.use((req, res, next) => {
   body("*").escape()(req, res, () => {});
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
   res.status(500).json({ error: "Internal server error" });
 });*/
 
+// Connect to MongoDB sessions database
 import MongoDBSession from "connect-mongodb-session";
 const MongoDBStore = MongoDBSession(session);
 const store = new MongoDBStore(
@@ -57,6 +59,7 @@ store.on("connected", () => {
   console.log("Succesfully connected to sessions database via MongoDBStore");
 });
 
+// Initialize session store
 const oneMonth = 1000 * 60 * 60 * 24 * 7 * 30;
 app.use(
   session({
@@ -69,15 +72,16 @@ app.use(
   })
 );
 
-/*app.use((req, res, next) => {
-  req.setTimeout(10000, () => {
+// Request timeout limit
+app.use((req, res, next) => {
+  req.setTimeout(REQ_TIMEOUT_SERVER, () => {
     res.status(408).json({
       error:
-        "The server timed out waiting for the request. Please check your connection or try again later",
+        "Sorry fot the inconveniences! The server timed out waiting for the request. Please try again later",
     });
   });
   next();
-});*/
+});
 
 apiRoutes(app);
 

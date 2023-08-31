@@ -11,9 +11,9 @@ import {
 import { PopupContext, UserContext, IsLoadingContext } from "../Contexts";
 import { handleErrorAlert } from "../utils/alertFunctions";
 import { getFormattedCurrentDate } from "../utils/formatFunctions";
+import useAxiosInstance from "../hooks/useAxiosInstance";
 import SelectCategory from "./SelectCategory";
 
-import axios from "axios";
 import DOMPurify from "dompurify";
 
 const NewTaskPopup = () => {
@@ -25,6 +25,8 @@ const NewTaskPopup = () => {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const dueDateRef = useRef<HTMLInputElement>(null);
   const formattedCurrentDate = getFormattedCurrentDate();
+
+  const axiosInstance = useAxiosInstance();
 
   const [category, setCategory] = useState<string>("");
   const handleCategoryChange = (updatedCat: string) => {
@@ -51,7 +53,7 @@ const NewTaskPopup = () => {
     const text = DOMPurify.sanitize(textRef.current?.value || "");
     const dueDate = dueDateRef.current?.value ? dueDateRef.current.value : "";
     setIsLoading(true);
-    axios
+    axiosInstance
       .post("/api/new-task", {
         task_title: title,
         task_text: text,
