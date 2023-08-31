@@ -67,6 +67,7 @@ declare global {
   type User = {
     username: string;
     password: string;
+    email: string;
     logged_in: boolean;
     tasks: Array<Task>;
   };

@@ -121,23 +121,6 @@ button {
   }
 }
 
-.content {
-  position: relative;
-  top: $header-height;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-items: start;
-  left: 0;
-  width: 100vw;
-  min-height: calc(100vh - $header-height);
-  height: fit-content;
-  padding: 0 15vw 40px;
-  overflow-x: hidden;
-  margin: auto;
-}
-
 .left-aligned-form {
   align-items: start;
 }
@@ -318,17 +301,57 @@ hr {
 }
 
 /* ---------------- */
+/*      CONTENT     */
+/* ---------------- */
+
+.content {
+  position: relative;
+  top: $header-height;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: start;
+  left: 0;
+  width: 100vw;
+  min-height: calc(100vh - $header-height);
+  height: fit-content;
+  padding: 0 15vw 40px;
+  overflow-x: hidden;
+  margin: auto;
+}
+
+/* ---------------- */
 /* PROFILE SETTINGS */
 /* ---------------- */
 
-#profile-settings-forms {
+#profile-settings {
+  h2 {
+    margin: 25px auto;
+  }
+  .profile-info {
+    overflow-wrap: normal;
+    margin-top: 5px;
+    width: 240px;
+    text-align: left;
+    //border: 1px solid red;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .profile-info-subtitle {
+      //border: 1px solid green;
+      font-weight: bold;
+      width: max-content;
+    }
+    .profile-info-content {
+      //font-weight: bold;
+      //border: 1px solid yellow;
+      font-style: italic;
+      width: max-content;
+    }
+  }
   & > * {
     margin-bottom: 10px;
-  }
-  #username-in-profile {
-    text-align: center;
-    width: 100%;
-    margin-top: 0;
   }
   #delete-account-button {
     border-radius: 5px;

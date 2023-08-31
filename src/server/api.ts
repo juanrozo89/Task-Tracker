@@ -276,10 +276,7 @@ export default function (app: Express) {
       invalidEmailFormatError(res);
     } else if (!req.body.confirm_password) {
       missingFieldError("confirm password", res);
-    } else if (
-      req.body.password.length > PASSWORD_LIMIT ||
-      req.body.confirm_password.length > PASSWORD_LIMIT
-    ) {
+    } else if (req.body.password.length > PASSWORD_LIMIT) {
       longPasswordError(res);
     } else {
       const username = req.body.username;
@@ -372,13 +369,10 @@ export default function (app: Express) {
       const confirmPassword = req.body.confirm_password || "";
       if (!newUsername && !newPassword && !newEmail) {
         missingFieldError("username, password or email", res);
+      } else if (req.body.new_password.length > PASSWORD_LIMIT) {
+        longPasswordError(res);
       } else if (newPassword && newPassword != confirmPassword) {
         conflictingPasswordError(res);
-      } else if (
-        req.body.password.length > PASSWORD_LIMIT ||
-        req.body.confirm_password.length > PASSWORD_LIMIT
-      ) {
-        longPasswordError(res);
       } else if (newEmail && !isEmail(newEmail)) {
         invalidEmailFormatError(res);
       } else {
