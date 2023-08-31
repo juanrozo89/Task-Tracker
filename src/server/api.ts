@@ -3,7 +3,7 @@
 import { Express, Request, Response, NextFunction } from "express";
 import { Session } from "express-session";
 import { rateLimit } from "express-rate-limit";
-import isEmail from "validator/es/lib/isEmail";
+import isEmail from "validator/lib/isEmail";
 import {
   PENDING,
   ONGOING,

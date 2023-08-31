@@ -10,6 +10,7 @@ import useAxiosInstance from "../hooks/useAxiosInstance";
 
 const SignUp = () => {
   const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { setIsLoading } = useContext(IsLoadingContext)!;
@@ -27,6 +28,7 @@ const SignUp = () => {
       .post("/api/sign-up", {
         username: username,
         password: password,
+        email: email,
         confirm_password: confirmPassword,
       })
       .then((res) => {
@@ -47,6 +49,7 @@ const SignUp = () => {
       <h2>Register a new account:</h2>
 
       <form onSubmit={handleSubmit}>
+        {/*   USERNAME   */}
         <label htmlFor="signup-username">Username: </label>
         <input
           type="text"
@@ -57,6 +60,17 @@ const SignUp = () => {
           required
         />
 
+        {/*   E-MAIL   */}
+        <label htmlFor="signup-email">E-mail: </label>
+        <input
+          type="email"
+          name="email"
+          id="signup-email"
+          onChange={(e) => setEmail(DOMPurify.sanitize(e.target.value))}
+          required
+        />
+
+        {/*  PASSWORD  */}
         <label htmlFor="signup-password">Password: </label>
         <input
           type="password"
@@ -68,6 +82,7 @@ const SignUp = () => {
           required
         />
 
+        {/*  CONFIRM PASSWORD  */}
         <label htmlFor="signup-confirm-password">Confirm password: </label>
         <input
           type="password"
@@ -81,6 +96,7 @@ const SignUp = () => {
           required
         />
 
+        {/*  SUBMIT  */}
         <button type="submit">Sign Up!</button>
       </form>
     </section>
