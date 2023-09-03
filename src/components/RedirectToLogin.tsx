@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 const RedirectToLogin = () => {
   return (
     <div className="content">
-      <h3 style={{ marginTop: "20vh" }}>
+      <h2 className="page-message">
         Please <Link to="/">log in</Link> or <Link to="/sign-up">sign up</Link>
-      </h3>
+      </h2>
     </div>
   );
 };

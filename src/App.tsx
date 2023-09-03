@@ -70,10 +70,10 @@ function App() {
                       path={"profile-settings"}
                       element={<ProfileSettings />}
                     />
-                    {/*<Route
-                        path={"reset-password"}
-                        element={<ResetPassword />}
-                    />*/}
+                    <Route
+                      path={"reset-password"}
+                      element={<ResetPassword />}
+                    />
                     <Route path="sign-up" element={<SignUp />} />
                   </>
                 )}

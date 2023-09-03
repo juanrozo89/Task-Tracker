@@ -53,7 +53,7 @@ const LogIn = () => {
           //console.log(`${res.data.result}`);
           setPopup({
             type: ALERT,
-            title: "Error",
+            title: "E-mail Sent",
             content: res.data.result,
           });
           navigate("/");

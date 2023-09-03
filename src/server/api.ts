@@ -250,7 +250,7 @@ export default function (app: Express) {
     });
 
   // Use the custom session interface in your reset-password route
-  app.route("/reset-password").get(async (req, res) => {
+  app.route("/api/reset-password").get(async (req, res) => {
     const token = req.query.token as string;
     const id = req.query._id as string;
     console.log(id);
@@ -259,10 +259,10 @@ export default function (app: Express) {
       if (!user) {
         notFoundError(`User with id ${id}`, res);
       } else {
-        req.session.user = id;
         delete req.session.resetToken;
+        req.session.user = id;
         console.log("Session restored");
-        res.redirect(301, "/profile-settings/");
+        res.status(200).send({ result: "Session restored", user: user });
       }
     } else {
       res.status(400).json({ error: "Invalid or expired token" });
@@ -286,7 +286,7 @@ export default function (app: Express) {
       }
     });
 
-  // add a new user
+  // sign up a new user
   app.route("/api/sign-up").post(async (req: Request, res: Response) => {
     if (!req.body.username) {
       missingFieldError("username", res);
