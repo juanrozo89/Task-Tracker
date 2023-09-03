@@ -18,6 +18,7 @@ import NoPage from "./pages/NoPage";
 import InternalError from "./pages/InternalError";
 import ProfileSettings from "./pages/ProfileSettings";
 import SignUp from "./pages/SignUp";
+import ResetPassword from "./pages/ResetPassword";
 import MyTasks from "./pages/MyTasks";
 
 // components
@@ -69,6 +70,10 @@ function App() {
                       path={"profile-settings"}
                       element={<ProfileSettings />}
                     />
+                    {/*<Route
+                        path={"reset-password"}
+                        element={<ResetPassword />}
+                    />*/}
                     <Route path="sign-up" element={<SignUp />} />
                   </>
                 )}

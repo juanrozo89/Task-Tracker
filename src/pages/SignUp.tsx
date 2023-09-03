@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useContext, useRef } from "react";
 import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
 
 import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
@@ -9,10 +9,10 @@ import { handleErrorAlert } from "../utils/alertFunctions";
 import useAxiosInstance from "../hooks/useAxiosInstance";
 
 const SignUp = () => {
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const { setIsLoading } = useContext(IsLoadingContext)!;
 
   const navigate = useNavigate();
@@ -26,10 +26,10 @@ const SignUp = () => {
     setIsLoading(true);
     axiosInstance
       .post("/api/sign-up", {
-        username: username,
-        password: password,
-        email: email,
-        confirm_password: confirmPassword,
+        username: DOMPurify.sanitize(usernameRef.current!.value),
+        email: DOMPurify.sanitize(emailRef.current!.value),
+        password: DOMPurify.sanitize(passwordRef.current!.value),
+        confirm_password: DOMPurify.sanitize(confirmPasswordRef.current!.value),
       })
       .then((res) => {
         console.log(`${res.data.result}`);
@@ -47,7 +47,6 @@ const SignUp = () => {
   return (
     <section id="sign-up" className="content">
       <h2>Register a new account:</h2>
-
       <form onSubmit={handleSubmit}>
         {/*   USERNAME   */}
         <label htmlFor="signup-username">Username: </label>
@@ -55,7 +54,7 @@ const SignUp = () => {
           type="text"
           name="username"
           id="signup-username"
-          onChange={(e) => setUsername(DOMPurify.sanitize(e.target.value))}
+          ref={usernameRef}
           maxLength={USERNAME_LIMIT}
           required
         />
@@ -66,7 +65,7 @@ const SignUp = () => {
           type="email"
           name="email"
           id="signup-email"
-          onChange={(e) => setEmail(DOMPurify.sanitize(e.target.value))}
+          ref={emailRef}
           required
         />
 
@@ -76,7 +75,7 @@ const SignUp = () => {
           type="password"
           name="password"
           id="signup-password"
-          onChange={(e) => setPassword(DOMPurify.sanitize(e.target.value))}
+          ref={passwordRef}
           autoComplete="new-password"
           maxLength={PASSWORD_LIMIT}
           required
@@ -88,9 +87,7 @@ const SignUp = () => {
           type="password"
           name="confirm_password"
           id="confirm-password-signup"
-          onChange={(e) =>
-            setConfirmPassword(DOMPurify.sanitize(e.target.value))
-          }
+          ref={confirmPasswordRef}
           autoComplete="new-password"
           maxLength={PASSWORD_LIMIT}
           required

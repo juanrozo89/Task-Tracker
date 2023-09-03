@@ -45,7 +45,6 @@ const userSchema = new Schema({
     maxLength: USERNAME_LIMIT,
     required: true,
     unique: true,
-    trim: true,
   },
   password: { type: String, required: true },
   email: { type: String, required: true },
@@ -143,7 +142,7 @@ const getIndex = (list: Array<any>, key: string, value: any) => {
 
 // destroy session
 const destroySession = (session: Session, res: Response) => {
-  session.destroy((err: any) => {
+  session.destroy((err: Error) => {
     if (err) {
       handle500Error(
         err,
@@ -188,7 +187,7 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
   const username = req.body.username || null;
   let user;
   if (!username && !id) {
-    missingFieldError("username or id", res);
+    missingFieldError("username or user id", res);
   } else {
     if (id) {
       user = await User.findById(id);
@@ -228,10 +227,11 @@ export default function (app: Express) {
     .post(getUser, async (req: Request, res: Response) => {
       const email = req.user.email;
       const resetToken = crypto.randomBytes(32).toString("hex");
-      req.session.user = `${resetToken}`;
+      req.session.resetToken = resetToken;
+      req.session.cookie.maxAge = 1000 * 60 * 10; // 10 minutes
       const resetLink = `${req.protocol}://${req.get(
         "host"
-      )}/reset-password?token=${resetToken}`;
+      )}/reset-password?token=${resetToken}&_id=${req.user.id}`;
       try {
         const mailOptions = {
           from: process.env["EMAIL"],
@@ -240,12 +240,34 @@ export default function (app: Express) {
           text: `Click on ${resetLink} to reset your password`,
         };
         await transporter.sendMail(mailOptions);
-        res.status(200).json({ result: "Email sent successfully." });
+        res.status(200).json({
+          result: `Instructions for recovering your password were successfully sent to your email address ${email}.`,
+        });
       } catch (error) {
         console.error("Error sending email: ", error);
-        res.status(500).json({ error: "Failed to send email." });
+        res.status(500).json({ error: `Failed to send email to ${email}.` });
       }
     });
+
+  // Use the custom session interface in your reset-password route
+  app.route("/reset-password").get(async (req, res) => {
+    const token = req.query.token as string;
+    const id = req.query._id as string;
+    console.log(id);
+    if (token === req.session.resetToken) {
+      const user = await User.findById(id);
+      if (!user) {
+        notFoundError(`User with id ${id}`, res);
+      } else {
+        req.session.user = id;
+        delete req.session.resetToken;
+        console.log("Session restored");
+        res.redirect(301, "/profile-settings/");
+      }
+    } else {
+      res.status(400).json({ error: "Invalid or expired token" });
+    }
+  });
 
   // get user from session:
   app

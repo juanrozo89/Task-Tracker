@@ -15,6 +15,7 @@ import { REQ_TIMEOUT_SERVER } from "../constants";
 declare module "express-session" {
   export interface SessionData {
     user: string;
+    resetToken: string;
   }
 }
 
@@ -60,14 +61,13 @@ store.on("connected", () => {
 });
 
 // Initialize session store
-const oneMonth = 1000 * 60 * 60 * 24 * 7 * 30;
 app.use(
   session({
     secret: process.env.SESSIONS_KEY!,
     saveUninitialized: true,
     store: store,
     unset: "destroy",
-    cookie: { maxAge: oneMonth },
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 * 30 }, // one month
     resave: false,
   })
 );
@@ -82,6 +82,18 @@ app.use((req, res, next) => {
   });
   next();
 });
+
+/*app.use((req, res, next) => {
+  req.session.destroy((err: Error) => {
+    if (err) {
+      res.status(500).json({ error: "could not destroy session" });
+      return;
+    } else {
+      console.log("Session successfully destroyed");
+    }
+  });
+});
+*/
 
 apiRoutes(app);
 

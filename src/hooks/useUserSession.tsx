@@ -1,22 +1,21 @@
 import { useState, useEffect } from "react";
 
-import axios from "axios";
+import useAxiosInstance from "../hooks/useAxiosInstance";
 import { handleAxiosError } from "../utils/alertFunctions";
 
 const useUserSession = () => {
   const [user, setUser] = useState<User | null>(null);
+  const axiosInstance = useAxiosInstance();
 
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const response = await axios.get("/api/user-from-session");
+        const response = await axiosInstance.get("/api/user-from-session");
         if (response.data.user) {
           setUser(response.data.user);
         }
       } catch (error) {
-        axios.isAxiosError(error)
-          ? handleAxiosError(error)
-          : console.log(error);
+        handleAxiosError(error);
       }
     };
     getUserData();

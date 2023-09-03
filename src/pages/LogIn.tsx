@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useContext, useRef } from "react";
 import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
-import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
+import { ALERT, USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
 
 import DOMPurify from "dompurify";
 import { handleErrorAlert } from "../utils/alertFunctions";
 import useAxiosInstance from "../hooks/useAxiosInstance";
 
 const LogIn = () => {
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const { setIsLoading } = useContext(IsLoadingContext)!;
 
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ const LogIn = () => {
     setIsLoading(true);
     axiosInstance
       .post("/api/log-in", {
-        username: username,
-        password: password,
+        username: DOMPurify.sanitize(usernameRef.current!.value),
+        password: DOMPurify.sanitize(passwordRef.current!.value),
       })
       .then((res) => {
         console.log(`${res.data.result}`);
@@ -40,6 +40,33 @@ const LogIn = () => {
       });
   };
 
+  const recoverPassword = () => {
+    if (usernameRef.current?.value === "") {
+      usernameRef.current.focus();
+    } else {
+      setIsLoading(true);
+      axiosInstance
+        .post("/api/recover-password", {
+          username: DOMPurify.sanitize(usernameRef.current!.value),
+        })
+        .then((res) => {
+          //console.log(`${res.data.result}`);
+          setPopup({
+            type: ALERT,
+            title: "Error",
+            content: res.data.result,
+          });
+          navigate("/");
+        })
+        .catch((error) => {
+          handleErrorAlert(error, setPopup);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  };
+
   return (
     <section id="log-in" className="content">
       <h2>Log in to your account:</h2>
@@ -50,7 +77,7 @@ const LogIn = () => {
           type="text"
           name="username"
           id="login-username"
-          onChange={(e) => setUsername(DOMPurify.sanitize(e.target.value))}
+          ref={usernameRef}
           maxLength={USERNAME_LIMIT}
           required
         />
@@ -60,13 +87,15 @@ const LogIn = () => {
           type="password"
           name="password"
           id="login-password"
-          onChange={(e) => setPassword(DOMPurify.sanitize(e.target.value))}
+          ref={passwordRef}
           autoComplete="new-password"
           maxLength={PASSWORD_LIMIT}
           required
         />
-
         <button type="submit">Log In</button>
+        <p className="link" onClick={recoverPassword}>
+          Forgot my password
+        </p>
       </form>
     </section>
   );

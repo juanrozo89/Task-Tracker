@@ -5,7 +5,7 @@ interface ErrorResponse {
   message: string;
 }
 
-export const handleAxiosError = (error: AxiosError<ErrorResponse>) => {
+export const handleAxiosError = (error: any) => {
   if (error.response) {
     console.log(error.response.data);
     console.log(error.response.status);
