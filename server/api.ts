@@ -17,7 +17,13 @@ import {
   TITLE_LIMIT,
   DESCRIPTION_LIMIT,
   CATEGORY_LIMIT,
-} from "../constants";
+} from "../src/constants";
+
+import { fileURLToPath } from "url";
+import fs from "fs";
+import path from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -156,6 +162,22 @@ const destroySession = (session: Session, res: Response) => {
   });
 };
 
+const getEmailTemplate = (filename: string) => {
+  const emailTemplatePath = path.join(
+    __dirname,
+    `../email-templates/${filename}`
+  );
+  const emailTemplate = fs.readFileSync(emailTemplatePath, "utf-8");
+  return emailTemplate;
+};
+
+const partiallyHiddenEmail = (email: string) => {
+  const parts = email.split("@");
+  const username = parts[0];
+  const domain = parts[1];
+  const hiddenEmail = username.charAt(0) + "*****" + "@" + domain;
+};
+
 // MIDDLEWARE:
 
 // check if there is connection to sessions and users databases
@@ -221,27 +243,38 @@ const attemptPasswordLimiter = rateLimit({
 export default function (app: Express) {
   // ~~~ HANDLE USER SESSION ~~~
 
-  // recover password
+  // send request to recover password via e-mail
   app
     .route("/api/recover-password")
     .post(getUser, async (req: Request, res: Response) => {
-      const email = req.user.email;
       const resetToken = crypto.randomBytes(32).toString("hex");
+      const expirationMins = 10;
       req.session.resetToken = resetToken;
-      req.session.cookie.maxAge = 1000 * 60 * 10; // 10 minutes
+      req.session.cookie.maxAge = 1000 * 60 * expirationMins; // 10 minutes
+
+      const email = req.user.email;
+
+      const emailTemplate = getEmailTemplate("reset-password-email.html");
       const resetLink = `${req.protocol}://${req.get(
         "host"
       )}/reset-password?token=${resetToken}&_id=${req.user.id}`;
+      const htmlContent = emailTemplate
+        .replace("{{resetLink}}", resetLink)
+        .replace("{{expirationTime}}", `${expirationMins} minutes`)
+        .replace("{{username}}", req.user.username);
+
       try {
         const mailOptions = {
           from: process.env["EMAIL"],
           to: email,
           subject: "Password Recovery",
-          text: `Click on ${resetLink} to reset your password`,
+          html: htmlContent,
         };
         await transporter.sendMail(mailOptions);
         res.status(200).json({
-          result: `Instructions for recovering your password were successfully sent to your email address ${email}.`,
+          result: `Instructions for recovering your password were successfully sent to your email address ${partiallyHiddenEmail(
+            email
+          )}.`,
         });
       } catch (error) {
         console.error("Error sending email: ", error);
@@ -249,7 +282,7 @@ export default function (app: Express) {
       }
     });
 
-  // Use the custom session interface in your reset-password route
+  // reset-password route
   app.route("/api/reset-password").get(async (req, res) => {
     const token = req.query.token as string;
     const id = req.query._id as string;

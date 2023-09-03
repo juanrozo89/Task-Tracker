@@ -93,7 +93,11 @@ const LogIn = () => {
           required
         />
         <button type="submit">Log In</button>
-        <p className="link" onClick={recoverPassword}>
+        <p
+          id="recover-password-link"
+          className="link"
+          onClick={recoverPassword}
+        >
           Forgot my password
         </p>
       </form>

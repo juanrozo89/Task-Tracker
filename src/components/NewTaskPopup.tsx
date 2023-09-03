@@ -108,7 +108,7 @@ const NewTaskPopup = () => {
               changeCategory={handleCategoryChange}
             ></SelectCategory>
             <br />
-            <label htmlFor="select-priority">Priority*</label>
+            <label htmlFor="select-priority">Priority</label>
             <select
               id="select-priority"
               onChange={handlePriorityChange}
