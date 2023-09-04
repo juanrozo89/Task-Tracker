@@ -102,6 +102,16 @@
     }
   }
 
+  #terms-of-service-container {
+    border-color: $light;
+    background-color: white;
+    color: $darkest;
+    h2,
+    strong {
+      color: $dark;
+    }
+  }
+
   .popup {
     .popup-box {
       background-color: white;
@@ -111,6 +121,7 @@
       background-color: $medium-light;
     }
   }
+
   #tasks-container-border {
     &::before,
     &::after {
@@ -310,6 +321,16 @@
     background-color: $warning-medium;
     &:hover {
       background-color: lighten($warning-medium, 3%);
+    }
+  }
+
+  #terms-of-service-container {
+    border-color: $medium;
+    background-color: $dark;
+    color: $light;
+    h2,
+    strong {
+      color: $lightest;
     }
   }
 

@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
 
 import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
+
+import TermsOfService from "../components/TermsOfService";
 
 import DOMPurify from "dompurify";
 import { handleErrorAlert, handleSuccessAlert } from "../utils/alertFunctions";
@@ -14,6 +16,11 @@ const SignUp = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const { setIsLoading } = useContext(IsLoadingContext)!;
+
+  const [showTerms, setShowTerms] = useState<boolean>(false);
+  const hideTerms = () => {
+    setShowTerms(false);
+  };
 
   const navigate = useNavigate();
   const axiosInstance = useAxiosInstance();
@@ -46,58 +53,77 @@ const SignUp = () => {
   };
 
   return (
-    <section id="sign-up" className="content">
-      <h2>Register a new account:</h2>
-      <form onSubmit={handleSubmit}>
-        {/*   USERNAME   */}
-        <label htmlFor="signup-username">Username: </label>
-        <input
-          type="text"
-          name="username"
-          id="signup-username"
-          ref={usernameRef}
-          maxLength={USERNAME_LIMIT}
-          required
-        />
+    <>
+      {showTerms && (
+        <>
+          <div className="overlay"></div>
+          <TermsOfService hideFunction={hideTerms}></TermsOfService>
+        </>
+      )}
+      <section id="sign-up" className="content">
+        <h2>Register a new account:</h2>
+        <form onSubmit={handleSubmit}>
+          {/*   USERNAME   */}
+          <label htmlFor="signup-username">Username: </label>
+          <input
+            type="text"
+            name="username"
+            id="signup-username"
+            ref={usernameRef}
+            maxLength={USERNAME_LIMIT}
+            required
+          />
 
-        {/*   E-MAIL   */}
-        <label htmlFor="signup-email">E-mail: </label>
-        <input
-          type="email"
-          name="email"
-          id="signup-email"
-          ref={emailRef}
-          required
-        />
+          {/*   E-MAIL   */}
+          <label htmlFor="signup-email">E-mail: </label>
+          <input
+            type="email"
+            name="email"
+            id="signup-email"
+            ref={emailRef}
+            required
+          />
 
-        {/*  PASSWORD  */}
-        <label htmlFor="signup-password">Password: </label>
-        <input
-          type="password"
-          name="password"
-          id="signup-password"
-          ref={passwordRef}
-          autoComplete="new-password"
-          maxLength={PASSWORD_LIMIT}
-          required
-        />
+          {/*  PASSWORD  */}
+          <label htmlFor="signup-password">Password: </label>
+          <input
+            type="password"
+            name="password"
+            id="signup-password"
+            ref={passwordRef}
+            autoComplete="new-password"
+            maxLength={PASSWORD_LIMIT}
+            required
+          />
 
-        {/*  CONFIRM PASSWORD  */}
-        <label htmlFor="signup-confirm-password">Confirm password: </label>
-        <input
-          type="password"
-          name="confirm_password"
-          id="confirm-password-signup"
-          ref={confirmPasswordRef}
-          autoComplete="new-password"
-          maxLength={PASSWORD_LIMIT}
-          required
-        />
+          {/*  CONFIRM PASSWORD  */}
+          <label htmlFor="signup-confirm-password">Confirm password: </label>
+          <input
+            type="password"
+            name="confirm_password"
+            id="confirm-password-signup"
+            ref={confirmPasswordRef}
+            autoComplete="new-password"
+            maxLength={PASSWORD_LIMIT}
+            required
+          />
 
-        {/*  SUBMIT  */}
-        <button type="submit">Sign Up!</button>
-      </form>
-    </section>
+          {/*  TERMS OF SERVICE  */}
+          <div id="accept-terms-container">
+            <label htmlFor="accept-terms-checkbox">
+              Accept{" "}
+              <span className="link" onClick={() => setShowTerms(true)}>
+                terms of service
+              </span>
+            </label>
+            <input id="accept-terms-checkbox" type="checkbox" required></input>
+          </div>
+
+          {/*  SUBMIT  */}
+          <button type="submit">Sign Up!</button>
+        </form>
+      </section>
+    </>
   );
 };
 
