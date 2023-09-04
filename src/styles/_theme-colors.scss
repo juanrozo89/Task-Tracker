@@ -325,7 +325,7 @@
   }
 
   #terms-of-service-container {
-    border-color: $medium;
+    border-color: darken($medium, 8%);
     background-color: $dark;
     color: $light;
     h2,

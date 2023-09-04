@@ -9,6 +9,7 @@ import TermsOfService from "../components/TermsOfService";
 import DOMPurify from "dompurify";
 import { handleErrorAlert, handleSuccessAlert } from "../utils/alertFunctions";
 import useAxiosInstance from "../hooks/useAxiosInstance";
+import useTermsOfService from "../hooks/useTermsOfService";
 
 const SignUp = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -21,6 +22,7 @@ const SignUp = () => {
   const hideTerms = () => {
     setShowTerms(false);
   };
+  const termsContent = useTermsOfService();
 
   const navigate = useNavigate();
   const axiosInstance = useAxiosInstance();
@@ -57,7 +59,10 @@ const SignUp = () => {
       {showTerms && (
         <>
           <div className="overlay"></div>
-          <TermsOfService hideFunction={hideTerms}></TermsOfService>
+          <TermsOfService
+            hideFunction={hideTerms}
+            termsContent={termsContent}
+          ></TermsOfService>
         </>
       )}
       <section id="sign-up" className="content">
