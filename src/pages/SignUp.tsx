@@ -16,6 +16,7 @@ const SignUp = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const acceptTermsRef = useRef<HTMLInputElement>(null);
   const { setIsLoading } = useContext(IsLoadingContext)!;
 
   const [showTerms, setShowTerms] = useState<boolean>(false);
@@ -38,6 +39,7 @@ const SignUp = () => {
         username: DOMPurify.sanitize(usernameRef.current!.value),
         email: DOMPurify.sanitize(emailRef.current!.value),
         password: DOMPurify.sanitize(passwordRef.current!.value),
+        accepted_terms: acceptTermsRef.current!.checked,
         confirm_password: DOMPurify.sanitize(confirmPasswordRef.current!.value),
       })
       .then((res) => {
@@ -115,13 +117,20 @@ const SignUp = () => {
 
           {/*  TERMS OF SERVICE  */}
           <div id="accept-terms-container">
-            <label htmlFor="accept-terms-checkbox">
+            <label>
               Accept{" "}
               <span className="link" onClick={() => setShowTerms(true)}>
                 terms of service
               </span>
             </label>
-            <input id="accept-terms-checkbox" type="checkbox" required></input>
+            {/*<div className="checkbox">*/}
+            <input
+              id="accept-terms-checkbox"
+              type="checkbox"
+              ref={acceptTermsRef}
+              required
+            ></input>
+            {/*</div>*/}
           </div>
 
           {/*  SUBMIT  */}

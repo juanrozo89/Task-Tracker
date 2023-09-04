@@ -54,6 +54,7 @@ const userSchema = new Schema({
   },
   password: { type: String, required: true },
   email: { type: String, required: true },
+  accepted_terms_of_service_at: { type: Date, required: true },
   tasks: [
     {
       category: { type: String, maxLength: CATEGORY_LIMIT, required: true },
@@ -106,7 +107,7 @@ const missingFieldError = (field: string, res: Response) => {
 };
 
 const notFoundError = (thing: string, res: Response) => {
-  res.status(400).json({ error: `${thing} not found` });
+  res.status(404).json({ error: `${thing} not found` });
 };
 
 const conflictingPasswordError = (res: Response) => {
@@ -117,8 +118,14 @@ const longPasswordError = (res: Response) => {
   res.status(400).json({ error: "Password is too long" });
 };
 
+const acceptTermsError = (res: Response) => {
+  res.status(403).json({ error: "Must accept the terms of service" });
+};
+
 const usernameExistsError = (username: string, res: Response) => {
-  res.status(409).json({ error: `Username '${username}' already exists` });
+  res
+    .status(409)
+    .json({ error: `<p>Username <b>${username}</b> already exists</p>` });
 };
 
 const invalidEmailFormatError = (res: Response) => {
@@ -330,6 +337,8 @@ export default function (app: Express) {
       missingFieldError("e-mail", res);
     } else if (!isEmail(req.body.email)) {
       invalidEmailFormatError(res);
+    } else if (!req.body.accepted_terms) {
+      acceptTermsError(res);
     } else if (!req.body.confirm_password) {
       missingFieldError("confirm password", res);
     } else if (req.body.password.length > PASSWORD_LIMIT) {
@@ -356,9 +365,11 @@ export default function (app: Express) {
           };
           await transporter.sendMail(mailOptions);
           const hashed = bcrypt.hashSync(req.body.password, saltRounds);
+          const date = new Date();
           let newUser = new User({
             username: username,
             password: hashed,
+            accepted_terms_of_service_at: date,
             email: email,
             tasks: [],
           });

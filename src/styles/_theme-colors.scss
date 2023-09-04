@@ -68,6 +68,11 @@
       outline: 2px solid $medium-light;
     }
   }
+
+  input:autofill {
+    background: white;
+  }
+
   select {
     &.inactive-input,
     .new-category-option {
@@ -298,6 +303,10 @@
     &:focus {
       outline: 2px solid lighten($medium, 10%);
     }
+  }
+
+  input:autofill {
+    background: $dark;
   }
 
   button {
