@@ -5,7 +5,7 @@ import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
 import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
 
 import DOMPurify from "dompurify";
-import { handleErrorAlert } from "../utils/alertFunctions";
+import { handleErrorAlert, handleSuccessAlert } from "../utils/alertFunctions";
 import useAxiosInstance from "../hooks/useAxiosInstance";
 
 const SignUp = () => {
@@ -33,6 +33,7 @@ const SignUp = () => {
       })
       .then((res) => {
         console.log(`${res.data.result}`);
+        handleSuccessAlert(res, setPopup);
         setUser(res.data.user);
         navigate("/");
       })

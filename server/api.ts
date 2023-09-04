@@ -176,6 +176,7 @@ const partiallyHiddenEmail = (email: string) => {
   const username = parts[0];
   const domain = parts[1];
   const hiddenEmail = username.charAt(0) + "*****" + "@" + domain;
+  return hiddenEmail;
 };
 
 // MIDDLEWARE:
@@ -343,27 +344,41 @@ export default function (app: Express) {
       } else if (req.body.password != req.body.confirm_password) {
         conflictingPasswordError(res);
       } else {
-        const hashed = bcrypt.hashSync(req.body.password, saltRounds);
+        const emailTemplate = getEmailTemplate("welcome-email.html");
+        const htmlContent = emailTemplate.replace("{{username}}", username);
         const email = req.body.email;
-        let newUser = new User({
-          username: username,
-          password: hashed,
-          email: email,
-          tasks: [],
-        });
         try {
-          await User.create(newUser);
-          req.session.user = `${newUser._id}`;
-          res.json({
-            result: `New user account for ${username} successfully created`,
-            user: newUser,
+          const mailOptions = {
+            from: process.env["EMAIL"],
+            to: email,
+            subject: "Welcome to Task Tracker!",
+            html: htmlContent,
+          };
+          await transporter.sendMail(mailOptions);
+          const hashed = bcrypt.hashSync(req.body.password, saltRounds);
+          let newUser = new User({
+            username: username,
+            password: hashed,
+            email: email,
+            tasks: [],
           });
+          try {
+            await User.create(newUser);
+            req.session.user = `${newUser._id}`;
+            res.json({
+              result: `<p>Congratulations <b>${username}</b>!<br/>Your account has been successfully created.<br/>If you haven't received a confirmation email, please check your spam folder or verify your email address in your Profile Settings.</p>`,
+              user: newUser,
+            });
+          } catch (error) {
+            handle500Error(
+              error,
+              "An internal error occurred while creating the user account",
+              res
+            );
+          }
         } catch (error) {
-          handle500Error(
-            error,
-            "An internal error occurred while creating the user account",
-            res
-          );
+          console.error("Error sending email: ", error);
+          res.status(500).json({ error: `Failed to send email to ${email}.` });
         }
       }
     }
@@ -486,7 +501,7 @@ export default function (app: Express) {
           await User.deleteOne({ username: username });
           destroySession(req.session, res);
           res.json({
-            result: `User account for ${username} successfully deleted`,
+            result: `<p>User account for <b>${username}</b> successfully deleted</p>`,
           });
         } catch (error) {
           const errorMessage = "An error occurred while deleting the user";

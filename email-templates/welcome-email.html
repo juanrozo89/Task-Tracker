@@ -1,10 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Password Reset</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root {
+        font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+      }
+      h2 {
+        text-align: center;
+        color: hsl(250, 35%, 27%);
+        font-size: 42px;
+        margin: 0 auto 0;
+        padding: 20px 0 0;
+      }
+      #body-container {
+        max-width: 500px !important;
+        display: block;
+        margin: 0 auto;
+        /*box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);*/
+      }
+      #title,
+      b {
+        color: hsl(250, 35%, 27%);
+      }
+      #title {
+        margin: 28px 25px;
+      }
+      #content {
+        color: hsl(250, 50%, 15%);
+        padding: 0 38px 8px;
+      }
+      ul {
+        list-style: none;
+        padding-left: 25px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+      }
+      li:not(:first-child) {
+        margin-top: 16px !important;
+        margin-left: 0;
+      }
+      .link {
+        color: hsl(255, 35%, 37%);
+      }
+      hr {
+        border: none;
+        background-image: linear-gradient(
+          90deg,
+          hsla(0, 100%, 100%, 0),
+          hsl(255, 35%, 37%),
+          hsla(0, 100%, 100%, 0)
+        );
+        margin-top: 18px;
+        height: 2px;
+        width: 80%;
+      }
+    </style>
   </head>
   <body>
-    <p>Click on the link below to reset your password:</p>
-    <a href="{{resetLink}}">Reset Password</a>
+    <div id="body-container">
+      <h2>Task Tracker</h2>
+      <hr />
+      <h3 id="title">Welcome to Task Tracker!</h3>
+      <div id="content">
+        <p>Hello <b>{{username}}!</b></p>
+        <p>
+          We're excited to have you on board. You're now part of our growing
+          community! Here are a few things to get you started on your journey to
+          supercharged productivity:
+        </p>
+        <ul>
+          <li>
+            <b>1. Getting Started: </b>Log in to your account with the
+            credentials you provided during registration. Explore the
+            user-friendly interface and find your way around.
+          </li>
+
+          <li>
+            <b>2. Create Your First Task: </b>Click on the "New Task" button in
+            the "My Tasks" section to create your first task. Give it a name,
+            set a due date, and add any important details.
+          </li>
+
+          <li>
+            <b>3. Organize Your Tasks: </b> Use categories to keep your tasks
+            organized and easily accessible. Set priorities to focus on what
+            matters most.
+          </li>
+
+          <li>
+            <b>4. Sort And Filter: </b> Find what you need quickly. Eplore the
+            "Sort" and "Filter" options in "My Tasks" to customize how your
+            tasks are displayed.
+          </li>
+
+          <li>
+            <b>5. Need Help? </b> If you have any questions or need assistance,
+            our support team is here to help. Contact us at
+            <a href="mailto:tasktracker.service@gmail.com" class="link"
+              >tasktracker.service@gmail.com</a
+            >
+          </li>
+        </ul>
+
+        <p>
+          Thank you for choosing Task Tracker to boost your productivity and
+          stay organized. We're here to help you achieve your goals.
+        </p>
+        <p style="margin-top: 30px">Happy task tracking!</p>
+        <p style="margin-top: 30px">The Task Tracker Team</p>
+        <br />
+        <hr />
+      </div>
+    </div>
   </body>
 </html>

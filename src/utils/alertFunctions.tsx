@@ -51,7 +51,6 @@ export const handleSuccessAlert = (
   setPopupFunc: React.Dispatch<React.SetStateAction<Popup>>
 ) => {
   const result = `${res.data.result}`;
-  console.log(result);
   setPopupFunc({
     type: ALERT,
     title: "Success",
