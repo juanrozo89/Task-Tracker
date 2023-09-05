@@ -35,7 +35,7 @@ It combines the functionality of a comprehensive to-do list with an efficient ta
 
    To better leverage the searching functionality, you can apply "and" or "conditionals" by using the "&" and "|" characters respectively.
 
-   For example:
+   **For example:**
 
 - Searching "task & ongoing" will display all tasks containing the keywords "task" and "ongoing" anywhere in their content, but not necessarily contiguously.
 - Searching "task | ongoing" will display all tasks containing the keywords "task" or "ongoing" anywhere in their content
