@@ -90,7 +90,7 @@ const LogIn = () => {
           className="link"
           onClick={recoverPassword}
         >
-          Forgot my password
+          I forgot my password
         </p>
         <button type="submit">Log In</button>
       </form>

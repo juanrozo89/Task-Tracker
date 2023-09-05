@@ -793,16 +793,34 @@ hr {
 /* ----------- */
 /*    ABOUT    */
 /* ----------- */
+#about {
+  position: relative;
+  padding: 0;
+  #readme {
+    padding-top: 4vh;
+    width: 75vw;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    display: block;
+    text-align: left;
+    h2 {
+      margin: 20px auto 20px;
+    }
+    ul {
+      margin-left: 20px;
+    }
+    li {
+      margin: 5px 0 15px;
+    }
+  }
+}
 
 #contact-info {
   width: 100vw;
-  height: 120px;
-  padding-top: 8vh;
+  height: 85px;
+  padding-top: 5vh;
   text-align: center;
-}
-
-#about {
-  padding-top: 10vh;
 }
 
 /* ------------- */
