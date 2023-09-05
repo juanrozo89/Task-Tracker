@@ -73,6 +73,10 @@
     background: white;
   }
 
+  input[type="checkbox"] {
+    accent-color: $done-light;
+  }
+
   select {
     &.inactive-input,
     .new-category-option {
@@ -307,6 +311,10 @@
 
   input:autofill {
     background: $dark;
+  }
+
+  input[type="checkbox"] {
+    accent-color: darken($done-dark, 28%);
   }
 
   button {
