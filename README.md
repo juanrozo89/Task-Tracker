@@ -1,8 +1,8 @@
 # Task Tracker App
 
-The Task Tracker App is an intuitive, user-friendly web application that allows users to manage their tasks effectively, enhancing productivity and time management.
+TaskTrack is a simple intuitive app designed to streamline your daily achievements and help you stay on top of your tasks.
 
-With this app, users can create a user account, add new tasks, delete tasks, edit tasks, set due dates, set priorities, set categories, and track task completion status.
+It combines the functionality of a comprehensive to-do list with an efficient task manager and tracker, empowering you to optimize your time, achieve your goals, and stay organized.
 
 ## Features:
 
