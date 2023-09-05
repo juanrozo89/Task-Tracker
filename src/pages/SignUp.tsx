@@ -5,6 +5,7 @@ import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
 import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
 
 import TermsOfService from "../components/TermsOfService";
+import PasswordInput from "../components/PasswordInput";
 
 import DOMPurify from "dompurify";
 import { handleErrorAlert, handleSuccessAlert } from "../utils/alertFunctions";
@@ -93,15 +94,7 @@ const SignUp = () => {
 
           {/*  PASSWORD  */}
           <label htmlFor="signup-password">Password: </label>
-          <input
-            type="password"
-            name="password"
-            id="signup-password"
-            ref={passwordRef}
-            autoComplete="new-password"
-            maxLength={PASSWORD_LIMIT}
-            required
-          />
+          <PasswordInput id={"signup-password"} ref={passwordRef} />
 
           {/*  CONFIRM PASSWORD  */}
           <label htmlFor="signup-confirm-password">Confirm password: </label>

@@ -1,6 +1,11 @@
 import MainMenu from "./MainMenu";
 import ProfileMenu from "./ProfileMenu";
 
+interface HeaderProps {
+  username: string;
+  pageTitle: string;
+}
+
 const Header: React.FC<HeaderProps> = ({ username, pageTitle }) => {
   return (
     <>

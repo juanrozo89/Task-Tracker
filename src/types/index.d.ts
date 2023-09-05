@@ -8,20 +8,6 @@ declare global {
     }
   }
 
-  interface HeaderProps {
-    username: string;
-    pageTitle: string;
-  }
-
-  interface ErrorBoundaryProps {
-    children: ReactNode;
-    fallback: ReactElement;
-  }
-
-  interface ErrorBoundaryState {
-    hasError: boolean;
-  }
-
   type PopupType =
     | constants.CONFIRM
     | constants.ALERT

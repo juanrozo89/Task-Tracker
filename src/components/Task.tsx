@@ -257,7 +257,7 @@ const Task: React.FC<Task> = ({
               <input
                 id={`edit-title-${_id}`}
                 className="edit-task-title-input"
-                defaultValue={task_title}
+                defaultValue={decodeHtml(task_title)}
                 ref={editTitleRef}
                 maxLength={TITLE_LIMIT}
               ></input>
@@ -312,7 +312,11 @@ const Task: React.FC<Task> = ({
                 ) : undefined}
 
                 {/*---TITLE---*/}
-                {task_title}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: formatToHtml(task_title),
+                  }}
+                />
                 {editingTask && (
                   <>
                     &nbsp;&nbsp;&nbsp;

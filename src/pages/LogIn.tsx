@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useRef } from "react";
 import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
-import { ALERT, USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
+import { ALERT, USERNAME_LIMIT } from "../constants";
 
 import DOMPurify from "dompurify";
 import { handleErrorAlert } from "../utils/alertFunctions";
 import useAxiosInstance from "../hooks/useAxiosInstance";
+
+import PasswordInput from "../components/PasswordInput";
 
 const LogIn = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -75,7 +77,6 @@ const LogIn = () => {
         <label htmlFor="login-username">Username: </label>
         <input
           type="text"
-          name="username"
           id="login-username"
           ref={usernameRef}
           maxLength={USERNAME_LIMIT}
@@ -83,16 +84,7 @@ const LogIn = () => {
         />
 
         <label htmlFor="login-password">Password: </label>
-        <input
-          type="password"
-          name="password"
-          id="login-password"
-          ref={passwordRef}
-          autoComplete="new-password"
-          maxLength={PASSWORD_LIMIT}
-          required
-        />
-        <button type="submit">Log In</button>
+        <PasswordInput id={"login-password"} ref={passwordRef} />
         <p
           id="recover-password-link"
           className="link"
@@ -100,6 +92,7 @@ const LogIn = () => {
         >
           Forgot my password
         </p>
+        <button type="submit">Log In</button>
       </form>
     </section>
   );

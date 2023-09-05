@@ -63,6 +63,18 @@ input[type="checkbox"] {
   }
 }
 
+.password-input {
+  position: relative;
+  .view-password-btn {
+    font-size: 1.3rem;
+    position: absolute;
+    top: -5px;
+    right: -25px;
+    user-select: none;
+    cursor: pointer;
+  }
+}
+
 /*.checkbox {
   position: relative;
   cursor: pointer;
@@ -349,6 +361,16 @@ hr {
   margin: auto;
   .page-message {
     margin-top: 15vh !important;
+  }
+}
+
+/* -------------- */
+/*     LOG IN     */
+/* -------------- */
+
+#log-in {
+  #recover-password-link {
+    margin: 5px auto 2px;
   }
 }
 

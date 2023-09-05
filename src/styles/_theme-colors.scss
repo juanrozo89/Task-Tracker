@@ -77,6 +77,12 @@
     accent-color: $done-light;
   }
 
+  .password-input {
+    .view-password-btn {
+      color: darken($medium, 10%);
+    }
+  }
+
   select {
     &.inactive-input,
     .new-category-option {
@@ -315,6 +321,12 @@
 
   input[type="checkbox"] {
     accent-color: darken($done-dark, 28%);
+  }
+
+  .password-input {
+    .view-password-btn {
+      color: darken($medium-light, 5%);
+    }
   }
 
   button {

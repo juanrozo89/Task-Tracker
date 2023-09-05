@@ -1,8 +1,10 @@
 import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
-import RedirectToLogin from "../components/RedirectToLogin";
 import { CONFIRM } from "../constants";
+
+import RedirectToLogin from "../components/RedirectToLogin";
+import PasswordInput from "../components/PasswordInput";
 
 import { USERNAME_LIMIT, PASSWORD_LIMIT } from "../constants";
 
@@ -248,15 +250,7 @@ const ProfileSettings = () => {
           onSubmit={confirmUpdatePassword}
         >
           <label htmlFor="update-new-password">New password: </label>
-          <input
-            type="password"
-            name="new_password"
-            id="update-new-password"
-            autoComplete="new-password"
-            ref={newPasswordRef}
-            maxLength={PASSWORD_LIMIT}
-            required
-          />
+          <PasswordInput id={"update-new-password"} ref={newPasswordRef} />
           <label htmlFor="update-confirm-password">
             Confirm new password:{" "}
           </label>
