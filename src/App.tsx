@@ -25,9 +25,8 @@ import MyTasks from "./pages/MyTasks";
 import Loading from "./components/Loading";
 
 function App() {
-  const { user, setUser } = useUserSession();
-
   const [hasInternalError, setHasInternalError] = useState<boolean>(false);
+  const { user, setUser } = useUserSession(setHasInternalError);
   const [isLoading, setIsLoading] = useState<boolean>(false)!;
 
   const { theme, toggleTheme } = useThemeHandler();

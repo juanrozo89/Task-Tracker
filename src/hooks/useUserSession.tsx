@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import useAxiosInstance from "../hooks/useAxiosInstance";
 import { handleAxiosError } from "../utils/alertFunctions";
 
-const useUserSession = () => {
+const useUserSession = (
+  setHasInternalError: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const [user, setUser] = useState<User | null>(null);
   const axiosInstance = useAxiosInstance();
 
@@ -15,6 +17,7 @@ const useUserSession = () => {
           setUser(response.data.user);
         }
       } catch (error) {
+        setHasInternalError(true);
         handleAxiosError(error);
       }
     };
