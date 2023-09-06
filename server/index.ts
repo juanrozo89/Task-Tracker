@@ -32,11 +32,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// Handle database connection errors
-/*app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err);
-  res.status(500).json({ error: "Internal server error" });
-});*/
+// Request timeout limit
+app.use((req, res, next) => {
+  req.setTimeout(REQ_TIMEOUT_SERVER, () => {
+    res.status(408).json({
+      error:
+        "Sorry fot the inconveniences! The server timed out waiting for the request. Please try again later",
+    });
+  });
+  next();
+});
 
 // Connect to MongoDB sessions database
 import MongoDBSession from "connect-mongodb-session";
@@ -56,6 +61,7 @@ const store = new MongoDBStore(
     }
   }
 );
+
 store.on("connected", () => {
   console.log("Succesfully connected to sessions database via MongoDBStore");
 });
@@ -71,29 +77,6 @@ app.use(
     resave: false,
   })
 );
-
-// Request timeout limit
-app.use((req, res, next) => {
-  req.setTimeout(REQ_TIMEOUT_SERVER, () => {
-    res.status(408).json({
-      error:
-        "Sorry fot the inconveniences! The server timed out waiting for the request. Please try again later",
-    });
-  });
-  next();
-});
-
-/*app.use((req, res, next) => {
-  req.session.destroy((err: Error) => {
-    if (err) {
-      res.status(500).json({ error: "could not destroy session" });
-      return;
-    } else {
-      console.log("Session successfully destroyed");
-    }
-  });
-});
-*/
 
 apiRoutes(app);
 
