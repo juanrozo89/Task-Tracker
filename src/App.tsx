@@ -25,8 +25,8 @@ import MyTasks from "./pages/MyTasks";
 import Loading from "./components/Loading";
 
 function App() {
-  const [hasInternalError, setHasInternalError] = useState<boolean>(false);
-  const { user, setUser } = useUserSession(setHasInternalError);
+  const [internalError, setInternalError] = useState<string | null>(null);
+  const { user, setUser } = useUserSession(setInternalError);
   const [isLoading, setIsLoading] = useState<boolean>(false)!;
 
   const { theme, toggleTheme } = useThemeHandler();
@@ -53,14 +53,20 @@ function App() {
                   />
                 }
               >
-                {hasInternalError ? (
+                {internalError ? (
                   <>
-                    <Route index element={<InternalError />} />
+                    <Route
+                      index
+                      element={<InternalError message={internalError} />}
+                    />
                     <Route
                       path={"profile-settings"}
-                      element={<InternalError />}
+                      element={<InternalError message={internalError} />}
                     />
-                    <Route path="sign-up" element={<InternalError />} />
+                    <Route
+                      path="sign-up"
+                      element={<InternalError message={internalError} />}
+                    />
                   </>
                 ) : (
                   <>

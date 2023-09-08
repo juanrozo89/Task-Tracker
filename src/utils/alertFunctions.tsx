@@ -1,9 +1,5 @@
 import { ALERT } from "../constants";
-import { AxiosResponse, AxiosError } from "axios";
-
-interface ErrorResponse {
-  message: string;
-}
+import { AxiosResponse } from "axios";
 
 export const handleAxiosError = (error: any) => {
   if (error.response) {

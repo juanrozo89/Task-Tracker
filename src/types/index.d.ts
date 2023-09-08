@@ -1,3 +1,4 @@
+import { MongoDBStore } from "connect-mongodb-session";
 import * as constants from "../constants";
 export {};
 
@@ -5,7 +6,13 @@ declare global {
   namespace Express {
     interface Request {
       user: any;
+      store: MongoDBStore;
     }
+  }
+
+  interface HeaderProps {
+    username: string;
+    pageTitle: string;
   }
 
   type PopupType =

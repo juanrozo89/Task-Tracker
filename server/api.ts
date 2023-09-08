@@ -189,14 +189,17 @@ const partiallyHiddenEmail = (email: string) => {
 // MIDDLEWARE:
 
 // check if there is connection to sessions and users databases
-/*const checkDBConnection = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.session) {
-    handle500Error(null, "Unable to connect to sessions database", res);
-  } else if (!mongoose.connection || mongoose.connection.readyState !== 1) {
-    handle500Error(null, "Unable to connect to users database", res);
+const checkDBConnection = (req: Request, res: Response, next: NextFunction) => {
+  if (!mongoose.connection || !mongoose.connection.readyState) {
+    handle500Error(
+      null,
+      "Sorry! We could not establish a connection to the users database. Please try again later.",
+      res
+    );
+  } else {
+    next();
   }
-  next();
-};*/
+};
 
 // autheticate if the user session is active
 const authenticateSession = (
@@ -313,7 +316,7 @@ export default function (app: Express) {
   // get user from session:
   app
     .route("/api/user-from-session/")
-    .get(async (req: Request, res: Response) => {
+    .get(checkDBConnection, async (req: Request, res: Response) => {
       if (!req.session.user) {
         res.status(204).json({ result: "No logged-in user" });
       } else {

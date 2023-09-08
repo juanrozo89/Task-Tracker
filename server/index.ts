@@ -43,37 +43,17 @@ app.use((req, res, next) => {
   next();
 });
 
-// Connect to MongoDB sessions database
-import MongoDBSession from "connect-mongodb-session";
-const MongoDBStore = MongoDBSession(session);
-const store = new MongoDBStore(
-  {
-    uri: process.env.MONGO_URI_SESSIONS!,
-    //uri: "bad",
-    collection: "sessions",
-  },
-  (error) => {
-    if (error) {
-      console.log(
-        "Could not connect to sessions database via MongoDBStore: ",
-        error
-      );
-    }
-  }
-);
-
-store.on("connected", () => {
-  console.log("Succesfully connected to sessions database via MongoDBStore");
-});
-
 // Initialize session store
 app.use(
   session({
     secret: process.env.SESSIONS_KEY!,
     saveUninitialized: true,
-    store: store,
-    unset: "destroy",
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 * 30 }, // one month
+    unset: "keep",
+    cookie: {
+      secure: false, // Set to true in production for HTTPS
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7 * 30, // one month
+    },
     resave: false,
   })
 );

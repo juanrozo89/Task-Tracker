@@ -4,7 +4,7 @@ import useAxiosInstance from "../hooks/useAxiosInstance";
 import { handleAxiosError } from "../utils/alertFunctions";
 
 const useUserSession = (
-  setHasInternalError: React.Dispatch<React.SetStateAction<boolean>>
+  setHasInternalError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   const [user, setUser] = useState<User | null>(null);
   const axiosInstance = useAxiosInstance();
@@ -16,8 +16,13 @@ const useUserSession = (
         if (response.data.user) {
           setUser(response.data.user);
         }
-      } catch (error) {
-        setHasInternalError(true);
+      } catch (error: any) {
+        if (error.response?.data?.error) {
+          const errorMessage = error.response.data.error;
+          setHasInternalError(errorMessage);
+        } else {
+          setHasInternalError("An unexpected error occurred");
+        }
         handleAxiosError(error);
       }
     };
