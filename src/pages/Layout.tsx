@@ -20,7 +20,6 @@ const Layout: React.FC<HeaderProps> = ({ username, pageTitle }) => {
     <PopupContext.Provider value={{ popup, setPopup, onConfirm, setOnConfirm }}>
       <div className={theme}>
         <Header username={username} pageTitle={pageTitle} />
-        <hr />
         <Outlet />
         {popup.type == CONFIRM && <ConfirmationDialog></ConfirmationDialog>}
         {popup.type == NEW_TASK && <NewTaskPopup></NewTaskPopup>}

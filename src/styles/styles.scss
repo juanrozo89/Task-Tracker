@@ -211,133 +211,140 @@ button {
 /* -------------- */
 /*     HEADER     */
 /* -------------- */
-
-header {
+#header-container {
   position: fixed;
   top: 0;
   left: 0;
   margin: 0;
-  height: $header-height;
+  height: fit-content;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   z-index: $z-index-header;
-  /*box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);*/
-  /*border: 1px solid red;*/
 
-  #main-title {
-    position: relative;
-    text-align: center;
-    font-size: $largest-font-size;
-    margin-top: 35px;
-    z-index: $z-index-title;
-    @media (max-width: calc($small-screen-width + 1px)) {
-      font-size: calc($largest-font-size * 0.9);
-    }
-  }
-
-  #header-background {
-    width: 100vw;
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
     height: $header-height;
-    position: absolute;
-    z-index: $z-index-header-background;
-  }
 
-  .menu-list {
-    position: fixed;
-    top: $header-height;
-    margin: -5px 0 0 0;
-    padding: 10px 0 10px;
-    display: block;
-    z-index: $z-index-menu-list;
-    .menu-slot {
+    #main-title {
+      position: relative;
+      text-align: center;
+      margin: 0 20px;
+      padding: 0;
+      z-index: $z-index-title;
+      @media (max-width: calc($medium-screen-width + 1px)) {
+        font-size: calc($largest-font-size * 0.95);
+        &.long-title {
+          font-size: 9.8vw;
+        }
+        &.longest-title {
+          font-size: 8.1vw;
+        }
+      }
+      @media (max-width: calc($small-screen-width + 1px)) {
+        font-size: calc($largest-font-size * 0.85);
+        margin: 0 12px;
+      }
+    }
+
+    #header-background {
+      width: 100vw;
+      height: $header-height;
+      position: absolute;
+      z-index: $z-index-header-background;
+    }
+
+    .menu-list {
+      position: fixed;
+      top: $header-height;
+      margin: -5px 0 0 0;
+      padding: 10px 0 10px;
       display: block;
-      width: 220px;
-      height: 40px;
-      padding: 8px 30px 12px 20px;
-      font-weight: 500;
-      text-decoration: none;
+      z-index: $z-index-menu-list;
+      .menu-slot {
+        display: block;
+        width: 220px;
+        height: 40px;
+        padding: 8px 30px 12px 20px;
+        font-weight: 500;
+        text-decoration: none;
+      }
+      li {
+        list-style-type: none;
+      }
     }
-    li {
-      list-style-type: none;
+
+    #main-menu-button {
+      position: relative;
+      margin-left: 10px;
+      width: 60px;
+      height: 50px;
+      font-size: 45px;
+      @media (max-width: calc($small-screen-width + 1px)) {
+        width: 55px;
+        height: 45px;
+        font-size: 42px;
+      }
+      border-radius: 5px;
+      /*box-shadow: 0 0 8px var(--medium-light);*/
+      text-align: center;
+      font-family: $base-font;
+      line-height: 48px;
+      vertical-align: middle;
+      cursor: pointer;
+      user-select: none;
+      z-index: $z-index-menu-button;
+      &:hover {
+        transition: background-color 0.2s;
+      }
+    }
+    #main-menu-list {
+      left: 10px;
+      border-radius: 0 5px 5px 3px;
+    }
+
+    #profile-menu-button {
+      position: relative;
+      margin-right: 10px;
+      height: 50px;
+      aspect-ratio: 1;
+      line-height: 43px;
+      font-size: 30px;
+
+      border-radius: 50%;
+      vertical-align: center;
+      text-align: center;
+      font-family: "Arial", sans-serif;
+      vertical-align: middle;
+      cursor: pointer;
+      user-select: none;
+      z-index: $z-index-menu-button;
+      &:hover {
+        transition: background-color 0.2s;
+      }
+    }
+    #profile-menu-list {
+      right: 10px;
+      border-radius: 5px 0 0 5px;
     }
   }
-
-  #main-menu-button {
+  hr {
     position: relative;
-    margin-left: 10px;
-    width: 60px;
-    height: 50px;
-    font-size: 45px;
-    @media (max-width: calc($small-screen-width + 1px)) {
-      width: 55px;
-      height: 45px;
-      font-size: 42px;
-    }
-    border-radius: 5px;
-    /*box-shadow: 0 0 8px var(--medium-light);*/
-    text-align: center;
-    font-family: $base-font;
-    line-height: 48px;
-    vertical-align: middle;
-    cursor: pointer;
-    user-select: none;
-    z-index: $z-index-menu-button;
-    &:hover {
-      transition: background-color 0.2s;
-    }
+    display: block;
+    margin: 0 auto;
+    height: 2px;
+    width: 80vw;
+    border: none;
+    background-image: linear-gradient(
+      90deg,
+      hsla(0, 100%, 100%, 0),
+      $medium,
+      hsla(0, 100%, 100%, 0)
+    );
+    z-index: $z-index-hr;
   }
-
-  #main-menu-list {
-    left: 10px;
-    border-radius: 0 5px 5px 3px;
-  }
-  #profile-menu-button {
-    position: relative;
-    margin-right: 10px;
-    height: 50px;
-    aspect-ratio: 1;
-    line-height: 43px;
-    font-size: 30px;
-
-    border-radius: 50%;
-    vertical-align: center;
-    text-align: center;
-    font-family: "Arial", sans-serif;
-    vertical-align: middle;
-    cursor: pointer;
-    user-select: none;
-    z-index: $z-index-menu-button;
-    &:hover {
-      transition: background-color 0.2s;
-    }
-  }
-
-  #profile-menu-list {
-    right: 10px;
-    border-radius: 5px 0 0 5px;
-  }
-}
-
-hr {
-  position: fixed;
-  top: $header-height;
-  left: 50%;
-  transform: translate(-50%);
-  display: block;
-  margin: 0 auto;
-  height: 2px;
-  width: 80vw;
-  border: none;
-  background-image: linear-gradient(
-    90deg,
-    hsla(0, 100%, 100%, 0),
-    $medium,
-    hsla(0, 100%, 100%, 0)
-  );
-  z-index: $z-index-hr;
 }
 
 /* ---------------- */
