@@ -34,14 +34,6 @@ const saltRounds = 10;
 import crypto from "crypto";
 
 import mongoose from "mongoose";
-mongoose
-  .connect(process.env.MONGO_URI!)
-  .then(() =>
-    console.log("Successfully connected to users database via Mongoose")
-  )
-  .catch((err) => {
-    console.log("Error connecting to users database via Mongoose: ", err);
-  });
 
 const Schema = mongoose.Schema;
 
@@ -169,6 +161,7 @@ const destroySession = (session: Session, res: Response) => {
   });
 };
 
+// get the html file for an email template
 const getEmailTemplate = (filename: string) => {
   const emailTemplatePath = path.join(
     __dirname,
@@ -178,6 +171,7 @@ const getEmailTemplate = (filename: string) => {
   return emailTemplate;
 };
 
+// get the email address partially hidden
 const partiallyHiddenEmail = (email: string) => {
   const parts = email.split("@");
   const username = parts[0];
@@ -188,14 +182,27 @@ const partiallyHiddenEmail = (email: string) => {
 
 // MIDDLEWARE:
 
-// check if there is connection to sessions and users databases
-const checkDBConnection = (req: Request, res: Response, next: NextFunction) => {
+// check if there is connection to users databases
+const handleDBConnection = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   if (!mongoose.connection || !mongoose.connection.readyState) {
-    handle500Error(
-      null,
-      "Sorry! We could not establish a connection to the users database. Please try again later.",
-      res
-    );
+    mongoose
+      .connect(process.env.MONGO_URI!)
+      .then(() => {
+        console.log("Successfully connected to users database via Mongoose");
+        next();
+      })
+      .catch((err) => {
+        console.log("Error connecting to users database via Mongoose: ", err);
+        handle500Error(
+          null,
+          "Sorry! We could not establish a connection to the users database. Please try again later.",
+          res
+        );
+      });
   } else {
     next();
   }
@@ -316,7 +323,7 @@ export default function (app: Express) {
   // get user from session:
   app
     .route("/api/user-from-session/")
-    .get(checkDBConnection, async (req: Request, res: Response) => {
+    .get(handleDBConnection, async (req: Request, res: Response) => {
       if (!req.session.user) {
         res.status(204).json({ result: "No logged-in user" });
       } else {
