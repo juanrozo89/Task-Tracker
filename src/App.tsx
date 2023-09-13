@@ -24,7 +24,7 @@ import MyTasks from "./pages/MyTasks";
 // components
 import Loading from "./components/Loading";
 
-function App() {
+const App = () => {
   const [internalError, setInternalError] = useState<string | null>(null);
   const { user, setUser } = useUserSession(setInternalError);
   const [isLoading, setIsLoading] = useState<boolean>(false)!;
@@ -91,6 +91,6 @@ function App() {
       </ThemeContext.Provider>
     </>
   );
-}
+};
 
 export default App;

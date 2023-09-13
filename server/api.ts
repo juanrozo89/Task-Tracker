@@ -259,6 +259,9 @@ const attemptPasswordLimiter = rateLimit({
 // API ROUTES:
 
 export default function (app: Express) {
+  // Check connection to db for all routes
+  app.use("/api/", handleDBConnection);
+
   // ~~~ HANDLE USER SESSION ~~~
 
   // send request to recover password via e-mail
@@ -323,7 +326,7 @@ export default function (app: Express) {
   // get user from session:
   app
     .route("/api/user-from-session/")
-    .get(handleDBConnection, async (req: Request, res: Response) => {
+    .get(async (req: Request, res: Response) => {
       if (!req.session.user) {
         res.status(204).json({ result: "No logged-in user" });
       } else {

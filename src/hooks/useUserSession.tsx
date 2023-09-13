@@ -15,6 +15,7 @@ const useUserSession = (
         const response = await axiosInstance.get("/api/user-from-session");
         if (response.data.user) {
           setUser(response.data.user);
+          setHasInternalError(null);
         }
       } catch (error: any) {
         if (error.response?.data?.error) {
