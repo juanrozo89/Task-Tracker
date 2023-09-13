@@ -32,12 +32,3 @@ It combines the functionality of a comprehensive to-do list with an efficient ta
 8. **Delete a Task:** To remove a task from the list, click the "Delete" button in the lower part of the task's content.
 9. **Filtering by Keyword Functionality:**
    Filtering by keyword(s) will display tasks containing the specified keywords within their content. This includes their title, category, description, priority, status, as well as created on, accomplished on or due by dates.
-
-   To better leverage the searching functionality, you can apply "and" or "conditionals" by using the "&" and "|" characters respectively.
-
-   **For example:**
-
-- Searching "task & ongoing" will display all tasks containing the keywords "task" and "ongoing" anywhere in their content, but not necessarily contiguously.
-- Searching "task | ongoing" will display all tasks containing the keywords "task" or "ongoing" anywhere in their content
-
-  If none of these characters are used, the input will be read as a continuous string.
