@@ -9,6 +9,26 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "keywords": [
+    "task",
+    "tracker",
+    "app",
+    "manager",
+    "kanban",
+    "productivity",
+    "organization",
+    "todo",
+    "todolist",
+    "list",
+    "workflow",
+    "project management"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juanrozo89/Task-Tracker/"
+  },
+  "author": "Juan Rozo",
+  "license": "MIT",
   "dependencies": {
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
