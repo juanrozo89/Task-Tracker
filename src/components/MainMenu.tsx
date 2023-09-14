@@ -1,6 +1,6 @@
 import useDisplayMenu from "../hooks/useDisplayMenu";
 import { Link } from "react-router-dom";
-import { LIGHT, DARK } from "../constants.js";
+import { DARK } from "../constants.js";
 import { useContext } from "react";
 import { ThemeContext } from "../Contexts";
 

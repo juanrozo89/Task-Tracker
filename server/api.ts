@@ -183,11 +183,7 @@ const partiallyHiddenEmail = (email: string) => {
 // MIDDLEWARE:
 
 // check if there is connection to users databases
-const handleDBConnection = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const handleDBConnection = (_: Request, res: Response, next: NextFunction) => {
   if (!mongoose.connection || !mongoose.connection.readyState) {
     mongoose
       .connect(process.env.MONGO_URI!)
