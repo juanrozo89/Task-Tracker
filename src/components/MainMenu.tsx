@@ -30,7 +30,7 @@ const MainMenu = () => {
           </li>
           <li>
             <Link
-              to="https://github.com/juanrozo89"
+              to="https://github.com/juanrozo89/Task-Tracker"
               id="menu-github"
               className="menu-slot"
               target="_blank"
