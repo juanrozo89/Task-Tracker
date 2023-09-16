@@ -22,7 +22,13 @@ declare module "express-session" {
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ limit: "10kb", extended: true }));
 app.use(cookieParser());
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "'unsafe-inline'"],
+    },
+  })
+);
 
 // Middleware to validate and sanitize input
 import { query, body } from "express-validator";
