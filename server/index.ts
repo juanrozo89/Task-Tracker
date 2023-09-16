@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      "script-src": ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
     },
   })
 );

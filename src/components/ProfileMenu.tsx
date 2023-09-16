@@ -57,7 +57,7 @@ const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
           setDisplayMenu(!displayMenu);
         }}
       >
-        {username ? ":)" : ":/"}
+        {username ? ":)" : "?"}
       </div>
       {displayMenu && menuContent}
     </div>

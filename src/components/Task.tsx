@@ -321,10 +321,10 @@ const Task: React.FC<Task> = ({
                   <>
                     &nbsp;&nbsp;&nbsp;
                     <span
-                      className="edit-task-text-btn link"
+                      className="edit-task-field-btn link"
                       onClick={() => setEditingTitle(true)}
                     >
-                      ｢🖉｣
+                      [🖉]
                     </span>
                   </>
                 )}
@@ -385,10 +385,10 @@ const Task: React.FC<Task> = ({
                   <>
                     &nbsp;&nbsp;&nbsp;
                     <span
-                      className="edit-task-priority-btn link"
+                      className="edit-task-field-btn link"
                       onClick={() => setEditingPriority(true)}
                     >
-                      ｢🖉｣
+                      [🖉]
                     </span>
                   </>
                 )}
@@ -427,10 +427,10 @@ const Task: React.FC<Task> = ({
                   <>
                     &nbsp;&nbsp;&nbsp;
                     <span
-                      className="edit-task-category-btn link"
+                      className="edit-task-field-btn link"
                       onClick={() => setEditingCategory(true)}
                     >
-                      ｢🖉｣
+                      [🖉]
                     </span>
                   </>
                 )}
@@ -474,10 +474,10 @@ const Task: React.FC<Task> = ({
                   <>
                     &nbsp;&nbsp;&nbsp;
                     <span
-                      className="edit-task-text-btn link"
+                      className="edit-task-field-btn link"
                       onClick={() => setEditingText(true)}
                     >
-                      ｢🖉｣
+                      [🖉]
                     </span>
                   </>
                 )}
@@ -563,10 +563,10 @@ const Task: React.FC<Task> = ({
                   <>
                     &nbsp;&nbsp;&nbsp;
                     <span
-                      className="edit-task-due-date-btn link"
+                      className="edit-task-field-btn link"
                       onClick={() => setEditingDueDate(true)}
                     >
-                      ｢🖉｣
+                      [🖉]
                     </span>
                   </>
                 )}
