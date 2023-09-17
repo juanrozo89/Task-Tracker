@@ -294,6 +294,7 @@
   .menu-list {
     /*background: linear-gradient(180deg, $dark, $medium-dark 5%);*/
     background: $medium-dark;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
     .menu-slot {
       color: $lightest;
     }

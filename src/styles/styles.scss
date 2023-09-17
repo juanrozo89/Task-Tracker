@@ -8,6 +8,7 @@
 * {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 :root {
@@ -223,6 +224,15 @@ button {
       @media (max-width: calc($small-screen-width + 1px)) {
         font-size: calc($largest-font-size * 0.85);
         margin: 0 12px;
+      }
+      @media (max-width: calc($smallest-screen-width + 1px)) {
+        font-size: calc($largest-font-size * 0.76);
+        &.long-title {
+          font-size: calc($largest-font-size * 0.68);
+        }
+        &.longest-title {
+          font-size: calc($largest-font-size * 0.68);
+        }
       }
     }
 
@@ -441,6 +451,13 @@ button {
   }
   & > * {
     margin-bottom: 10px;
+  }
+  @media (max-width: calc($smallest-screen-width + 1px)) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 140px;
+    }
   }
   #delete-account-button {
     border-radius: 5px;
@@ -746,12 +763,18 @@ button {
             justify-content: space-between;
             align-items: center;
             width: 260px;
+            @media (max-width: calc($smallest-screen-width + 1px)) {
+              width: 230px;
+            }
             .task-status {
               border-radius: 5px;
               width: 80px;
               height: 28px;
               text-align: center;
               padding-top: 1px;
+              @media (max-width: calc($smallest-screen-width + 1px)) {
+                width: 70px;
+              }
             }
             .current-status {
               font-family: $font-bold !important;
