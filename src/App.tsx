@@ -9,6 +9,7 @@ import { ThemeContext, UserContext, IsLoadingContext } from "./Contexts";
 import useThemeHandler from "./hooks/useThemeHandler";
 import useTitleModifier from "./hooks/useTitleModifier";
 import useUserSession from "./hooks/useUserSession";
+import useFetchReadme from "./hooks/useFetchReadme";
 
 // pages
 import Layout from "./pages/Layout";
@@ -31,6 +32,7 @@ const App = () => {
 
   const { theme, toggleTheme } = useThemeHandler();
   const pageTitle = useTitleModifier(user);
+  const readmeContent = useFetchReadme();
 
   return (
     <>
@@ -38,6 +40,7 @@ const App = () => {
         <IsLoadingContext.Provider value={{ isLoading, setIsLoading }}>
           {isLoading && <Loading />}
           <UserContext.Provider value={{ user, setUser }}>
+            {/* Preload loading image */}
             <img
               style={{ display: "none" }}
               src="/src/images/loading1.gif"
@@ -82,7 +85,10 @@ const App = () => {
                     <Route path="sign-up" element={<SignUp />} />
                   </>
                 )}
-                <Route path="about" element={<About />} />
+                <Route
+                  path="about"
+                  element={<About content={readmeContent} />}
+                />
                 <Route path="*" element={<NoPage />} />
               </Route>
             </Routes>

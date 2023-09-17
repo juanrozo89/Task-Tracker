@@ -4,7 +4,14 @@ const RedirectToLogin = () => {
   return (
     <div className="content">
       <h2 className="page-message">
-        Please <Link to="/">log in</Link> or <Link to="/sign-up">sign up</Link>
+        Please{" "}
+        <Link className="link" to="/">
+          log in
+        </Link>{" "}
+        or{" "}
+        <Link className="link" to="/sign-up">
+          sign up
+        </Link>
       </h2>
     </div>
   );
