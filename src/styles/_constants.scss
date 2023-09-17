@@ -55,6 +55,12 @@ $overlay-color: rgba(0, 0, 0, 0.5);
     url("/fonts/segoeuii.woff") format("woff");
 }
 
+@font-face {
+  font-family: "SymbolFont";
+  src: local("Segoe UI Symbol"), url("/fonts/seguisym.woff2") format("woff2"),
+    url("/fonts/seguisym.woff") format("woff");
+}
+
 $small-font-size: 14px;
 $font-size: 16px;
 $large-font-size: 18px;
@@ -62,6 +68,7 @@ $largest-font-size: 50px;
 $font-normal: "MainFont", sans-serif;
 $font-bold: "MainFontBold", sans-serif;
 $font-italic: "MainFontItalic", sans-serif;
+$font-symbol: "SymbolFont", sans-serif;
 
 /*  ~~~ Z-INDEXES ~~~ */
 $z-index-loading-img: 9;
