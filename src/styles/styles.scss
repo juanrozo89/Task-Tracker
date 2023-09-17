@@ -100,7 +100,8 @@ h2 {
   margin: 10vh 0 30px;
 }
 
-.link {
+.link,
+a {
   text-decoration: inherit;
   &:hover {
     cursor: pointer;
@@ -613,8 +614,8 @@ button {
       pointer-events: none;
     }
     @media (max-width: 800px) {
-      max-height: calc(100vh - $header-height - 25px);
-      margin-bottom: -26px;
+      max-height: calc(100vh - $header-height - 70px);
+      margin-bottom: 25px;
     }
     @media (min-width: 801px) {
       margin-top: 15px;
@@ -857,6 +858,9 @@ button {
   width: 100vw;
   padding: 15px 0 35px;
   text-align: center;
+  @media (max-width: 800px) {
+    margin-bottom: 25px;
+  }
 }
 
 /* ------------- */

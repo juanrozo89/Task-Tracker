@@ -14,7 +14,8 @@
     background-color: white;
   }
 
-  .link {
+  .link,
+  a {
     color: darken($link-color, 3%);
     &:hover {
       color: $link-color;
@@ -262,7 +263,8 @@
     color: $light;
   }
 
-  .link {
+  .link,
+  a {
     color: lighten($link-color, 3%);
     &:hover {
       color: lighten($link-color, 6%);

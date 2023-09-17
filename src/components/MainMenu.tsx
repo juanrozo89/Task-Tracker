@@ -22,7 +22,13 @@ const MainMenu = () => {
         ≡
       </div>
       {displayMenu && (
-        <ul id="main-menu-list" className="menu-list">
+        <ul
+          id="main-menu-list"
+          className="menu-list"
+          onClick={() => {
+            setDisplayMenu(false);
+          }}
+        >
           <li>
             <Link to="/about" id="menu-home" className="menu-slot">
               About
@@ -38,11 +44,6 @@ const MainMenu = () => {
               Github Repo&nbsp;&nbsp;&nbsp;↗
             </Link>
           </li>
-          {/*<li>
-            <Link to="/" target="_blank" id="menu-donate" className="menu-slot">
-              Make a Donation&nbsp;&nbsp;&nbsp;↗
-            </Link>
-      </li>*/}
           <li>
             <Link
               to=""
