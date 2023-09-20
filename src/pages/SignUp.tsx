@@ -98,14 +98,9 @@ const SignUp = () => {
 
           {/*  CONFIRM PASSWORD  */}
           <label htmlFor="signup-confirm-password">Confirm password: </label>
-          <input
-            type="password"
-            name="confirm_password"
-            id="confirm-password-signup"
+          <PasswordInput
+            id={"signup-confirm-password"}
             ref={confirmPasswordRef}
-            autoComplete="new-password"
-            maxLength={PASSWORD_LIMIT}
-            required
           />
 
           {/*  TERMS OF SERVICE  */}

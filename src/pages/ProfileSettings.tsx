@@ -254,14 +254,10 @@ const ProfileSettings = () => {
           <label htmlFor="update-confirm-password">
             Confirm new password:{" "}
           </label>
-          <div>
-            <input
-              type="password"
-              name="confirm_new_password"
-              id="update-confirm-password"
+          <div id="update-password-last-row">
+            <PasswordInput
+              id={"update-confirm-password"}
               ref={confirmPasswordRef}
-              maxLength={PASSWORD_LIMIT}
-              required
             />
             <button type="submit" className="inline-button">
               Apply
