@@ -16,7 +16,7 @@ const MainMenu: React.FC<{ username: string }> = ({ username }) => {
   return (
     <div id="main-menu" ref={menuRef}>
       <div
-        id="main-menu-button"
+        id="main-menu-btn"
         onClick={() => {
           setDisplayMenu(!displayMenu);
         }}

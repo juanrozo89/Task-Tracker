@@ -226,19 +226,25 @@ button {
       right: 75px;
       width: calc(100vw - 150px);
       @media (max-width: calc($medium-screen-width + 1px)) {
+        right: 40px;
+        width: calc(100vw - 115px);
         font-size: calc($largest-font-size * 0.95);
         &.long-title {
-          font-size: 9.8vw;
+          font-size: calc($largest-font-size * 0.85);
         }
         &.longest-title {
-          font-size: 8.1vw;
+          font-size: calc($largest-font-size * 0.7);
         }
       }
       @media (max-width: calc($small-screen-width + 1px)) {
         font-size: calc($largest-font-size * 0.85);
-        padding: 0 12px;
-        right: 65px;
-        width: calc(100vw - 130px);
+        padding: 0 10px;
+        &.long-title {
+          font-size: calc($largest-font-size * 0.7);
+        }
+        &.longest-title {
+          font-size: calc($largest-font-size * 0.68);
+        }
       }
       @media (max-width: calc($smallest-screen-width + 1px)) {
         font-size: calc($largest-font-size * 0.7);
@@ -276,7 +282,7 @@ button {
       }
     }
 
-    #main-menu-button {
+    #main-menu-btn {
       position: relative;
       margin-left: 10px;
       width: 60px;
@@ -285,16 +291,22 @@ button {
       border-radius: 5px;
       text-align: center;
       font-family: $font-symbol !important;
-      line-height: 38px;
+      line-height: 37px;
       vertical-align: middle;
       cursor: pointer;
       user-select: none;
       z-index: $z-index-menu-button;
       @media (max-width: calc($small-screen-width + 1px)) {
-        width: 55px;
-        height: 45px;
-        font-size: 46px;
-        line-height: 34px;
+        width: 54px;
+        height: 44px;
+        font-size: 44px;
+        line-height: 31px;
+      }
+      @media (max-width: calc($smallest-screen-width + 1px)) {
+        width: 48px;
+        height: 40px;
+        font-size: 40px;
+        line-height: 28px;
       }
       &:hover {
         transition: background-color 0.2s;
@@ -860,9 +872,6 @@ button {
   #readme {
     padding-top: 4vh;
     width: 75vw;
-    @media (max-width: calc($small-screen-width + 1px)) {
-      width: 85vw;
-    }
     max-width: 600px;
     margin: 0 auto;
     position: relative;
@@ -871,11 +880,20 @@ button {
     h2 {
       margin: 20px auto 20px;
     }
-    ul {
-      margin-left: 20px;
+    ul,
+    ol {
+      margin-left: 12px;
     }
     li {
       margin: 5px 0 15px;
+    }
+    @media (max-width: calc($small-screen-width + 1px)) {
+      width: 83vw;
+      padding-top: 2vh;
+      ul,
+      ol {
+        margin-left: 4px;
+      }
     }
   }
 }
