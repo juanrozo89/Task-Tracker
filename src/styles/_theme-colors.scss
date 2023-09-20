@@ -35,7 +35,7 @@
     }
   }
 
-  #profile-menu-button {
+  /*#profile-menu-button {
     border: none;
     background-color: $light;
     color: $dark;
@@ -43,7 +43,7 @@
       border: none;
       background-color: $medium-light;
     }
-  }
+  }*/
 
   .menu-list {
     /*background: linear-gradient(180deg, $light, $lightest 2%);*/
@@ -55,6 +55,14 @@
     }
     .menu-slot:hover {
       background-color: $light;
+    }
+    #menu-hr {
+      background-image: linear-gradient(
+        90deg,
+        hsla(0, 100%, 100%, 0),
+        $medium,
+        hsla(0, 100%, 100%, 0)
+      );
     }
   }
 
@@ -282,7 +290,7 @@
     }
   }
 
-  #profile-menu-button {
+  /*#profile-menu-button {
     background-color: $medium-dark;
     color: $light;
     &:hover {
@@ -291,7 +299,7 @@
     &:active {
       background-color: $medium-dark;
     }
-  }
+  }*/
 
   .menu-list {
     /*background: linear-gradient(180deg, $dark, $medium-dark 5%);*/
@@ -303,6 +311,14 @@
     .menu-slot:hover {
       background-color: $medium;
       color: white;
+    }
+    #menu-hr {
+      background-image: linear-gradient(
+        90deg,
+        hsla(0, 100%, 100%, 0),
+        $medium-light,
+        hsla(0, 100%, 100%, 0)
+      );
     }
   }
 

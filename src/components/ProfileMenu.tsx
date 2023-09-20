@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+/*import { Link } from "react-router-dom";
 import useDisplayMenu from "../hooks/useDisplayMenu";
 import useLogout from "../hooks/useLogout";
 
@@ -73,3 +73,4 @@ const ProfileMenu: React.FC<{ username: string }> = ({ username }) => {
 };
 
 export default ProfileMenu;
+*/

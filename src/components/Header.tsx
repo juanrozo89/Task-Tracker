@@ -1,12 +1,12 @@
 import MainMenu from "./MainMenu";
-import ProfileMenu from "./ProfileMenu";
+//import ProfileMenu from "./ProfileMenu";
 import { MAIN, PROFILE_SETTINGS } from "../constants";
 
 const Header: React.FC<HeaderProps> = ({ username, pageTitle }) => {
   return (
     <div id="header-container">
       <header>
-        <MainMenu />
+        <MainMenu username={username} />
         <h1
           id="main-title"
           className={
@@ -19,10 +19,10 @@ const Header: React.FC<HeaderProps> = ({ username, pageTitle }) => {
         >
           {pageTitle}
         </h1>
-        <ProfileMenu username={username} />
+        {/*<ProfileMenu username={username} />*/}
         <div id="header-background"></div>
       </header>
-      <hr />
+      <hr id="header-hr" />
     </div>
   );
 };
