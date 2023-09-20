@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useContext, useRef } from "react";
 import { UserContext, PopupContext, IsLoadingContext } from "../Contexts";
 import { ALERT, USERNAME_LIMIT } from "../constants";
@@ -72,7 +72,6 @@ const LogIn = () => {
   return (
     <section id="log-in" className="content">
       <h2>Log in to your account:</h2>
-
       <form onSubmit={handleSubmit}>
         <label htmlFor="login-username">Username: </label>
         <input
@@ -93,6 +92,9 @@ const LogIn = () => {
           I forgot my password
         </p>
         <button type="submit">Log In</button>
+        <p id="link-to-signup">
+          Or create a <Link to="/sign-up">new account</Link>
+        </p>
       </form>
     </section>
   );
