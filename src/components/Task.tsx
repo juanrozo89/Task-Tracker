@@ -530,7 +530,9 @@ const Task: React.FC<Task> = ({
             {/*---DUE DATE---*/}
             {editingDueDate && editingTask ? (
               <div className="edit-task-due-date-container">
-                <label htmlFor={`edit-due-date-${_id}`}>New due date:</label>
+                <label htmlFor={`edit-due-date-${_id}`}>
+                  New due date and hour:
+                </label>
                 <br />
                 <input
                   id={`edit-due-date-${_id}`}

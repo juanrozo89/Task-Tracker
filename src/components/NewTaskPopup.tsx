@@ -84,7 +84,7 @@ const NewTaskPopup = () => {
         <h3 className="popup-title">Add a new task</h3>
         <div className="popup-content">
           <form id="new-task-form" className="left-aligned-form">
-            <label htmlFor="task-title">Title*</label>
+            <label htmlFor="task-title">Title *</label>
             <input
               id="task-title"
               type="text"
@@ -94,7 +94,7 @@ const NewTaskPopup = () => {
               required
             />
             <br />
-            <label htmlFor="task-description">Description</label>
+            <label htmlFor="task-description">Description (optional)</label>
             <textarea
               id="task-description"
               name="task_description"
@@ -102,13 +102,13 @@ const NewTaskPopup = () => {
               ref={textRef}
             />
             <br />
-            <label htmlFor="select-category">Category*</label>
+            <label htmlFor="select-category">Category *</label>
             <SelectCategory
               _id={"select-category"}
               changeCategory={handleCategoryChange}
             ></SelectCategory>
             <br />
-            <label htmlFor="select-priority">Priority</label>
+            <label htmlFor="select-priority">Priority *</label>
             <select
               id="select-priority"
               onChange={handlePriorityChange}
@@ -119,7 +119,7 @@ const NewTaskPopup = () => {
               <option value={MEDIUM_PRIORITY}>Medium</option>
               <option value={LOW_PRIORITY}>Low</option>
             </select>
-            <label htmlFor="due-date">Due date</label>
+            <label htmlFor="due-date">Due date and hour (optional)</label>
             <input
               id="due-date"
               type="datetime-local"

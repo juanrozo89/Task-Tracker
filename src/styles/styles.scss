@@ -127,7 +127,7 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin: 15px auto 15px;
+  margin: 15px auto;
   padding: 0 20px;
   width: 280px;
 }
@@ -915,6 +915,9 @@ button {
       align-items: center;
       white-space: normal;
       word-break: break-word;
+    }
+    .large-btn-pair {
+      margin: 18px auto;
     }
     .confirm-btn {
       display: block;
